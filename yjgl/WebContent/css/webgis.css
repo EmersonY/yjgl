@@ -1,0 +1,69 @@
+.inputButton{
+	vertical-align:middle;
+	text-align:center;
+	font-size: 10pt;
+    height:26px;
+	width:70px;
+	border-color:#89BFF7;
+	background-color:#6CAEF5;
+	color:#FFFFFF;
+	font-weight: bolder;
+/* 	font-family: "Microsoft YaHei" ! important; */
+}
+.inputButton:hover {
+	vertical-align:middle;
+	text-align:center;
+	font-size: 10pt;
+    height:26px;
+	width:70px;
+	border-color:#89BFF7;
+	background-color:#89BFF7;
+	color:#FFFFFF;
+	font-weight: bolder;
+/* 	font-family: "Microsoft YaHei" ! important; */
+}
+.l-btn {
+/* 	color:#000;#689E5B */
+    background: #6CAEF5;
+    border: 1px solid #89BFF7;
+}
+.l-btn:hover {
+/* 	color:#AAAAAA; */
+    background: #89BFF7;
+    border: 1px solid #89BFF7;
+}
+
+.esriLegendLayer{
+	font-size : 14px;
+}
+
+.apply_footer_upload_edit_webgis_nb{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_upload_edit_webgis_yj{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_upload_edit_webgis_jj{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}

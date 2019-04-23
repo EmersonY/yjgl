@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblMkMenuMappingMapper
+	@Description TBL_MK_MENU_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-09-18 10:07:05
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.activiti.mapper.TblMkMenuMappingMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblMkMenuMappingEntity">
+		select 
+			count(t.id)
+		from 
+			TBL_MK_MENU_MAPPING t
+	</select>
+	
+	<select id="selectPagination" resultType="tblMkMenuMappingEntity" parameterType="tblMkMenuMappingEntity">
+		select 
+			t.gxsj,t.id,t.menuid,t.roleid 
+		from 
+			TBL_MK_MENU_MAPPING t
+	</select>
+	
+	<select id="select" resultType="tblMkMenuMappingEntity">
+		select 
+			t.gxsj,t.id,t.menuid,t.roleid 
+		from 
+			TBL_MK_MENU_MAPPING t
+	</select>
+	
+	<select id="getByPkey" resultType="tblMkMenuMappingEntity" parameterType="String">
+		select 
+			t.gxsj,t.id,t.menuid,t.roleid 
+		from 
+			TBL_MK_MENU_MAPPING t
+		where 
+			t.id = #{id}
+	</select>
+	
+	<insert id="insert" parameterType="tblMkMenuMappingEntity">
+		insert into TBL_MK_MENU_MAPPING(
+			gxsj,id,menuid,roleid
+		)values(
+			#{gxsj,jdbcType=TIME},#{id,jdbcType=VARCHAR},#{menuid,jdbcType=VARCHAR},#{roleid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblMkMenuMappingEntity">
+		update TBL_MK_MENU_MAPPING
+		set 
+			gxsj = #{gxsj,jdbcType=TIME}, menuid = #{menuid,jdbcType=VARCHAR}, roleid = #{roleid,jdbcType=VARCHAR} 
+		where 
+			id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_MK_MENU_MAPPING where id = #{id}
+	</delete>
+	
+	<delete id="deleteByMenuid" parameterType="String">
+		delete from TBL_MK_MENU_MAPPING where id = #{menuid}
+	</delete>
+	
+</mapper>

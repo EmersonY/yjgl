@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName com.kingtopinfo.base.mapper.TBaseLogMapper
+	@Description T_BASE_LOG表映射配置文件
+	@author 陈海彬 chenhb@kingtopinfo.com
+	@date 2017-03-08 16:57:11
+	@version 1.0
+	@remark create by generator
+	-->
+	
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseLogMapper">
+	
+	<select id="selectCount" resultType="int" parameterType="tblBaseLogEntity">
+		select 
+			count(t.logid)
+		from 
+			TBL_BASE_LOG t
+		<where>
+			<if test="username != null and username != ''">
+				t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="result != null and result != ''">
+				and t.result like '%'||#{result,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="module != null and module != '-1'">
+				and t.module like '%'||#{module,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="logtimeStart != null and logtimeStart != ''">
+				and t.logtime >=  #{logtimeStart,jdbcType=TIME}
+			</if>
+			<if test="logtimeEnd != null and logtimeEnd != ''">
+				and #{logtimeEnd,jdbcType=TIME} >= t.logtime
+			</if>
+			<if test="content != null and content != ''">
+				and t.content like '%'||#{content,jdbcType=VARCHAR}||'%'
+			</if>
+		</where>	
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseLogEntity" parameterType="tblBaseLogEntity">
+		select 
+			t.content,t.logid,t.logtime,t.module,t.result,t.userid,t.username 
+		from 
+			TBL_BASE_LOG t
+		<where>
+			<if test="username != null and username != ''">
+				t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="result != null and result != ''">
+				and t.result like '%'||#{result,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="module != null and module != '-1'">
+				and t.module like '%'||#{module,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="logtimeStart != null and logtimeStart != ''">
+				and t.logtime >=  #{logtimeStart,jdbcType=TIME}
+			</if>
+			<if test="logtimeEnd != null and logtimeEnd != ''">
+				and #{logtimeEnd,jdbcType=TIME} >= t.logtime
+			</if>
+			<if test="content != null and content != ''">
+				and t.content like '%'||#{content,jdbcType=VARCHAR}||'%'
+			</if>
+		</where>	
+		order by t.logtime desc	
+	</select>
+
+	<insert id="insert" parameterType="tblBaseLogEntity">
+		insert into TBL_BASE_LOG(
+			content,logid,logtime,module,result,userid,username
+		)values(
+			#{content,jdbcType=VARCHAR},#{logid,jdbcType=VARCHAR},#{logtime,jdbcType=VARCHAR},#{module,jdbcType=VARCHAR},#{result,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+</mapper>

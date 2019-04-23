@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseRoleMenuMappingMapper
+	@Description TBL_BASE_ROLE_MENU_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-06-05 14:20:01
+	@version 1.0
+	@remark create by generator
+	-->
+	
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseRoleMenuMappingMapper">
+	
+	<sql id="columns">
+		t.updatetime,t.updateuserid,t.state,t.icon,t.sequ,t.basemenupid,t.src,t.menuname,t.basemenuid 
+	</sql>
+	
+	<insert id="insert" parameterType="tblBaseRoleMenuMappingEntity">
+		insert into TBL_BASE_ROLE_MENU_MAPPING(
+			updateuserid,updatetime,basemenuid,baseroleid,baserolemenumid
+		)values(
+			#{updateuserid,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{basemenuid,jdbcType=VARCHAR},#{baseroleid,jdbcType=VARCHAR},#{baserolemenumid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<delete id="deleteByMenuid" parameterType="String">
+		delete FROM TBL_BASE_ROLE_MENU_MAPPING where basemenuid = #{basemenuid}
+	</delete>
+	
+	<delete id="deleteByRoleid" parameterType="String">
+		delete FROM TBL_BASE_ROLE_MENU_MAPPING where basemenuid = #{basemenuid}
+	</delete>
+	
+	<delete id="deleteByRoleidAndMenuid" parameterType="tblBaseRoleMenuMappingEntity">
+		delete FROM TBL_BASE_ROLE_MENU_MAPPING where baseroleid = #{baseroleid,jdbcType=VARCHAR} and basemenuid = #{basemenuid,jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

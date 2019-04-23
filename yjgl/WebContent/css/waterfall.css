@@ -1,0 +1,40 @@
+.masonry {
+  column-count: 1;
+  column-gap: 0;
+  counter-reset: item-counter;
+  
+  @media screen and (min-width: 400px) {
+    column-count: 2;
+  }
+  
+  @media screen and (min-width: 600px) {
+    column-count: 3;
+  }
+  
+  @media screen and (min-width: 800px) {
+    column-count: 4;
+  }
+  
+  @media screen and (min-width: 1100px) {
+    column-count: 5;
+  }
+}
+.item {
+  box-sizing: border-box;
+  break-inside: avoid;
+  padding: 10px;
+  counter-increment: item-counter;
+}
+
+ .item__content {
+    border: 1px rgb(221, 221, 221) solid;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    background: #f5f5f5;
+    box-sizing: border-box;
+ }
+
+ 

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgGglMapper
+	@Description YJG_GGL表映射配置文件
+	@author cyf
+	@date 2017-12-07 14:01:27
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgGglMapper">
+	
+	<select id="getCount" resultType="int" parameterType="yjgGglEntity">
+		select 
+			count(t.gglid)
+		from 
+			YJG_GGL t
+		<where>
+		    <if test="null != gglnr and '' != gglnr">
+				and t.gglnr like '%'||#{gglnr}||'%'
+			</if>
+			 <if test="null != czrxm and '' != czrxm">
+				and t.czrxm like '%'||#{czrxm}||'%'
+			</if>
+			<if test="null != ggltimeStart and '' != ggltimeStart">
+			    and t.czsj  &gt;= to_date(#{ggltimeStart}, 'yyyy-MM-dd hh24:mi:ss')
+			</if>
+			<if test="null != ggltimeEnd and '' != ggltimeEnd">
+			    and t.czsj &lt; to_date(#{ggltimeEnd}, 'yyyy-MM-dd hh24:mi:ss')
+			</if>
+		</where>
+		ORDER BY t.czsj DESC
+	</select>
+	
+	<select id="selectPagination" resultType="yjgGglEntity" parameterType="yjgGglEntity">
+		select 
+			t.czrxm,t.gglbt,t.gglid,t.gglnr,
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj 
+		from 
+			YJG_GGL t
+		<where>
+		    <if test="null != gglnr and '' != gglnr">
+				and t.gglnr like '%'||#{gglnr}||'%'
+			</if>
+			 <if test="null != czrxm and '' != czrxm">
+				and t.czrxm like '%'||#{czrxm}||'%'
+			</if>
+			<if test="null != ggltimeStart and '' != ggltimeStart">
+			    and t.czsj  &gt;= to_date(#{ggltimeStart}, 'yyyy-MM-dd hh24:mi:ss')
+			</if>
+			<if test="null != ggltimeEnd and '' != ggltimeEnd">
+			    and t.czsj &lt; to_date(#{ggltimeEnd}, 'yyyy-MM-dd hh24:mi:ss')
+			</if>
+		</where>
+		ORDER BY t.czsj DESC
+	</select>
+	
+	<select id="select" resultType="yjgGglEntity">
+		select 
+			t.czrxm,t.gglbt,t.gglid,t.gglnr, 
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj
+		from 
+			YJG_GGL t
+		where t.czsj > trunc(sysdate)-30 
+		ORDER BY t.czsj DESC
+	</select>
+	<select id="selectGg" resultType="yjgGglEntity">
+		select 
+			t.czrxm,t.gglbt,t.gglid, 
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj
+		from 
+			YJG_GGL t
+		ORDER BY t.czsj DESC
+	</select>
+	<select id="getByPkey" resultType="yjgGglEntity" parameterType="String">
+		select 
+			t.czrxm,t.czsj,t.gglbt,t.gglid,t.gglnr 
+		from 
+			YJG_GGL t
+		where 
+			t.gglid = #{gglid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgGglEntity">
+		insert into YJG_GGL(
+			czrxm,czsj,gglbt,gglid,gglnr
+		)values(
+			#{czrxm,jdbcType=VARCHAR},#{czsj,jdbcType=TIME},#{gglbt,jdbcType=VARCHAR},#{gglid,jdbcType=VARCHAR},#{gglnr,jdbcType=BLOB}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgGglEntity">
+		update YJG_GGL
+		set 
+			czrxm = #{czrxm,jdbcType=VARCHAR}, czsj = #{czsj,jdbcType=TIME}, gglbt = #{gglbt,jdbcType=VARCHAR}, gglnr = #{gglnr,jdbcType=BLOB} 
+		where 
+			gglid = #{gglid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_GGL where gglid = #{gglid}
+	</delete>
+	 
+	
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgXmlcMapper
+	@Description YJG_XMLC表映射配置文件
+	@author cyf
+	@date 2017-09-21 11:09:29
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgXmlcMapper">
+	
+	<select id="getCount" resultType="int" parameterType="yjgXmlcEntity">
+		select 
+			count(t.xmlcid)
+		from 
+			YJG_XMLC t
+	</select>
+	
+	<select id="selectPagination" resultType="yjgXmlcEntity" parameterType="yjgXmlcEntity">
+		select 
+			t.cjr,t.cjsj,t.instanceid,t.sjdjid,t.state,t.xmlcid 
+		from 
+			YJG_XMLC t
+	</select>
+	
+	<select id="select" resultType="yjgXmlcEntity">
+		select 
+			t.cjr,t.cjsj,t.instanceid,t.sjdjid,t.state,t.xmlcid 
+		from 
+			YJG_XMLC t
+	</select>
+	
+	<select id="getByPkey" resultType="yjgXmlcEntity" parameterType="String">
+		select 
+			t.cjr,t.cjsj,t.instanceid,t.sjdjid,t.state,t.xmlcid 
+		from 
+			YJG_XMLC t
+		where 
+			t.xmlcid = #{xmlcid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgXmlcEntity">
+		insert into YJG_XMLC(
+			cjr,cjsj,instanceid,sjdjid,state,xmlcid
+		)values(
+			#{cjr,jdbcType=VARCHAR},#{cjsj,jdbcType=TIME},#{instanceid,jdbcType=VARCHAR},#{sjdjid,jdbcType=VARCHAR},#{state,jdbcType=INTEGER},#{xmlcid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgXmlcEntity">
+		update YJG_XMLC
+		set 
+			cjr = #{cjr,jdbcType=VARCHAR}, cjsj = #{cjsj,jdbcType=TIME}, instanceid = #{instanceid,jdbcType=VARCHAR}, sjdjid = #{sjdjid,jdbcType=VARCHAR}, state = #{state,jdbcType=INTEGER} 
+		where 
+			xmlcid = #{xmlcid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_XMLC where xmlcid = #{xmlcid}
+	</delete>
+	
+	<select id="selectInstanceBySjdjid" resultType="yjgXmlcEntity" parameterType="String">
+		select 
+			t.cjr,t.cjsj,t.instanceid,t.sjdjid,t.state,t.xmlcid 
+ 		from 
+ 			yjg_xmlc t
+ 		where 
+ 			t.sjdjid = #{sjdjid}
+	</select>
+	
+</mapper>

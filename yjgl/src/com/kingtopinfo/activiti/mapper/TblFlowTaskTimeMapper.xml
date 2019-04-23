@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblFlowTaskTimeMapper
+	@Description TBL_FLOW_TASK_TIME表映射配置文件
+	@author cyf
+	@date 2017-09-19 14:51:08
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.activiti.mapper.TblFlowTaskTimeMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblFlowTaskTimeEntity">
+		select 
+			count(t.id)
+		from 
+			TBL_FLOW_TASK_TIME t
+	</select>
+	
+	<select id="selectPagination" resultType="tblFlowTaskTimeEntity" parameterType="tblFlowTaskTimeEntity">
+		select 
+			t.id,t.processid,t.time 
+		from 
+			TBL_FLOW_TASK_TIME t
+	</select>
+	
+	<select id="select" resultType="tblFlowTaskTimeEntity">
+		select 
+			t.id,t.processid,t.time 
+		from 
+			TBL_FLOW_TASK_TIME t
+	</select>
+	
+	<select id="getByPkey" resultType="tblFlowTaskTimeEntity" parameterType="String">
+		select 
+			t.id,t.processid,t.time 
+		from 
+			TBL_FLOW_TASK_TIME t
+		where 
+			t.id = #{id}
+	</select>
+	
+	<insert id="insert" parameterType="tblFlowTaskTimeEntity">
+		insert into TBL_FLOW_TASK_TIME(
+			id,processid,time
+		)values(
+			#{id,jdbcType=VARCHAR},#{processid,jdbcType=VARCHAR},#{time,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblFlowTaskTimeEntity">
+		update TBL_FLOW_TASK_TIME
+		set 
+			processid = #{processid,jdbcType=VARCHAR}, time = #{time,jdbcType=INTEGER} 
+		where 
+			id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_FLOW_TASK_TIME where id = #{id}
+	</delete>
+	
+	<select id="selectByProcessid" resultType="tblFlowTaskTimeEntity" parameterType="String">
+		select 
+			t.time,t.processid,t.id 
+		from 
+			TBL_FLOW_TASK_TIME t
+		where 
+			t.processid = #{processid}
+	</select>
+	
+</mapper>

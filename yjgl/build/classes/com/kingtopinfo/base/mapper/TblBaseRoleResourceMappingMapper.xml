@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseRoleResourceMappingMapper
+	@Description TBL_BASE_ROLE_RESOURCE_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-07-28 10:54:04
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseRoleResourceMappingMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblBaseRoleResourceMappingEntity">
+		select 
+			count(t.baseroleresourceid)
+		from 
+			TBL_BASE_ROLE_RESOURCE_MAPPING t
+			<where>
+				<if test="null != baseresourceid and '' != baseresourceid">
+					and baseresourceid = '||#{baseresourceid}||'
+				</if>
+			</where>
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseRoleResourceMappingEntity" parameterType="tblBaseRoleResourceMappingEntity">
+		select 
+			t.baseresourceid,t.baseroleid,t.baseroleresourceid 
+		from 
+			TBL_BASE_ROLE_RESOURCE_MAPPING t
+	</select>
+	
+	<select id="select" resultType="tblBaseRoleResourceMappingEntity">
+		select 
+			t.baseresourceid,t.baseroleid,t.baseroleresourceid 
+		from 
+			TBL_BASE_ROLE_RESOURCE_MAPPING t
+	</select>
+	
+	<select id="selectByResourceId" resultType="tblBaseRoleResourceMappingEntity">
+		select 
+			t.baseresourceid,t.baseroleid,t.baseroleresourceid 
+		from 
+			TBL_BASE_ROLE_RESOURCE_MAPPING t
+		where
+			t.baseresourceid = #{baseresourceid}
+	</select>
+	
+	<select id="selectByRoleId" resultType="tblBaseRoleResourceMappingEntity">
+		select 
+			t.baseresourceid,t.baseroleid,t.baseroleresourceid 
+		from 
+			TBL_BASE_ROLE_RESOURCE_MAPPING t
+		where
+			t.baseroleid = #{baseroleid}
+	</select>
+	
+	<select id="getByPkey" resultType="tblBaseRoleResourceMappingEntity" parameterType="String">
+		select 
+			t.baseresourceid,t.baseroleid,t.baseroleresourceid 
+		from 
+			TBL_BASE_ROLE_RESOURCE_MAPPING t
+		where 
+			t.baseroleresourceid = #{baseroleresourceid}
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseRoleResourceMappingEntity">
+		insert into TBL_BASE_ROLE_RESOURCE_MAPPING(
+			baseresourceid,baseroleid,baseroleresourceid
+		)values(
+			#{baseresourceid,jdbcType=VARCHAR},#{baseroleid,jdbcType=VARCHAR},#{baseroleresourceid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblBaseRoleResourceMappingEntity">
+		update TBL_BASE_ROLE_RESOURCE_MAPPING
+		set 
+			baseresourceid = #{baseresourceid,jdbcType=VARCHAR}, baseroleid = #{baseroleid,jdbcType=VARCHAR} 
+		where 
+			baseroleresourceid = #{baseroleresourceid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_BASE_ROLE_RESOURCE_MAPPING where baseroleresourceid = #{baseroleresourceid}
+	</delete>
+	
+	<delete id="deleteByResorceId" parameterType="String">
+		delete from TBL_BASE_ROLE_RESOURCE_MAPPING where baseresourceid = #{baseresourceid}
+	</delete>
+	
+	<delete id="deleteByRoleid" parameterType="String">
+		delete from TBL_BASE_ROLE_RESOURCE_MAPPING where baseroleid = #{baseroleid}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseUserExtMapper
+	@Description TBL_BASE_USER_EXT表映射配置文件
+	@author cyf
+	@date 2017-06-14 15:36:47
+	@version 1.0
+	@remark create by generator
+	-->
+	
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseUserExtMapper">
+	
+	<sql id="columns">
+		t.updatetime,t.updateuserid,t.phone,t.tel,t.gender,t.baseuserid,t.baseuserextid 
+	</sql>
+	
+	<select id="getByUserId" resultType="tblBaseUserExtEntity" parameterType="String">
+		select 
+			<include refid="columns"></include>
+		from 
+			TBL_BASE_USER_EXT t
+		where 
+			t.baseuserid = #{baseuserid}
+	</select>
+	
+	<update id="update" parameterType="tblBaseUserExtEntity">
+		update TBL_BASE_USER_EXT
+		set 
+			updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR}, phone = #{phone,jdbcType=VARCHAR}, tel = #{tel,jdbcType=VARCHAR}, gender = #{gender,jdbcType=INTEGER}, baseuserid = #{baseuserid,jdbcType=VARCHAR} 
+		where 
+			baseuserextid = #{baseuserextid}
+	</update>
+	
+	<insert id="insert" parameterType="tblBaseUserExtEntity">
+		insert into TBL_BASE_USER_EXT(
+			updatetime,updateuserid,phone,tel,gender,baseuserid,baseuserextid
+		)values(
+			#{updatetime,jdbcType=TIME},#{updateuserid,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{gender,jdbcType=INTEGER},#{baseuserid,jdbcType=VARCHAR},#{baseuserextid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+</mapper>

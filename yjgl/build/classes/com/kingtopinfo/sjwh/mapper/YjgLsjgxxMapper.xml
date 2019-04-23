@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgLsjgxxMapper
+	@Description YJG_LSJGXX表映射配置文件
+	@author cyf
+	@date 2017-11-09 09:38:29
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.sjwh.mapper.YjgLsjgxxMapper">
+	
+	<select id="getCount" resultType="int" parameterType="yjgLsjgxxEntity">
+		select 
+			count(t.lsjgid)
+		from 
+			YJG_LSJGXX t
+		where 1=1 
+		<if test="null != lsjglx and lsjglx != '-1'">
+			and t.lsjglx = #{lsjglx}
+		</if>
+		<if test="null != lsjngj and lsjngj != ''">
+			and t.lsjngj like '%'||#{lsjngj,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != lsjgxz and lsjgxz != '-1'">
+			and t.lsjgxz = #{lsjgxz}
+		</if>
+		<if test="null != lsjgcz and lsjgcz != '-1'">
+			and t.lsjgcz = #{lsjgcz}
+		</if>
+		<if test="null != lsjggg and lsjggg != ''">
+			and t.lsjggg like '%'||#{lsjggg,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != lssfzw and lssfzw != '-1'">
+			and t.lssfzw = #{lssfzw}
+		</if>
+		<if test="null != lsssdl and lsssdl != ''">
+			and t.lsssdl in (${lsssdl})
+		</if>
+		<if test="null != lsjgbh and lsjgbh != ''">
+			and t.lsjgbh like '%'||#{lsjgbh,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != sbr and sbr != ''">
+			and t.sbr like '%'||#{sbr,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="timeStart != null">
+			and t.sbsj >=  #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t.sbsj
+		</if>
+		<if test="timeStartCopy != null">
+			and t.shsj >=  #{timeStartCopy,jdbcType=TIME}
+		</if>
+		<if test="timeEndCopy != null">
+			and #{timeEndCopy,jdbcType=TIME} >= t.shsj
+		</if>
+		<if test="null != lsjs and lsjs != ''">
+			and t.lsjs = #{lsjs}
+		</if>
+		<if test="null != lsjgsl and lsjgsl != ''">
+			and t.lsjgsl = #{lsjgsl}
+		</if>
+	</select>
+	
+	
+	<select id="getSjcjList" resultType="yjgLsjgxxEntity" parameterType="yjgLsjgxxEntity">
+		select 
+			t.bglx,t.isdel,t.lsdljssj,t.lsgldw,t.lsjgbh,t.lsjgcz,t.lsjggg,t.lsjgid,t.lsjglx,t.lsjgxz,t.lsjgzt,t.lsjngj,t.lsqsdw,t.lssfzw,t.lsssdl,t.lsxzb,t.lsxzqh,t.lsyzb,t.sbr,t.shrxm,t.shzt,t.lsjs,t.lsjgsl,
+			to_char (
+				t.sbsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS sbsj,
+			to_char (
+				t.shsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS shsj
+		from 
+			YJG_LSJGXX t
+		<where>
+			<if test="null != shzt and shzt != '-1'">
+				 t.shzt = #{shzt}
+			</if>
+			order by t.sbsj
+		</where>  
+	</select>
+	<select id="selectPagination" resultType="yjgLsjgxxEntity" parameterType="yjgLsjgxxEntity">
+		select 
+			t.bglx,t.isdel,t.lsdljssj,t.lsgldw,t.lsjgbh,t.lsjgcz,t.lsjggg,t.lsjgid,t.lsjglx,t.lsjgxz,t.lsjgzt,t.lsjngj,t.lsqsdw,t.lssfzw,t.lsssdl,t.lsxzb,t.lsxzqh,t.lsyzb,t.sbr,t.shrxm,t.shzt,t.lsjgsl,t.lsjs, 
+			to_char (
+				t.sbsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS sbsj,
+			to_char (
+				t.shsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS shsj
+		from 
+			YJG_LSJGXX t
+		where 1=1 
+		<if test="null != shzt and shzt != '-1'">
+			and t.shzt = #{shzt}
+		</if>
+		<if test="null != bglx and bglx != '-1'">
+			and t.bglx = #{bglx}
+		</if>
+		<if test="null != lsjglx and lsjglx != '-1'">
+			and t.lsjglx = #{lsjglx}
+		</if>
+		<if test="null != lsjngj and lsjngj != ''">
+			and t.lsjngj like '%'||#{lsjngj,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != lsjgxz and lsjgxz != '-1'">
+			and t.lsjgxz = #{lsjgxz}
+		</if>
+		<if test="null != lsjgcz and lsjgcz != '-1'">
+			and t.lsjgcz = #{lsjgcz}
+		</if>
+		<if test="null != lsjggg and lsjggg != ''">
+			and t.lsjggg like '%'||#{lsjggg,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != lssfzw and lssfzw != '-1'">
+			and t.lssfzw = #{lssfzw}
+		</if>
+		<if test="null != lsjgbh and lsjgbh != ''">
+			and t.lsjgbh like '%'||#{lsjgbh,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != sbr and sbr != ''">
+			and t.sbr like '%'||#{sbr,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != shrxm and shrxm != ''">
+			and t.shrxm like '%'||#{shrxm,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="timeStart != null">
+			and t.sbsj >=  #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t.sbsj
+		</if>
+		<if test="timeStartCopy != null">
+			and t.shsj >=  #{timeStartCopy,jdbcType=TIME}
+		</if>
+		<if test="timeEndCopy != null">
+			and #{timeEndCopy,jdbcType=TIME} >= t.shsj
+		</if>
+		<if test="null != lsjs and lsjs != ''">
+			and t.lsjs = #{lsjs}
+		</if>
+		<if test="null != lsjgsl and lsjgsl != ''">
+			and t.lsjgsl = #{lsjgsl}
+		</if>
+		<if test="null != lsssdl and lsssdl != ''">
+			and t.lsssdl in (${lsssdl})
+		</if>
+		order by t.sbsj desc
+	</select>
+	
+	<select id="select" resultType="yjgLsjgxxEntity">
+		select 
+			t.bglx,t.isdel,t.lsdljssj,t.lsgldw,t.lsjgbh,t.lsjgcz,t.lsjggg,t.lsjgid,t.lsjglx,t.lsjgxz,t.lsjgzt,t.lsjngj,t.lsqsdw,t.lssfzw,t.lsssdl,t.lsxzb,t.lsxzqh,t.lsyzb,t.sbr,t.sbsj,t.shrxm,t.shsj,t.shzt,t.lsjgsl,t.lsjs 
+		from 
+			YJG_LSJGXX t
+	</select>
+	
+	<select id="getjniamgelist" resultType="tblBaseImageEntity" parameterType="yjgLsjgxxEntity">
+		select t.filepath as path,t.OPERATYPE as name,t.FILEID as mimeType from tbl_base_file t where t.operaid = #{lsjgid} and t.OPERATYPE= 'YJG_IMG_NBJG_FILE'
+	</select>
+	<select id="getjwiamgelist" resultType="tblBaseImageEntity" parameterType="yjgLsjgxxEntity">
+		select t.filepath as path,t.OPERATYPE as name,t.FILEID as mimeType from tbl_base_file t where t.operaid = #{lsjgid} and t.OPERATYPE= 'YJG_IMG_JJJG_FILE'
+	</select>
+	<select id="getzbiamgelist" resultType="tblBaseImageEntity" parameterType="yjgLsjgxxEntity">
+		select t.filepath as path,t.OPERATYPE as name,t.FILEID as mimeType from tbl_base_file t where t.operaid = #{lsjgid} and t.OPERATYPE='YJG_IMG_YJJG_FILE'
+	</select>
+	<resultMap type="com.kingtopinfo.sjwh.entity.YjgLsjgxxEntity" id="classmap">  
+	    <id property="lsjgid" column="lsjgid"  javaType="java.lang.String" />  
+	    <result property="bglx" column="bglx"  javaType="java.lang.String" />  
+   	    <result property="lsdljssj" column="lsdljssj"  javaType="java.lang.String" />  
+   	    <result property="lsgldw" column="lsgldw"  javaType="java.lang.String" />  
+   	    <result property="lsjgbh" column="lsjgbh"  javaType="java.lang.String" />  
+   	    <result property="lsjgcz" column="lsjgcz"  javaType="java.lang.String" />  
+	    <result property="lsjggg" column="lsjggg"  javaType="java.lang.String" />  
+   	    <result property="lsjglx" column="lsjglx"  javaType="java.lang.String" />  
+   	    <result property="lsjgxz" column="lsjgxz"  javaType="java.lang.String" />  
+   	    <result property="lsjgzt" column="lsjgzt"  javaType="java.lang.String" />  
+   	    <result property="lsjngj" column="lsjngj"  javaType="java.lang.String" />  
+	    <result property="lsqsdw" column="lsqsdw"  javaType="java.lang.String" />  
+   	    <result property="lssfzw" column="lssfzw"  javaType="java.lang.String" />  
+   	    <result property="lsssdl" column="lsssdl"  javaType="java.lang.String" />  
+   	    <result property="lsxzb" column="lsxzb"  javaType="java.lang.String" />  
+   	    <result property="lsxzqh" column="lsxzqh"  javaType="java.lang.String" />  
+	   	<result property="lsyzb" column="lsyzb"  javaType="java.lang.String" />  
+	   	<result property="sbr" column="sbr"  javaType="java.lang.String" />  
+	   	<result property="sbsj" column="sbsj"  javaType="Date" />  
+	   	<result property="shrxm" column="shrxm"  javaType="java.lang.String" />  
+	   	<result property="shsj" column="shsj"  javaType="Date" />  
+	   	<result property="shzt" column="shzt"  javaType="java.lang.String" />  
+		<collection property="jmzp" column="{lsjgid = lsjgid}" javaType="ArrayList" ofType="TblBaseImageEntity" select="getjwiamgelist"/>  
+		<collection property="jnzp" column="{lsjgid = lsjgid}" javaType="ArrayList" ofType="TblBaseImageEntity" select="getjniamgelist"/>  
+		<collection property="jgzbzp" column="{lsjgid = lsjgid}" javaType="ArrayList" ofType="TblBaseImageEntity" select="getzbiamgelist"/>  
+	</resultMap>  
+	
+	<select id="getByPkey" resultMap="classmap" parameterType="String">
+		select 
+			t.bglx,
+			t.isdel,
+			t.lsdljssj,
+			t.lsgldw,
+			t.lsjgbh,
+			t.lsjgcz,
+			t.lsjggg,
+			t.lsjgid,
+			t.lsjglx,
+			t.lsjgxz,
+			t.lsjgzt,
+			t.lsjngj,
+			t.lsqsdw,
+			t.lssfzw,
+			t.lsssdl,
+			t.lsxzb,
+			t.lsxzqh,
+			t.lsyzb,
+			t.sbr,
+			t.sbsj,
+			t.shrxm,
+			t.shsj,
+			t.lsjs,
+			t.lsjgsl,
+			t.shzt 
+		from 
+			YJG_LSJGXX t
+		where 
+			t.lsjgid = #{lsjgid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgLsjgxxEntity">
+		insert into YJG_LSJGXX(
+			bglx,isdel,lsdljssj,lsgldw,lsjgbh,lsjgcz,lsjggg,lsjgid,lsjglx,lsjgsl,lsjgxz,lsjgzt,lsjngj,lsjs,lsqsdw,lssfzw,lsssdl,lsxzb,lsxzqh,lsyzb,sbr,sbsj,shrxm,shsj,shzt
+		)values(
+			#{bglx,jdbcType=VARCHAR},#{isdel,jdbcType=INTEGER},#{lsdljssj,jdbcType=VARCHAR},#{lsgldw,jdbcType=VARCHAR},#{lsjgbh,jdbcType=VARCHAR},#{lsjgcz,jdbcType=VARCHAR},#{lsjggg,jdbcType=VARCHAR},#{lsjgid,jdbcType=VARCHAR},#{lsjglx,jdbcType=VARCHAR},#{lsjgsl,jdbcType=VARCHAR},#{lsjgxz,jdbcType=VARCHAR},#{lsjgzt,jdbcType=VARCHAR},#{lsjngj,jdbcType=VARCHAR},#{lsjs,jdbcType=VARCHAR},#{lsqsdw,jdbcType=VARCHAR},#{lssfzw,jdbcType=VARCHAR},#{lsssdl,jdbcType=VARCHAR},#{lsxzb,jdbcType=VARCHAR},#{lsxzqh,jdbcType=VARCHAR},#{lsyzb,jdbcType=VARCHAR},#{sbr,jdbcType=VARCHAR},#{sbsj,jdbcType=TIME},#{shrxm,jdbcType=VARCHAR},#{shsj,jdbcType=TIME},#{shzt,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgLsjgxxEntity">
+		update YJG_LSJGXX
+		set 
+			bglx = #{bglx,jdbcType=VARCHAR}, isdel = #{isdel,jdbcType=INTEGER}, lsdljssj = #{lsdljssj,jdbcType=VARCHAR}, lsgldw = #{lsgldw,jdbcType=VARCHAR}, lsjgbh = #{lsjgbh,jdbcType=VARCHAR}, lsjgcz = #{lsjgcz,jdbcType=VARCHAR}, lsjggg = #{lsjggg,jdbcType=VARCHAR}, lsjglx = #{lsjglx,jdbcType=VARCHAR}, lsjgsl = #{lsjgsl,jdbcType=VARCHAR}, lsjgxz = #{lsjgxz,jdbcType=VARCHAR}, lsjgzt = #{lsjgzt,jdbcType=VARCHAR}, lsjngj = #{lsjngj,jdbcType=VARCHAR}, lsjs = #{lsjs,jdbcType=VARCHAR}, lsqsdw = #{lsqsdw,jdbcType=VARCHAR}, lssfzw = #{lssfzw,jdbcType=VARCHAR}, lsssdl = #{lsssdl,jdbcType=VARCHAR}, lsxzb = #{lsxzb,jdbcType=VARCHAR}, lsxzqh = #{lsxzqh,jdbcType=VARCHAR}, lsyzb = #{lsyzb,jdbcType=VARCHAR}, sbr = #{sbr,jdbcType=VARCHAR}, sbsj = #{sbsj,jdbcType=TIME}, shrxm = #{shrxm,jdbcType=VARCHAR}, shsj = #{shsj,jdbcType=TIME}, shzt = #{shzt,jdbcType=VARCHAR} 
+		where 
+			lsjgid = #{lsjgid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_LSJGXX where lsjgid = #{lsjgid}
+	</delete>
+	
+</mapper>

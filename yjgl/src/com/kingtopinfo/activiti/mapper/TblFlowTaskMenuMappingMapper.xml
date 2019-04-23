@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblFlowTaskMenuMappingMapper
+	@Description TBL_FLOW_TASK_MENU_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-09-20 09:39:46
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.activiti.mapper.TblFlowTaskMenuMappingMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblFlowTaskMenuMappingEntity">
+		select 
+			count(t.flowtaskmenumappingid)
+		from 
+			TBL_FLOW_TASK_MENU_MAPPING t
+	</select>
+	
+	<select id="selectPagination" resultType="tblFlowTaskMenuMappingEntity" parameterType="tblFlowTaskMenuMappingEntity">
+		select 
+			t.flowmenuid,t.flowtaskmenumappingid,t.gxsj,t.processid,t.taskid 
+		from 
+			TBL_FLOW_TASK_MENU_MAPPING t
+	</select>
+	
+	<select id="select" resultType="tblFlowTaskMenuMappingEntity">
+		select 
+			t.flowmenuid,t.flowtaskmenumappingid,t.gxsj,t.processid,t.taskid 
+		from 
+			TBL_FLOW_TASK_MENU_MAPPING t
+	</select>
+	
+	<select id="getByPkey" resultType="tblFlowTaskMenuMappingEntity" parameterType="String">
+		select 
+			t.flowmenuid,t.flowtaskmenumappingid,t.gxsj,t.processid,t.taskid 
+		from 
+			TBL_FLOW_TASK_MENU_MAPPING t
+		where 
+			t.flowtaskmenumappingid = #{flowtaskmenumappingid}
+	</select>
+	
+	<insert id="insert" parameterType="tblFlowTaskMenuMappingEntity">
+		insert into TBL_FLOW_TASK_MENU_MAPPING(
+			flowmenuid,flowtaskmenumappingid,gxsj,processid,taskid
+		)values(
+			#{flowmenuid,jdbcType=VARCHAR},#{flowtaskmenumappingid,jdbcType=VARCHAR},#{gxsj,jdbcType=TIME},#{processid,jdbcType=VARCHAR},#{taskid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblFlowTaskMenuMappingEntity">
+		update TBL_FLOW_TASK_MENU_MAPPING
+		set 
+			flowmenuid = #{flowmenuid,jdbcType=VARCHAR}, gxsj = #{gxsj,jdbcType=TIME}, processid = #{processid,jdbcType=VARCHAR}, taskid = #{taskid,jdbcType=VARCHAR} 
+		where 
+			flowtaskmenumappingid = #{flowtaskmenumappingid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_FLOW_TASK_MENU_MAPPING where flowtaskmenumappingid = #{flowtaskmenumappingid}
+	</delete>
+	
+	<delete id="deleteMenuMappingByMenuId" parameterType="String">
+		delete from TBL_FLOW_TASK_MENU_MAPPING where flowmenuid = #{flowmenuid}
+	</delete>
+	
+	<select id="selectByProcessidAndTaskid" resultType="tblFlowTaskMenuMappingEntity" parameterType="tblFlowTaskMenuMappingEntity">
+		select 
+			t.flowmenuid,t.flowtaskmenumappingid,t.gxsj,t.processid,t.taskid 
+		from 
+			TBL_FLOW_TASK_MENU_MAPPING t
+		where 
+			t.processid = #{processid}
+			and
+			t.taskid = #{taskid}
+		order by t.gxsj
+	</select>
+	
+	<select id="selectByMenuidAndProcess" resultType="tblFlowTaskMenuMappingEntity" parameterType="tblFlowTaskMenuMappingEntity">
+		select 
+			t.flowmenuid,t.flowtaskmenumappingid,t.gxsj,t.processid,t.taskid 
+		from 
+			TBL_FLOW_TASK_MENU_MAPPING t
+		where 
+			t.processid = #{processid}
+			and
+			t.taskid = #{taskid}
+			and
+			t.flowmenuid = #{flowmenuid}
+	</select>
+	
+</mapper>

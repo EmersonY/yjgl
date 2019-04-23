@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+
+	<http pattern="/**/*.css" security="none"/>
+	<http pattern="/**/*.png" security="none"/>
+	<http pattern="/**/*.jpg" security="none"/>
+	<http pattern="/**/*.js" security="none"/>
+	<http pattern="/YjglApp_*/**" security="none"/>
+
+	<http auto-config="true" use-expressions="true">
+		<intercept-url pattern="/base/login.jsp" access="permitAll"/>
+		<intercept-url pattern="/YjglApp_*/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+ 			<csrf disabled="false" request-matcher-ref="csrfSecurityRequestMatcher"/>
+ 		<headers>
+			<frame-options policy="SAMEORIGIN"/>
+		</headers>
+		<form-login
+			login-page="/base/login.jsp"
+			login-processing-url="/_check" 
+			username-parameter="un" 
+			password-parameter="pw"
+			authentication-success-handler-ref="loginSuccessHandler"
+			authentication-failure-handler-ref="loginFailureHandler"/>
+		<logout success-handler-ref="logoutHandler"/>
+		<logout logout-url="/logout" logout-success-url="/base/login.jsp" invalidate-session="true"/>
+		
+		<custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="userDefinedAbstractFilter" />
+		<session-management>
+			<concurrency-control max-sessions="10" expired-url= "/base/login.jsp"/>
+		</session-management>
+	</http>
+	
+	<authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="login">
+        </authentication-provider>
+    </authentication-manager>
+    <beans:bean id="login" class="com.kingtopinfo.base.security.Login" />
+    
+    <beans:bean id="loginSuccessHandler" class="com.kingtopinfo.base.security.LoginSuccessHandler">
+    	<beans:property name="defaultTargetUrl" value="/main/index"></beans:property>  
+    </beans:bean>
+    
+    <beans:bean id="loginFailureHandler" class="com.kingtopinfo.base.security.LoginFailureHandler">
+    	<beans:property name="defaultTargetUrl" value="/base/login.jsp?login=-1"></beans:property>  
+    </beans:bean>
+    
+     <beans:bean id="logoutHandler" class="com.kingtopinfo.base.security.LogoutHandler">
+     	<beans:property name="defaultTargetUrl" value="/base/login.jsp"></beans:property>  
+    </beans:bean>
+    
+    <beans:bean id="userDefinedAbstractFilter" class="com.kingtopinfo.base.security.UserDefinedAbstractFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="accessDecisionManager" ref="urlDecisionManager" />
+        <beans:property name="securityMetadataSource" ref="resourceMetadataSource" />
+    </beans:bean>
+    
+    <authentication-manager alias="authenticationManager">
+    	<authentication-provider user-service-ref="login"></authentication-provider>
+    </authentication-manager>
+    <beans:bean id="urlDecisionManager" class="com.kingtopinfo.base.security.UrlDecisionManager" />
+    
+    <!-- 
+    <beans:bean id="resourceMetadataSource" class="com.kingtopinfo.base.security.ResourceMetadataSource" />
+   	-->
+   	
+   	<beans:bean id="tBaseResUrlSecurity" class="com.kingtopinfo.base.security.TBaseResUrlSecurity"></beans:bean>
+    
+     <!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+    <beans:bean id="resourceMetadataSource"
+        class="com.kingtopinfo.base.security.ResourceMetadataSource" >
+        <beans:constructor-arg>
+    		<beans:ref bean="tBaseResUrlSecurity"/>
+    	</beans:constructor-arg> 
+    </beans:bean>
+    
+    <beans:bean id="csrfSecurityRequestMatcher" class="com.kingtopinfo.base.security.CsrfSecurityRequestMatcher">
+        <beans:property name="execludeUrls">
+            <beans:list>
+                <beans:value>/_check</beans:value>
+                <beans:value>/TblBaseUserAction/checkUserAcitve</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+</beans:beans>

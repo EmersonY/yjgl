@@ -1,0 +1,30 @@
+dojoConfig = {
+	packages: [
+		{
+			name:"jquery",
+			location:"/yjgl/js",
+			main:"jquery-1.8.3"
+		},{
+			name:"easyui",
+			location:"/yjgl/js",
+			main:"jquery.easyui.min"
+		},{
+			name:"mapManager",
+			location:"/yjgl/webgis",
+			main:"mapManager"
+		},{
+			name:"symbolManager",
+			location:"/yjgl/webgis",
+			main:"symbolManager"
+		},{
+			name:"global",
+			location:"/yjgl/webgis",
+			main:"global"
+		},{
+			name:"SymbolManager",
+			location:"/yjgl/webgis/location",
+			main:"symbolManager"
+		}
+	],
+	locale:"zh"
+};

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgHisjgxxMapper
+	@Description YJG_HISJGXX表映射配置文件
+	@author cyf
+	@date 2017-10-19 16:19:36
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.sjwh.mapper.YjgHisjgxxMapper">
+	
+	<select id="getCount" resultType="int" parameterType="yjgHisjgxxEntity">
+		select 
+			count(t.hisjgid)
+		from 
+			YJG_HISJGXX t
+		<where>
+			<if test="hisjgbh != null and hisjgbh != ''">
+				t.hisjgbh like '%'||#{hisjgbh,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="hisjglx != null and hisjglx != '-1'">
+				and t.hisjglx = #{hisjglx}
+			</if>
+			<if test="hisssdl != null and hisssdl != ''">
+				and t.hisssdl in (${hisssdl})
+			</if>
+			<if test="hisczr != null and hisczr != ''">
+				t.hisczr like '%'||#{hisczr,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="hisjgbh != null and hisjgbh != ''">
+				and t.hisjgbh = #{hisjgbh}
+			</if>
+			<if test="timeStart != null">
+				and t.hisczsj >=  #{timeStart,jdbcType=TIME}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIME} >= t.hisczsj
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectPagination" resultType="yjgHisjgxxEntity" parameterType="yjgHisjgxxEntity">
+		select 
+			t.hisczr,t.hisdljssj,t.hisgldw,t.hisjgbh,t.hisjgcz,t.hisjggg,t.hisjgid,t.hisjglx,t.hisjgxz,t.hisjgzt,t.hisjngj,t.hisqsdw,t.hissfzw,t.hisssdl,t.hisxzb,t.hisxzqh,t.hisyzb,
+			to_char (
+				t.hisczsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS hisczsj
+		from 
+			YJG_HISJGXX t
+			<where>
+				<if test="hisjgbh != null and hisjgbh != ''">
+					t.hisjgbh like '%'||#{hisjgbh,jdbcType=VARCHAR}||'%'
+				</if>
+				<if test="hisjglx != null and hisjglx != '-1'">
+					and t.hisjglx = #{hisjglx}
+				</if>
+				<if test="hisssdl != null and hisssdl != ''">
+					and t.hisssdl in (${hisssdl})
+				</if>
+				<if test="hisczr != null and hisczr != ''">
+					t.hisczr like '%'||#{hisczr,jdbcType=VARCHAR}||'%'
+				</if>
+				<if test="hisjgbh != null and hisjgbh != ''">
+					and t.hisjgbh = #{hisjgbh}
+				</if>
+				<if test="timeStart != null">
+					and t.hisczsj >=  #{timeStart,jdbcType=TIME}
+				</if>
+				<if test="timeEnd != null">
+					and #{timeEnd,jdbcType=TIME} >= t.hisczsj
+				</if>
+			</where>
+		order by t.hisczsj desc
+	</select>
+	
+	<select id="select" resultType="yjgHisjgxxEntity">
+		select 
+			t.hisczr,t.hisczsj,t.hisdljssj,t.hisgldw,t.hisjgbh,t.hisjgcz,t.hisjggg,t.hisjgid,t.hisjglx,t.hisjgxz,t.hisjgzt,t.hisjngj,t.hisqsdw,t.hissfzw,t.hisssdl,t.hisxzb,t.hisxzqh,t.hisyzb 
+		from 
+			YJG_HISJGXX t
+	</select>
+	
+	<select id="getByPkey" resultType="yjgHisjgxxEntity" parameterType="String">
+		select 
+			t.hisczr,t.hisczsj,t.hisdljssj,t.hisgldw,t.hisjgbh,t.hisjgcz,t.hisjggg,t.hisjgid,t.hisjglx,t.hisjgxz,t.hisjgzt,t.hisjngj,t.hisqsdw,t.hissfzw,t.hisssdl,t.hisxzb,t.hisxzqh,t.hisyzb 
+		from 
+			YJG_HISJGXX t
+		where 
+			t.hisjgid = #{hisjgid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgHisjgxxEntity">
+		insert into YJG_HISJGXX(
+			hisczr,hisczsj,hisdljssj,hisgldw,hisjgbh,hisjgcz,hisjggg,hisjgid,hisjglx,hisjgxz,hisjgzt,hisjngj,hisqsdw,hissfzw,hisssdl,hisxzb,hisxzqh,hisyzb
+		)values(
+			#{hisczr,jdbcType=VARCHAR},#{hisczsj,jdbcType=TIME},#{hisdljssj,jdbcType=VARCHAR},#{hisgldw,jdbcType=VARCHAR},#{hisjgbh,jdbcType=VARCHAR},#{hisjgcz,jdbcType=VARCHAR},#{hisjggg,jdbcType=VARCHAR},#{hisjgid,jdbcType=VARCHAR},#{hisjglx,jdbcType=VARCHAR},#{hisjgxz,jdbcType=VARCHAR},#{hisjgzt,jdbcType=VARCHAR},#{hisjngj,jdbcType=VARCHAR},#{hisqsdw,jdbcType=VARCHAR},#{hissfzw,jdbcType=VARCHAR},#{hisssdl,jdbcType=VARCHAR},#{hisxzb,jdbcType=VARCHAR},#{hisxzqh,jdbcType=VARCHAR},#{hisyzb,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgHisjgxxEntity">
+		update YJG_HISJGXX
+		set 
+			hisczr = #{hisczr,jdbcType=VARCHAR}, hisczsj = #{hisczsj,jdbcType=TIME}, hisdljssj = #{hisdljssj,jdbcType=VARCHAR}, hisgldw = #{hisgldw,jdbcType=VARCHAR}, hisjgbh = #{hisjgbh,jdbcType=VARCHAR}, hisjgcz = #{hisjgcz,jdbcType=VARCHAR}, hisjggg = #{hisjggg,jdbcType=VARCHAR}, hisjglx = #{hisjglx,jdbcType=VARCHAR}, hisjgxz = #{hisjgxz,jdbcType=VARCHAR}, hisjgzt = #{hisjgzt,jdbcType=VARCHAR}, hisjngj = #{hisjngj,jdbcType=VARCHAR}, hisqsdw = #{hisqsdw,jdbcType=VARCHAR}, hissfzw = #{hissfzw,jdbcType=VARCHAR}, hisssdl = #{hisssdl,jdbcType=VARCHAR}, hisxzb = #{hisxzb,jdbcType=VARCHAR}, hisxzqh = #{hisxzqh,jdbcType=VARCHAR}, hisyzb = #{hisyzb,jdbcType=VARCHAR} 
+		where 
+			hisjgid = #{hisjgid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_HISJGXX where hisjgid = #{hisjgid}
+	</delete>
+	
+</mapper>

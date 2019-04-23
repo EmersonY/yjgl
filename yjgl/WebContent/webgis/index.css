@@ -1,0 +1,470 @@
+html,body,#mapDiv {padding:0;margin:0;height:100%;}
+ul,ol{list-style-type:none;margin:0;padding:0;}
+body{background:#fff;overflow:hidden;}
+#title{position:absolute;z-index:99;}
+/* 主界面头部布局  开始 */
+.toolbar-main{
+	/*background-color:rgb(255,255,255);*/
+	width:44px;
+	height:171px;
+	position:absolute;
+	top:91px;
+	right:33px;
+	z-index:99;
+	/*border-color:rgb(241,240,237);
+	box-shadow:1px 1px 1px rgb(241,240,237);
+	border-radius:1px;*/
+}
+		
+.img-toolbar{
+	width:40px;
+	height:40px;
+	margin:2px 2px 8px 2px;
+	cursor:pointer;
+	background-color:#fff;
+	border-color:rgb(241,240,237);
+	box-shadow:1px 1px 0px rgba(191, 190, 187,0.5);
+	border-radius:1px;
+}
+#layout_north {
+	width: 100%;
+	height: 85px;
+	background-image: url('../images/webgis/top_background.png');
+	background-color:transparent;
+	position:absolute;
+	z-index:99;
+}
+#_timeSliderDiv_win {
+	width: 100%;
+	height: 90px;
+	background-image: url('../images/webgis/top_background.png');
+	background-color:transparent;
+	position:absolute;
+	z-index:99;
+}
+#layout_north_login {
+	cursor:pointer;
+	width:500px;
+	height:80px;
+	background-image: url('../images/webgis/top_left.png');
+	float: left;
+}
+#layout_north_login_main{
+	height:60px;
+	margin-top:10px;
+	float:right;
+}
+.layout_north_toolbar{
+	cursor:pointer;
+	height: 60px;
+	width:60px;
+	display: table-cell;
+	vertical-align:middle;
+	text-align: center;
+}
+.layout_north_toolbar:hover {
+	background-color: #64A9EE;
+}
+/* 主界面头部布局  结束 */
+
+#div_left{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:436px;
+	height:64px;
+}
+#basicLayer{
+	position:absolute;
+	right:0;
+	z-index:99;
+	background:rgba(55,63,66,0.8);
+	width:60px;
+	height:100%;
+}
+#basicLayer .userinfo{background:#3f8bbf;padding:0px 6px;height:80px;}
+#basicLayer .userinfo .userface{width:48px;height:48px;}
+#basicLayer .userinfo .username{text-align:center;color:#fff;font-size:13px;}
+#basicLayer .commontools{margin-top:20px;}
+#basicLayer .commontools li{text-align:center;padding:5px 0;height:50px;}
+#basicLayer .commontools li:hover{background:#adafb0;}
+#basicLayer .commontools li img{height:40px;width:40px;transform: scale(0.7);}
+#toolbar{
+	position:absolute;
+	bottom:0;
+	left:50%;
+	margin-left:-290px;
+	z-index:99;
+	height:100px;
+}
+#toolbar .bottomcenter{
+	margin-top:45px;
+	width:580px;
+	height:50px;
+	padding:0 20px;
+	background:rgba(55,63,66,0.8);
+	border:dashed 0px #000000;
+	-moz-border-radius: 5px;
+	-webkit-border-radius:5px;
+	border-radius: 5px;
+	color:#e3e3e3;
+	font-size:12px;
+}
+#toolbar .bottomcenter li{
+	display:block;
+	float:left;
+	margin:-30px 5px 0 5px;
+	text-align:center;
+}
+#toolbar .bottomcenter li a img{width:53px;height:54px;transform: scale(0.9);}
+#toolbar .bottomcenter li > a:hover img{
+	transform: scale(1.0) translateY(-13px);
+	transition: all 0.05s ease 0s;
+	-webkit-transform: scale(1.0);
+	-webkit-transform: all 0.05s ease 0s;
+}
+#tool .bottomcenter li > p{margin-top:-7px;}
+
+#toolbar .bottomcenter li > p{margin-top:-5px;}
+.partition_m{height:100%;}
+
+.bottomcenter .title{
+	float: right;
+}
+
+.firsttitle{
+	width: 60px;
+	height: 57px;
+}
+
+.firsttitle a{
+	position: relative;
+	top:25%;
+	left: 25%;
+}
+
+.secondtitle {
+   background-color: #A2D096;
+   display:none;
+   border-top:0;
+   overflow: hidden;
+   position: absolute;
+   top: 60px;
+   margin-left: 0px;
+   width: 60px;
+   height:60px;
+   z-index: 90;
+}
+
+.secondtitle a{
+	position: relative;
+	top:15px;
+	left: 15px;
+}
+
+.elementselect{
+	background-color:#b4d9aa;
+}
+
+.measure_click{
+	color:#579AFC
+}
+
+#content {
+	position:absolute;
+	width:350px;
+	font-size:14px;
+	font-family:"微软雅黑",Arial,Helvetica,STHeiti,"宋体";
+	background-color:#fff
+}
+.clearfixs:after {
+	display:block;
+	clear:both;
+	content:” “;
+	visibility:hidden;
+	height:0
+}
+.ui3-control-wrap {
+	box-sizing:border-box;
+	position:relative
+}
+.ui3-control-wrap #ui3_city_change {
+	display:inline-block;
+	float:left;
+	border-radius:2px
+}
+.ui3-control-wrap .ui3-city-change-inner {
+	float:left;
+	display:inline-block;
+	padding-right:12px;
+	height:34px;
+	line-height:34px;
+	background-color:#fff;
+	color:#666;
+	font-size:12px;
+	text-decoration:none;
+	vertical-align:middle;
+	position:relative
+}
+.ui3-control-wrap .ui3-city-change-inner em {
+	width:7px;
+	height:7px;
+	margin-left:5px;
+	float:left;
+	margin-top:13px;
+	background-image:url(../images/webgis/newtools_9ddbaad.png);
+	background-repeat:no-repeat;
+	background-position:-13px -17px
+}
+.ui3-control-wrap .ui3-city-change-inner span {
+	font-size:12px;
+	float:left
+}
+.ui3-control-wrap .ui3-city-change-inner:hover {
+	color:#0C88E8
+}
+.ui3-control-wrap .ui3-city-change-inner:hover em {
+	border-top-color:#0C88E8
+}
+.ui3-control-wrap .ui3-city-change-click .ui3-city-change-inner em,.ui3-control-wrap .ui3-city-change-click-close .ui3-city-change-inner em {
+	background-position:-12px -177px
+}
+.ui3-control-wrap .ui3-blue,.ui3-control-wrap .ui3-blue span {
+	color:#0C88E8
+}
+.ui3-control-wrap #ui3_city_change .adjustpadding {
+	float:left;
+	width:5px;
+	height:34px;
+	border-radius:2px 0 0 2px;
+	padding-left:7px;
+	background:#fff
+}
+.ui3-control-wrap #weather img {
+	width:16px;
+	height:16px;
+	padding-top:8px;
+	margin-right:6px
+}
+.ui3-control-wrap #weather {
+	display:inline-block;
+	line-height:17px;
+	height:34px;
+	background-color:#fff;
+	text-decoration:none;
+	vertical-align:middle;
+	float:left
+}
+.ui3-control-wrap .left,.ui3-control-wrap .right {
+	height:34px;
+	background:#fff;
+	border-radius:0 2px 2px 0
+}
+.ui3-control-wrap .left b,.ui3-control-wrap .right b {
+	float:left;
+	height:21px;
+	display:inline-block;
+	border-right:1px solid #eee;
+	top:7px;
+	position:relative
+}
+.ui3-control-wrap .left span,.ui3-control-wrap .right span {
+	float:left;
+	height:34px;
+	width:29px;
+	background-image:url(../images/webgis/newtools_9ddbaad.png);
+	background-repeat:no-repeat
+}
+.ui3-control-wrap .left span.active,.ui3-control-wrap .right span.active {
+	background-color:#fff
+}
+.ui3-control-wrap i {
+	float:left;
+	font-size:12px;
+	font-style:normal;
+	height:34px;
+	line-height:34px;
+	display:inline-block
+}
+.ui3-control-wrap i.active {
+	color:#579AFC
+}
+.ui3-control-wrap .trafficopt:hover .traffic {
+	background-position:1px -49px
+}
+.ui3-control-wrap .trafficopt:hover i {
+	color:#579AFC
+}
+.ui3-control-wrap .trafficopt {
+	padding-right:12px;
+	line-height:34px;
+	float:left;
+	display:inline-block;
+	cursor:pointer
+}
+.ui3-control-wrap .trafficopt.disabled {
+	cursor:default;
+	color:#bbb
+}
+.ui3-control-wrap .trafficopt.disabled .traffic {
+	background-position:-77px -209px
+}
+.ui3-control-wrap .trafficopt.disabled:hover .traffic {
+	background-position:-77px -209px
+}
+.ui3-control-wrap .trafficopt.disabled:hover i {
+	color:#bbb
+}
+.ui3-control-wrap .traffic {
+	background-position:1px -114px
+}
+.ui3-control-wrap .traffic.active {
+	background-position:1px -49px
+}
+.ui3-control-wrap .boxopt:hover .boxutils {
+	background-position:-34px -48px
+}
+.ui3-control-wrap .boxopt:hover .boxtext {
+	color:#579AFC
+}
+.ui3-control-wrap .boxopt {
+	padding-right:12px;
+	line-height:34px;
+	float:left;
+	cursor:pointer;
+	display:inline-block
+}
+.ui3-control-wrap .boxopt em {
+	width:7px;
+	height:7px;
+	float:left;
+	margin-top:13px;
+	margin-left:5px;
+	background-image:url(../images/webgis/newtools_9ddbaad.png);
+	background-repeat:no-repeat;
+	background-position:-13px -17px
+}
+.ui3-control-wrap .boxopt em.active {
+	background-position:-12px -177px
+}
+.ui3-control-wrap .boxutils {
+	padding-right:7px;
+	background-position:-34px -116px
+}
+.ui3-control-wrap .boxutils.active {
+	background-position:-34px -48px
+}
+.ui3-control-wrap .map-measure:hover .measure {
+	background-position:-80px -49px
+}
+.ui3-control-wrap .map-measure:hover i {
+	color:#579AFC
+}
+.ui3-control-wrap .map-mark:hover .mark {
+	background-position:-40px -168px
+}
+.ui3-control-wrap .map-mark:hover i {
+	color:#579AFC
+}
+.ui3-control-wrap .map-share:hover .share {
+	background-position:-163px -51px
+}
+.ui3-control-wrap .map-share:hover i {
+	color:#579AFC
+}
+.ui3-control-wrap .detail-box {
+	position:absolute;
+	width:86px;
+	background:#fff;
+	box-shadow:1px 2px 1px rgba(0,0,0,.15);
+	top:34px;
+	right:0;
+	float:left;
+	display:none;
+	z-index:80000
+}
+.ui3-control-wrap .boxinfo {
+	list-style-type:none
+}
+.ui3-control-wrap .boxinfo li {
+	box-sizing:border-box;
+	width:100%;
+	cursor:pointer;
+	height:34px;
+	line-height:34px;
+	padding-left:7px
+}
+.ui3-control-wrap .boxinfo li i {
+	margin-left:2px
+}
+.ui3-control-wrap .boxinfo li .measure {
+	background-position:-80px -117px
+}
+.ui3-control-wrap .boxinfo li .measure.active {
+	background-position:-80px -49px
+}
+.ui3-control-wrap .boxinfo li .mark {
+	background-position:-80px -168px
+}
+.ui3-control-wrap .boxinfo li .mark.active {
+	background-position:-40px -168px
+}
+.ui3-control-wrap .boxinfo li .share {
+	background-position:-163px -117px
+}
+.ui3-control-wrap .boxinfo li .share.active {
+	background-position:-163px -51px
+}
+.ui3-control-wrap .boxinfo li.disabled {
+	color:#bbb;
+	cursor:default
+}
+.ui3-control-wrap .boxinfo li.disabled .measure {
+	background-position:-42px -209px
+}
+.ui3-control-wrap .boxinfo li.disabled .mark {
+	background-position:-1px -209px
+}
+.ui3-control-wrap .boxinfo li.disabled:hover .measurea {
+	background-position:-42px -209px
+}
+.ui3-control-wrap .boxinfo li.disabled:hover i {
+	color:#bbb
+}
+.ui3-control-wrap .last {
+	border:0!important
+}
+#_toolbar{
+	float:right;margin-right:6px;box-shadow:1px 2px 1px rgba(0,0,0,.15)
+}
+
+.templatePicker {
+        padding-bottom: 5px;
+        padding-top: 5px;
+        left: 50px;
+   		top: 180px;
+   		position: absolute;
+        border-radius: 0px 0px 4px 4px;
+        border: solid 1px #92A661;
+      }
+ 
+ .transform_legend{
+ 	transform:rotate(180deg);
+ 	transition: transform 2s ease 0s;
+	-moz-transition:transform 2s ease 0s; /* Firefox 4 */
+	-webkit-transition:transform 2s ease 0s; /* Safari 和 Chrome */
+	-o-transition: transform 2s ease 0s
+ }
+ 
+/*   .ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+           //防止水平滚动条
+    overflow-x: hidden;
+  } */
+  /* IE 6 不支持 max-height
+   * 我们使用 height 代替，但是这会强制菜单总是显示为那个高度
+   */
+  /* * html .ui-autocomplete {
+    height: 100px;
+  } */

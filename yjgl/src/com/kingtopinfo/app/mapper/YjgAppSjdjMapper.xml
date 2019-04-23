@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- @MapperName mapper.YjgSjdjMapper @Description YJG_SJDJ表映射配置文件 @author 
+	cyf @date 2017-08-24 10:56:59 @version 1.0 @remark create by generator -->
+<mapper namespace="com.kingtopinfo.app.mapper.YjgAppSjdjMapper">
+	
+	<sql id="all">t.BWLID,t.BASEUSERID,t.BWLNR,t.BWLJB,t.BWLWZ,t.BWLZT,t.BWLBT,to_char(t.bwldate,'yyyy-mm-dd hh24:mi:ss') AS bwldate</sql>
+		
+	<select id="getTypename" resultType="String" parameterType="String">
+			select p.name from tbl_base_type p where p.code = #{code} and p.value is not null order by p.value
+	</select>
+	<select id="getTypes" resultType="tblBaseImageEntity" parameterType="String">
+			select p.name,p.attribute from tbl_base_type p where p.code = #{code} and p.value is not null order by p.value
+	</select>
+	
+	<select id="getTypeValue" resultType="String" parameterType="String">
+			select p.value from tbl_base_type p where p.code = #{code} and p.value is not null order by p.value
+	</select>
+	
+	<select id="getRoles" resultType="tblBaseRoleEntity" parameterType="yjgGrxxEntity">
+		select t.ROLENAME as rolename from tbl_base_role t,tbl_base_user_role_mapping t1 where t.baseroleid= t1.baseroleid and t1.baseuserid = #{baseuserid}
+	</select>
+	
+	
+	<resultMap type="com.kingtopinfo.yjg.entity.YjgGrxxEntity" id="classmap">  
+	    <id property="baseuserid" column="baseuserid"  javaType="java.lang.String" />  
+	    <result property="tel" column="tel"  javaType="java.lang.String" />  
+	    <result property="phone" column="phone"  javaType="java.lang.String" />  
+	    <result property="state" column="state"  javaType="int" />  
+	    <result property="account" column="account" javaType="java.lang.String"/>  
+	    <result property="username" column="username"  javaType="java.lang.String" /> 
+	     <result property="baseuserrolemid" column="baseuserrolemid"  javaType="java.lang.String" />  
+		<collection property="rolelist" column="{baseuserid = baseuserid}" javaType="ArrayList" ofType="tblBaseRoleEntity" select="getRoles"/>  
+	</resultMap>  
+	
+
+
+	<update id="editJgxx" parameterType="YjgJgxxEntity">
+		update yjg_jgxx t
+		set
+		t.jgcz =#{jgcz,jdbcType=VARCHAR},
+		t.jgbh =#{jgbh,jdbcType=VARCHAR},
+		t.jglx =#{jglx,jdbcType=VARCHAR},
+		t.jgxz =#{jgxz,jdbcType=VARCHAR},
+		t.jggg =#{jggg,jdbcType=VARCHAR},
+		t.jgzt =#{jgzt,jdbcType=VARCHAR},
+		t.sfzw =#{sfzw,jdbcType=VARCHAR},
+		t.jngj =#{jngj,jdbcType=DOUBLE},
+		t.xzqh =#{xzqh,jdbcType=VARCHAR},
+		t.ssdl =#{ssdl,jdbcType=VARCHAR},
+		t.dljssj =#{dljssj,jdbcType=TIME},
+		t.gldw =#{gldw,jdbcType=VARCHAR},
+		t.qsdw =#{qsdw,jdbcType=VARCHAR},
+		t.czr =#{czr,jdbcType=VARCHAR},
+		t.czrj =#{czrj,jdbcType=TIME},
+		t.xzb =#{xzb,jdbcType=VARCHAR},
+		t.yzb =#{yzb,jdbcType=VARCHAR},
+		t.rtzt =#{rtzt,jdbcType=VARCHAR}
+		where
+		jgid = #{jgid} 
+	</update>
+	
+	<select id="getGrxx"  parameterType="String" resultMap="classmap">
+
+		select
+			t.baseuserrolemid as baseuserrolemid,
+			t.baseuserid as baseuserid,
+			t.state as state, 
+			t.account as account,
+			t.username as username,
+			t1.tel as tel,
+			t1.phone as phone
+		from 
+			TBL_BASE_USER t,TBL_BASE_USER_EXT t1
+		where
+			 t1.baseuserid(+) = t.baseuserid
+			and
+			t.baseuserid = #{baseuserid}
+	</select>
+	
+	
+	<select id="selectuserbyid" resultType="tblBaseUserEntity" parameterType="String">
+		select 
+			t.baseuserrolemid,
+			t.baseuserid,
+			t.account,
+			t.password,
+			t.username,
+			t.updateuserid,
+			t.pbaseuserid
+		from 
+			TBL_BASE_USER t
+		<where>
+			t.baseuserid = #{baseuserid}
+		</where>
+	</select>
+	
+	<select id="selectbwlforTimeanduser" resultType="yjgTxlEntity" parameterType="yjgTxlEntity">
+	select t.bwlid,t.bwlnr,t.bwljb,t.bwlwz,to_char(t.bwldate,'yyyy-mm-dd hh24:mi:ss') AS bwldate,t.bwlzt,t.bwlbt from yjg_bwl t
+	<where>
+		t.baseuserid = #{baseuserid}
+		<if test="null != bwldate1 and '' != bwldate1">
+		    and to_char(t.bwldate,'yyyy-mm-dd') = #{bwldate1}
+		</if>
+	</where>
+	</select>
+
+
+	<select id="getTxlCount" resultType="int" parameterType="YjgTxlEntity">
+		select count(t.txlid) from yjg_txl t  
+		<where>
+		   <if test="null != txlxm and '' != txlxm">
+				and t.txlxm like '%'||#{txlxm}||'%'
+			</if>
+			 <if test="null != txlgs and '' != txlgs">
+				and t.txlgs like '%'||#{txlgs}||'%'
+			</if>
+			 <if test="null != txljob and '' != txljob">
+				and t.txljob like '%'||#{txljob}||'%'
+			</if>
+			 <if test="null != txldh and '' != txldh">
+				and t.txldh like '%'||#{txldh}||'%'
+			</if>
+			<if test="null != baseuserid and '' != baseuserid">
+				and t.baseuserid = #{baseuserid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectTxlPagination" resultType="yjgTxlEntity" parameterType="YjgTxlEntity">
+		select t.txlid,t.BASEUSERID,t.TXLXM,t.TXLDH,t.TXLBZ,t.TXLZT,t.TXLEMAIL,t.TXLGS,t.TXLJOB,t.TXLXZQH from yjg_txl t 
+		<where>
+		     <if test="null != txlxm and '' != txlxm">
+				and t.txlxm like '%'||#{txlxm}||'%'
+			</if>
+			 <if test="null != txlgs and '' != txlgs">
+				and t.txlgs like '%'||#{txlgs}||'%'
+			</if>
+			 <if test="null != txljob and '' != txljob">
+				and t.txljob like '%'||#{txljob}||'%'
+			</if>
+			<if test="null != txldh and '' != txldh">
+				and t.txldh like '%'||#{txldh}||'%'
+			</if>
+			<if test="null != baseuserid and '' != baseuserid">
+				and t.baseuserid = #{baseuserid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getTxlList" resultType="yjgTxlEntity" parameterType="String">
+		select t.txlid,t.BASEUSERID,t.TXLXM,t.TXLDH,t.TXLBZ,t.TXLZT,t.TXLEMAIL,t.TXLGS,t.TXLJOB,t.TXLXZQH from yjg_txl t where t.BASEUSERID = #{baseuserid}
+	</select>
+	
+	<select id="getBwlList" resultType="yjgTxlEntity" parameterType="String">
+		select t.BWLID,t.BASEUSERID,t.BWLNR,t.BWLJB,t.BWLWZ,to_char(t.bwldate,'yyyy-mm-dd hh24:mi:ss') AS bwldate,to_char(t.bwldate,'yyyy') AS year,to_char(t.bwldate,'mm') AS month,to_char(t.bwldate,'dd') AS day from YJG_BWL t where t.BASEUSERID = #{baseuserid}
+	</select>
+
+
+	<delete id="deleteJgxx" parameterType="YjgJgxxEntity">
+		delete from yjg_jgxx
+		where
+		jgid = #{jgid}
+	</delete>
+
+	<insert id="insertJgxx" parameterType="YjgJgxxEntity">
+		insert into yjg_jgxx(
+		jgid,jgcz,jgbh,jglx,jgxz,jggg,jgzt,sfzw,jngj,xzqh,ssdl,dljssj,gldw,qsdw,czr,czrj,xzb,yzb,rtzt
+		)values(
+		#{jgid,jdbcType=VARCHAR},#{jgcz,jdbcType=VARCHAR},#{jgbh,jdbcType=VARCHAR},#{jglx,jdbcType=VARCHAR},#{jgxz,jdbcType=VARCHAR},#{jggg,jdbcType=VARCHAR},#{jgzt,jdbcType=VARCHAR},#{sfzw,jdbcType=VARCHAR},#{jngj,jdbcType=DOUBLE},#{xzqh,jdbcType=VARCHAR},#{ssdl,jdbcType=VARCHAR},#{dljssj,jdbcType=TIME},#{gldw,jdbcType=VARCHAR},#{qsdw,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{czrj,jdbcType=TIME},#{xzb,jdbcType=VARCHAR},#{yzb,jdbcType=VARCHAR},#{rtzt,jdbcType=VARCHAR}
+		)
+	</insert>
+	<select id="selectJgxx" resultType="YjgJgxxEntity"
+		parameterType="YjgJgxxEntity">
+		select
+		t.jgid,
+		t.jgcz,
+		t.jgbh,
+		t.jglx,
+		t.jgxz,
+		t.jggg,
+		t.jgzt,
+		t.sfzw,
+		t.jngj,
+		t.xzqh,
+		t.ssdl,
+		t.dljssj,
+		t.gldw,
+		t.qsdw,
+		t.czr,
+		t.czrj,
+		t.xzb,
+		t.yzb,
+		t.rtzt
+		from yjg_jgxx t
+		<where>
+			<if test="null != jgcz and '' != jgcz">
+				and t.jgcz like '%'||#{jgcz}||'%'
+			</if>
+			<if test="null != jglx and '' != jglx">
+				and t.jglx like '%'||#{jglx}||'%'
+			</if>
+			<if test="null != jgxz and '' != jgxz">
+				and t.jgxz like '%'||#{jgxz}||'%'
+			</if>
+			<if test="null != xzqh and '' != xzqh">
+				and t.xzqh like '%'||#{xzqh}||'%'
+			</if>
+		</where>
+	</select>
+	<select id="getUsername" resultType="TblBaseUserEntity"
+		parameterType="String">
+		select t.username from tbl_base_user t where
+		t.baseuserid = #{baseuserid}
+	</select>
+	
+	<select id="getxmlcID" resultType="yjgSjdjEntity" parameterType="String">
+		select t.instanceid from yjg_xmlc t where t.sjdjid = #{sjdjid}
+	</select>
+    
+	<select id="getiamgelist" resultType="tblBaseImageEntity" parameterType="yjgSjdjEntity">
+	select t.filepath as path,t.remark as name,t.FILEID as mimeType from tbl_base_file t where t.operaid = #{sjczid} and t.operatype = 'YJG_IMG_FILE'
+
+	</select>
+	
+	<select id="getvediolist" resultType="tblBaseImageEntity" parameterType="yjgSjdjEntity">
+		select t.filepath as path,t.remark as name,t.FILEID as mimeType from tbl_base_file t where t.operaid = #{sjczid} and t.operatype = 'YJG_VEDIO_FILE'
+
+	</select>
+
+	<resultMap type="com.kingtopinfo.yjg.entity.YjgSjczEntity" id="classResultMap">  
+	    <id property="sjczid" column="sjczid"  javaType="java.lang.String" />  
+	    <result property="czrxm" column="czrxm"  javaType="java.lang.String" />  
+	    <result property="czgcms" column="czgcms"  javaType="java.lang.String" />  
+	    <result property="sqzt" column="sqzt"  javaType="int" /> 
+	     <result property="dbzt" column="dbzt"  javaType="java.lang.String" />  
+	    <result property="czsj" column="czsj" />  
+	    <result property="bz" column="bz"  javaType="java.lang.String" />  
+	     <result property="czzt" column="czzt"  javaType="java.lang.String" />  
+	    <result property="czr" column="czr"  javaType="java.lang.String" /> 
+	    <collection property="imagelist" column="{sjczid = sjczid}" javaType="ArrayList" ofType="TblBaseImageEntity" select="getiamgelist"/>  
+		<collection property="vediolist" column="{sjczid = sjczid}" javaType="ArrayList" ofType="TblBaseImageEntity" select="getvediolist"/>  
+	</resultMap>  
+	
+	<select id="getversion"  resultType="yjgAppversionEntity" >  
+    	select a.versioncode,a.sfqzgx,a.id,a.versionname from yjg_appversion  a 
+    	where a.versioncode=(select max(b.versioncode) from yjg_appversion b) 
+	</select>  
+	<select id="getczlist" parameterType="String" resultMap="classResultMap">  
+    	SELECT t.sjczid,t.bz,t.czzt,t.czrxm,t.czgcms,t.czsj,t.czr,(select t5.dbzt from YJG_SJQQ t5 where t5.sjdjid = #{sjdjid}) dbzt,(select t1.sqzt from YJG_SJDJ t1 where t1.sjdjid = #{sjdjid}) sqzt  FROM yjg_sjcz t 
+   		WHERE t.sjdjid = #{sjdjid}
+   		order by t.czsj desc
+	</select>  
+	<select id="getCzCount" parameterType="String" resultType="int">  
+    	SELECT count(*) FROM yjg_sjcz t  
+   		WHERE t.sjdjid = #{sjdjid}
+	</select>  
+
+
+	
+	<select id="getJbxxZp" resultType="tblBaseImageEntity" parameterType="yjgSjdjEntity">
+	select t.filepath as path,t.remark as name,t.FILEID as mimeType from tbl_base_file t where t.operaid = #{sjdjid} and t.operatype=#{operatype}
+	</select>
+
+
+	
+
+	<select id="getJbEntity" resultType="yjgSjdjEntity" parameterType="yjgSjdjEntity">
+	select t.XZB,t.YZB,t.sbrxm,t.sjdjid,t.ckqx,t.SJDJDH, to_char (
+		t.SCSJ,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS SCSJ, t.XZQH, t.SSDL,  t.WZMS, t.JGLX,  t.SJLX, (select p.name from tbl_base_type p where p.code = 'YZJB' and p.value=t.yzjb) as yzjb ,(select p.name from tbl_base_type p where p.code = 'XXLY' and p.value=t.xxly) as xxlyname ,t.jgid, t.BZ from YJG_SJDJ t where t.sjdjid = #{sjdjid}
+	</select>
+
+	<select id="getCount" resultType="int" parameterType="yjgSjdjEntity">
+		SELECT
+		count(*)		
+		FROM (
+		SELECT
+		t.updator,
+		t.baseuserid,
+		t.bz,
+		t.cssjdjpid,
+		t.jgid,
+		t.jglx,
+		to_char (
+		t.jssj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS jssj,
+		t.sbrdh,
+		t.sbrxm,
+		to_char (
+		t.scsj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS scsj,
+		t.sjdjdh,
+		t.sjdjid,
+		'' as
+		fyjsjdjid,
+		t.sjlx,
+		t.sqzt,
+		t.ssdl,
+		to_char (
+		t.updatetime,
+		'yyyy-mm-dd
+		hh24:mi:ss'
+		) AS updatetime,
+		t.updateuserid,
+		t.wzms,
+		t.xxly,
+		t.xzb,
+		t.xzqh,
+		t.yzb,
+		t.yzjb,
+		t4.dbzt as dbzt
+		FROM
+		YJG_SJDJ t,yjg_sjqq t4
+		WHERE
+		t.ISDEL = 1 and t.cssjdjpid is null  and  t.sjdjid = t4.sjdjid(+)
+		<if test="null != sjdjdh and '' != sjdjdh">
+			and t.sjdjdh like '%'||#{sjdjdh}||'%'
+		</if>
+		<if test="null != sbrxm and '' != sbrxm">
+			and t.sbrxm like '%'||#{sbrxm}||'%'
+		</if>
+			<if test="null != yzjb and yzjb != ''">
+			and t.yzjb = #{yzjb}
+		</if>
+		<if test="null != sbrdh and '' != sbrdh">
+			and t.sbrdh like '%'||#{sbrdh}||'%'
+		</if>
+			<if test="null != sqzt and sqzt != -1 and sqzt != 4">
+			and t.sqzt = #{sqzt} 
+		</if>
+		<if test="null != sqzt and sqzt != -1 and sqzt == 4 and dbzt=='2'.toString()">
+			and t4.dbzt = #{dbzt}  and t.sqzt =4 
+		</if>
+			<if test="null != sqzt and sqzt != -1 and sqzt == 4 and dbzt=='5'.toString()">
+			and t4.dbzt !='2'   and t.sqzt =4 
+		</if>
+		<if test="null != ssdl and  '' != ssdl">
+			and t.ssdl = #{ssdl}
+		</if>
+		<if test="null != jglx and jglx != ''">
+			and t.jglx = #{jglx}
+		</if>
+		<if test="null != ssdl and  '' != ssdl">
+			and t.ssdl = #{ssdl}
+		</if>
+		<if test="null != sjlx and sjlx != -1">
+			and t.sjlx = #{sjlx}
+		</if>
+		<if test="timeStart != null">
+			and t.scsj >= #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t.scsj
+		</if>
+		<if test="null != ckqx and ckqx != ''">
+			and (instr(t.ckqx, #{ckqx})> 0 or t.ckqx is null)
+		</if>
+		UNION ALL
+		SELECT
+		t1.updator,
+		t1.baseuserid,
+		t1.bz,
+		t1.cssjdjpid,
+		t1.jgid,
+		t1.jglx,
+		to_char (
+		t1.jssj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS jssj,
+		t1.sbrdh,
+		t1.sbrxm,
+		to_char (
+		t1.scsj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS scsj,
+		t1.sjdjdh,
+		'' as sjdjid,
+		t1.fyjsjdjid,
+		t1.sjlx,
+		t1.sqzt,
+		t1.ssdl,
+		to_char (
+		t1.updatetime,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS updatetime,
+		t1.updateuserid,
+		t1.wzms,
+		t1.xxly,
+		t1.xzb,
+		t1.xzqh,
+		t1.yzb,
+		t1.yzjb,
+		'' as dbzt
+		FROM
+		YJG_FYJSJDJ t1
+		WHERE
+		t1.ISDEL = 1 and t1.cssjdjpid is null
+		<if test="null != sjdjdh and '' != sjdjdh">
+			and t1.sjdjdh like '%'||#{sjdjdh}||'%'
+		</if>
+		<if test="null != sbrxm and '' != sbrxm">
+			and t1.sbrxm like '%'||#{sbrxm}||'%'
+		</if>
+			<if test="null != yzjb and yzjb != ''">
+			and t1.yzjb = #{yzjb}
+		</if>
+		<if test="null != sbrdh and '' != sbrdh">
+			and t1.sbrdh like '%'||#{sbrdh}||'%'
+		</if>
+			<if test="null != ssdl and  '' != ssdl">
+			and t1.ssdl = #{ssdl}
+		</if>
+		<if test="null != sqzt and sqzt != -1">
+			and t1.sqzt = #{sqzt}
+		</if>
+		<if test="null != sjlx and sjlx != -1">
+			and t1.sjlx = #{sjlx}
+		</if>
+		<if test="null != jglx and jglx != ''">
+			and t1.jglx = #{jglx}
+		</if>
+		<if test="timeStart != null">
+			and t1.scsj >= #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t1.scsj
+		</if>
+		<if test="null != ckqx and ckqx != ''">
+			and (instr(t1.ckqx, #{ckqx})> 0 or t1.ckqx is null)
+		</if>
+		) t2
+		left join YJG_XMLC t1 on t2.sjdjid = t1.sjdjid
+		left join
+		V_FLOW_TODO v on t1.instanceid = v.instanceid
+		order by t2.scsj desc
+	</select>
+	<select id="selecttaskid" resultType="yjgSjdjEntity" parameterType="yjgSjdjUserMappingEntity">
+		select v.instanceid as instanceid,v.taskname as taskname from V_FLOW_TODO v where v.taskid='242532'
+	</select>
+	<select id="selectPagination" resultType="yjgSjdjEntity"
+		parameterType="yjgSjdjEntity">
+		SELECT
+		t1.instanceid as instanceid,t2.sjdjdh,
+		v.taskname as taskname,v.taskkey as
+		taskkey,v.taskid as
+		taskid,v.definitionid,v.taskstarttime,v.gotime,v.maxtimes,
+		t2.ssdl,t2.bz,t2.scsj,t2.sbrxm,t2.sjdjid,t2.sqzt,(select p.name from
+		tbl_base_type p where p.code = 'SQZT' and p.value=t2.sqzt) as
+		sqztname,(select p.name from tbl_base_type p where p.code = 'XZQH' and
+		p.value=t2.xzqh) as xzqh,(select p.name from tbl_base_type p where
+		p.code = 'XXLY' and p.value=t2.xxly) as xxlyname,t2.dbzt
+
+		FROM (
+		SELECT
+		t.updator,
+		t.baseuserid,
+		t.bz,
+		t.cssjdjpid,
+		t.jgid,
+		t.jglx,
+		to_char (
+		t.jssj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS jssj,
+		t.sbrdh,
+		t.sbrxm,
+		to_char (
+		t.scsj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS scsj,
+		t.sjdjdh,
+		t.sjdjid,
+		'' as
+		fyjsjdjid,
+		t.sjlx,
+		t.sqzt,
+		t.ssdl,
+		to_char (
+		t.updatetime,
+		'yyyy-mm-dd
+		hh24:mi:ss'
+		) AS updatetime,
+		t.updateuserid,
+		t.wzms,
+		t.xxly,
+		t.xzb,
+		t.xzqh,
+		t.yzb,
+		t.yzjb,
+		t4.dbzt as dbzt
+		FROM
+		YJG_SJDJ t,yjg_sjqq t4
+		WHERE
+		t.ISDEL = 1 and t.cssjdjpid is null  and  t.sjdjid = t4.sjdjid(+)
+		<if test="null != sjdjdh and '' != sjdjdh">
+			and t.sjdjdh like '%'||#{sjdjdh}||'%'
+		</if>
+		<if test="null != sbrxm and '' != sbrxm">
+			and t.sbrxm like '%'||#{sbrxm}||'%'
+		</if>
+			<if test="null != yzjb and yzjb != ''">
+			and t.yzjb = #{yzjb}
+		</if>
+		<if test="null != sbrdh and '' != sbrdh">
+			and t.sbrdh like '%'||#{sbrdh}||'%'
+		</if>
+			<if test="null != sqzt and sqzt != -1 and sqzt != 4">
+			and t.sqzt = #{sqzt} 
+		</if>
+		<if test="null != sqzt and sqzt != -1 and sqzt == 4 and dbzt=='2'.toString()">
+			and t4.dbzt = #{dbzt}  and t.sqzt =4 
+		</if>
+			<if test="null != sqzt and sqzt != -1 and sqzt == 4 and dbzt=='5'.toString()">
+			and t4.dbzt !='2'   and t.sqzt =4 
+		</if>
+		<if test="null != ssdl and  '' != ssdl">
+			and t.ssdl = #{ssdl}
+		</if>
+		<if test="null != ssdl and  '' != ssdl">
+			and t.ssdl = #{ssdl}
+		</if>
+		<if test="null != sjlx and sjlx != -1">
+			and t.sjlx = #{sjlx}
+		</if>
+		<if test="null != jglx and jglx != ''">
+			and t.jglx = #{jglx}
+		</if>
+		<if test="timeStart != null">
+			and t.scsj >= #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t.scsj
+		</if>
+		<if test="null != ckqx and ckqx != ''">
+			and (instr(t.ckqx, #{ckqx})> 0 or t.ckqx is null)
+		</if>
+		UNION ALL
+		SELECT
+		t1.updator,
+		t1.baseuserid,
+		t1.bz,
+		t1.cssjdjpid,
+		t1.jgid,
+		t1.jglx,
+		to_char (
+		t1.jssj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS jssj,
+		t1.sbrdh,
+		t1.sbrxm,
+		to_char (
+		t1.scsj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS scsj,
+		t1.sjdjdh,
+		'' as sjdjid,
+		t1.fyjsjdjid,
+		t1.sjlx,
+		t1.sqzt,
+		t1.ssdl,
+		to_char (
+		t1.updatetime,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS updatetime,
+		t1.updateuserid,
+		t1.wzms,
+		t1.xxly,
+		t1.xzb,
+		t1.xzqh,
+		t1.yzb,
+		t1.yzjb,
+		'' as dbzt
+		FROM
+		YJG_FYJSJDJ t1
+		WHERE
+		t1.ISDEL = 1 and t1.cssjdjpid is null
+		<if test="null != sjdjdh and '' != sjdjdh">
+			and t1.sjdjdh like '%'||#{sjdjdh}||'%'
+		</if>
+		<if test="null != sbrxm and '' != sbrxm">
+			and t1.sbrxm like '%'||#{sbrxm}||'%'
+		</if>
+			<if test="null != yzjb and yzjb != ''">
+			and t1.yzjb = #{yzjb}
+		</if>
+		<if test="null != sbrdh and '' != sbrdh">
+			and t1.sbrdh like '%'||#{sbrdh}||'%'
+		</if>
+			<if test="null != ssdl and  '' != ssdl">
+			and t1.ssdl = #{ssdl}
+		</if>
+		<if test="null != sqzt and sqzt != -1">
+			and t1.sqzt = #{sqzt}
+		</if>
+		<if test="null != sjlx and sjlx != -1">
+			and t1.sjlx = #{sjlx}
+		</if>
+		<if test="null != jglx and jglx != ''">
+			and t1.jglx = #{jglx}
+		</if>
+		<if test="timeStart != null">
+			and t1.scsj >= #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t1.scsj
+		</if>
+		<if test="null != ckqx and ckqx != ''">
+			and (instr(t1.ckqx, #{ckqx})> 0 or t1.ckqx is null)
+		</if>
+		) t2
+		left join YJG_XMLC t1 on t2.sjdjid = t1.sjdjid
+		left join
+		V_FLOW_TODO v on t1.instanceid = v.instanceid
+		order by t2.scsj desc
+	</select>
+	<select id="getTaskCount" resultType="int" parameterType="yjgSjdjEntity">
+		SELECT
+		count(distinct t1.sjdjid)
+		from
+		YJG_SJDJ t1,V_FLOW_TODO v,YJG_XMLC
+		t2,ACT_RU_IDENTITYLINK t3
+		where
+		t1.ISDEL = 1
+		and t1.cssjdjpid is null
+		and
+		t2.instanceid = v.instanceid
+		and t1.sjdjid = t2.sjdjid
+		and
+		(
+		(
+		v.TASKID =
+		t3.TASK_ID_
+		and t3.USER_ID_= #{assignee,jdbcType=VARCHAR}
+		)
+		or
+		(
+		v.assignee = #{assignee,jdbcType=VARCHAR}
+		)
+		)
+	</select>
+	<select id="selectTaskPagination" resultType="yjgSjdjEntity" parameterType="yjgSjdjEntity">
+	SELECT 
+			distinct t1.sjdjid,t2.instanceid as instanceid,
+			v.taskname as taskname,v.taskkey as taskkey,v.taskid as taskid,v.definitionid,v.taskstarttime,v.gotime,v.maxtimes,v.assignee,
+			t1.sjdjdh,t1.yzjb,t1.sqzt,t1.xxly,t1.jglx,t1.jssj,t1.sjlx,t1.sbrxm,t1.sbrdh,t1.xzb,t1.yzb,t1.ssdl,t1.jgid,t1.xzqh,t1.bz,t1.wzms,
+			(select p.name from tbl_base_type p where p.code = 'SQZT' and p.value=t1.sqzt)
+			as sqztname,(select p.name from tbl_base_type p where p.code = 'XXLY'
+			and p.value=t1.xxly) as xxlyname,t4.dbzt,t4.wdbbz,
+			to_char (
+				t1.scsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS scsj,
+			to_char (
+				t1.updatetime,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS updatetime
+		from	
+			YJG_SJDJ t1,V_FLOW_TODO v,YJG_XMLC t2,ACT_RU_IDENTITYLINK t3,yjg_sjqq t4
+		where
+			t1.ISDEL = 1 
+			and t1.cssjdjpid is null
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and t1.sjdjid = t4.sjdjid(+)
+			and
+				(
+					(
+					v.TASKID = t3.TASK_ID_ 
+					and v.assignee is null
+					and t3.TYPE_ = 'candidate'
+					and t3.USER_ID_= #{assignee,jdbcType=VARCHAR} 
+					)
+					or
+					(
+					v.assignee = #{assignee,jdbcType=VARCHAR}
+					)
+				)
+		order by v.taskstarttime desc
+	</select>
+
+	<delete id="delete" parameterType="String">
+		update YJG_SJDJ
+		set
+		isdel = 0
+		where
+		sjdjid = #{sjdjid} or cssjdjpid = #{cssjdjpid}
+	</delete>
+	<delete id="deleteFile" parameterType="String">
+		delete from tbl_base_file
+		where filepath = #{filepath}
+	</delete>
+
+	<update id="updatebwl" parameterType="YjgTxlEntity">
+		update YJG_BWL
+		set 
+			baseuserid = #{baseuserid,jdbcType=VARCHAR}, bwlbt = #{bwlbt,jdbcType=VARCHAR}, bwldate = #{bwldate,jdbcType=TIME}, bwljb = #{bwljb,jdbcType=VARCHAR}, bwlnr = #{bwlnr,jdbcType=VARCHAR}, bwlwz = #{bwlwz,jdbcType=VARCHAR}, bwlzt = #{bwlzt,jdbcType=VARCHAR} 
+		where 
+			bwlid = #{bwlid}
+	</update>
+	
+	<insert id="insertbwl" parameterType="YjgTxlEntity">
+		insert into YJG_BWL(
+			baseuserid,bwlbt,bwldate,bwlid,bwljb,bwlnr,bwlwz,bwlzt
+		)values(
+			#{baseuserid,jdbcType=VARCHAR},#{bwlbt,jdbcType=VARCHAR},#{bwldate,jdbcType=TIME},#{bwlid,jdbcType=VARCHAR},#{bwljb,jdbcType=VARCHAR},#{bwlnr,jdbcType=VARCHAR},#{bwlwz,jdbcType=VARCHAR},#{bwlzt,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<delete id="deletebwl" parameterType="YjgTxlEntity">
+		delete from YJG_BWL where bwlid = #{bwlid}
+	</delete>
+	<update id="updatebwlzt" parameterType="YjgTxlEntity">
+		update YJG_BWL
+		set 
+		 bwlzt = #{bwlzt,jdbcType=VARCHAR} 
+		where 
+			bwlid = #{bwlid}
+	</update>
+	
+	
+	<update id="updatetxl" parameterType="YjgTxlEntity">
+		update YJG_TXL
+		set 
+			baseuserid=#{baseuserid,jdbcType=VARCHAR},
+			txlxm=#{txlxm,jdbcType=VARCHAR},
+			txldh=#{txldh,jdbcType=VARCHAR},
+			txlbz=#{txlbz,jdbcType=VARCHAR},
+			txlzt=#{txlzt,jdbcType=INTEGER},
+			txlemail=#{txlemail,jdbcType=VARCHAR},
+			txlgs=#{txlgs,jdbcType=VARCHAR},
+			txljob=#{txljob,jdbcType=VARCHAR},
+			txlxzqh=#{txlxzqh,jdbcType=VARCHAR}
+		where 
+			txlid=#{txlid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateps" parameterType="TblBaseUserEntity">
+	update TBL_BASE_USER
+		set 
+			password = #{password,jdbcType=VARCHAR},
+			updatetime = #{updatetime,jdbcType=TIME}
+		where 
+			account = #{account,jdbcType=VARCHAR}
+	</update>
+	
+	
+	<insert id="SaveOrUpdateGrxx" parameterType="tblBaseUserExtEntity">
+	  <selectKey keyProperty="count" resultType="int" order="BEFORE">
+	    select count(*) from TBL_BASE_USER_EXT where BASEUSERID = #{baseuserid}
+	  </selectKey>
+	  <if test="count > 0">
+	    update TBL_BASE_USER_EXT t
+		set 
+			t.PHONE = #{phone},
+			t.TEL = #{tel},
+			t.UPDATETIME =  #{updatetime},
+			t.updateuserid=#{baseuserid}
+		where
+			t.baseuserid = #{baseuserid} 
+			
+	  </if>
+	  <if test="count==0">
+	    insert into TBL_BASE_USER_EXT(
+			BASEUSEREXTID,BASEUSERID,TEL,PHONE
+		)values(
+			#{baseuserextid},#{baseuserid},#{tel},#{phone}
+		)
+	  </if>
+	</insert>
+	
+	<insert id="inserttxl" parameterType="YjgTxlEntity">
+		insert into YJG_TXL(
+			txlid,
+			baseuserid,
+			txlxm,
+			txldh,
+			txlbz,
+			txlzt,
+			txlemail,
+			txlgs,
+			txljob,
+			txlxzqh
+		)values(
+			#{txlid,jdbcType=VARCHAR},
+			#{baseuserid,jdbcType=VARCHAR},
+			#{txlxm,jdbcType=VARCHAR},
+			#{txldh,jdbcType=VARCHAR},
+			#{txlbz,jdbcType=VARCHAR},
+			#{txlzt,jdbcType=INTEGER},
+			#{txlemail,jdbcType=VARCHAR},
+			#{txlgs,jdbcType=VARCHAR},
+			#{txljob,jdbcType=VARCHAR},
+			#{txlxzqh,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<delete id="deletetxl" parameterType="YjgTxlEntity">
+		delete from YJG_TXL where txlid = #{txlid}
+		
+	</delete>
+</mapper>

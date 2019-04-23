@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgFyjsjdjMapper
+	@Description YJG_FYJSJDJ表映射配置文件
+	@author cyf
+	@date 2017-08-25 15:02:06
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgFyjsjdjMapper">
+	
+	<sql id="all">
+		to_char (
+			t.scsj,
+			'yyyy-mm-dd hh24:mi:ss'
+		) AS scsj,
+		to_char (
+			t.jssj,
+			'yyyy-mm-dd hh24:mi:ss'
+		) AS jssj,
+		to_char (
+			t.updatetime,
+			'yyyy-mm-dd hh24:mi:ss'
+		) AS updatetime,
+		t.ckqx,t.baseuserid,t.bz,t.cssjdjpid,t.fyjsjdjid,t.isdel,t.jgid,t.jglx,t.sbrdh,t.sbrxm,t.sjdjdh,t.sjlx,t.sqzt,t.ssdl,t.updateuserid,t.updator,t.wzms,t.xxly,t.xzb,t.xzqh,t.yzb,t.yzjb 
+	</sql>
+	
+	<select id="getCount" resultType="int" parameterType="yjgFyjsjdjEntity">
+		select 
+			count(t.fyjsjdjid)
+		from 
+			YJG_FYJSJDJ t
+			<if test="null != ckqx and ckqx != ''">
+				and (instr(t1.ckqx, #{ckqx})> 0 or t1.ckqx is null)
+			</if>
+	</select>
+	
+	<select id="selectPagination" resultType="yjgFyjsjdjEntity" parameterType="yjgFyjsjdjEntity">
+		select 
+			t.baseuserid,t.bz,t.cssjdjpid,t.fyjsjdjid,t.isdel,t.jgid,t.jglx,t.jssj,t.sbrdh,t.sbrxm,t.scsj,t.sjdjdh,t.sjlx,t.sqzt,t.ssdl,t.updatetime,t.updateuserid,t.updator,t.wzms,t.xxly,t.xzb,t.xzqh,t.yzb,t.yzjb 
+		from 
+			YJG_FYJSJDJ t
+		where
+			<if test="null != ckqx and ckqx != ''">
+				and (instr(t1.ckqx, #{ckqx})> 0 or t1.ckqx is null)
+			</if>
+	</select>
+	
+	<select id="select" resultType="yjgFyjsjdjEntity">
+		select 
+			t.baseuserid,t.bz,t.cssjdjpid,t.fyjsjdjid,t.isdel,t.jgid,t.jglx,t.jssj,t.sbrdh,t.sbrxm,t.scsj,t.sjdjdh,t.sjlx,t.sqzt,t.ssdl,t.updatetime,t.updateuserid,t.updator,t.wzms,t.xxly,t.xzb,t.xzqh,t.yzb,t.yzjb 
+		from 
+			YJG_FYJSJDJ t
+	</select>
+	
+	<select id="getByPkey" resultType="yjgFyjsjdjEntity" parameterType="String">
+		select 
+			<include refid="all"></include>
+		from 
+			YJG_FYJSJDJ t
+		where 
+			t.fyjsjdjid = #{fyjsjdjid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgFyjsjdjEntity">
+		insert into YJG_FYJSJDJ(
+			baseuserid,bz,ckqx,cssjdjpid,fyjsjdjid,isdel,jgid,jglx,jssj,sbrdh,sbrxm,scsj,sjdjdh,sjlx,sqzt,ssdl,updatetime,updateuserid,updator,wzms,xxly,xzb,xzqh,yzb,yzjb
+		)values(
+			#{baseuserid,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{ckqx,jdbcType=VARCHAR},#{cssjdjpid,jdbcType=VARCHAR},#{fyjsjdjid,jdbcType=VARCHAR},#{isdel,jdbcType=INTEGER},#{jgid,jdbcType=VARCHAR},#{jglx,jdbcType=VARCHAR},#{jssj,jdbcType=TIME},#{sbrdh,jdbcType=VARCHAR},#{sbrxm,jdbcType=VARCHAR},#{scsj,jdbcType=TIME},#{sjdjdh,jdbcType=VARCHAR},#{sjlx,jdbcType=INTEGER},#{sqzt,jdbcType=INTEGER},#{ssdl,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{updateuserid,jdbcType=VARCHAR},#{updator,jdbcType=VARCHAR},#{wzms,jdbcType=VARCHAR},#{xxly,jdbcType=INTEGER},#{xzb,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{yzb,jdbcType=VARCHAR},#{yzjb,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgFyjsjdjEntity">
+		update YJG_FYJSJDJ
+		set 
+			baseuserid = #{baseuserid,jdbcType=VARCHAR}, bz = #{bz,jdbcType=VARCHAR}, ckqx = #{ckqx,jdbcType=VARCHAR}, cssjdjpid = #{cssjdjpid,jdbcType=VARCHAR}, isdel = #{isdel,jdbcType=INTEGER}, jgid = #{jgid,jdbcType=VARCHAR}, jglx = #{jglx,jdbcType=VARCHAR}, jssj = #{jssj,jdbcType=TIME}, sbrdh = #{sbrdh,jdbcType=VARCHAR}, sbrxm = #{sbrxm,jdbcType=VARCHAR}, scsj = #{scsj,jdbcType=TIME}, sjdjdh = #{sjdjdh,jdbcType=VARCHAR}, sjlx = #{sjlx,jdbcType=INTEGER}, sqzt = #{sqzt,jdbcType=INTEGER}, ssdl = #{ssdl,jdbcType=VARCHAR}, updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR}, updator = #{updator,jdbcType=VARCHAR}, wzms = #{wzms,jdbcType=VARCHAR}, xxly = #{xxly,jdbcType=INTEGER}, xzb = #{xzb,jdbcType=VARCHAR}, xzqh = #{xzqh,jdbcType=VARCHAR}, yzb = #{yzb,jdbcType=VARCHAR}, yzjb = #{yzjb,jdbcType=VARCHAR} 
+		where 
+			fyjsjdjid = #{fyjsjdjid}
+	</update>
+	
+	<update id="delete" parameterType="String">
+		update YJG_FYJSJDJ
+		set 
+			isdel = 0
+		where 
+			fyjsjdjid = #{fyjsjdjid} or cssjdjpid = #{fyjsjdjid}
+	</update>
+	
+	<select id="listChildSjdj" resultType="yjgSjdjEntity" parameterType="String">
+		select 
+			to_char (
+				t.scsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS scsj,
+			to_char (
+				t.jssj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS jssj,
+			t.updator,t.baseuserid,t.bz,t.cssjdjpid,t.isdel,t.jgid,t.jglx,t.sbrdh,t.sbrxm,t.sjdjdh,t.fyjsjdjid,t.sjlx,t.sqzt,t.ssdl,t.updatetime,t.updateuserid,t.wzms,t.xxly,t.xzb,t.xzqh,t.yzb,t.yzjb
+		from 
+			YJG_FYJSJDJ t
+		where
+			t.cssjdjpid = #{sjdjid} and t.ISDEL = 1
+	</select>
+	
+	<update id="separate" parameterType="String">
+		update YJG_FYJSJDJ
+		set 
+			cssjdjpid = null
+		where 
+			fyjsjdjid = #{fyjsjdjid} and ISDEL = 1
+	</update>
+	
+	<select id="getCountBySjlx" resultType="int" parameterType="yjgFyjsjdjEntity">
+		select 
+			count(*) 
+		from 
+			YJG_FYJSJDJ 
+		where 
+			SJLX = #{sjlx} and ISDEL = 1 and cssjdjpid is null
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd} >= scsj
+			</if>
+	</select>
+	
+</mapper>

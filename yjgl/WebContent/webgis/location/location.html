@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<head>
+		<title>“一张图”数据中心</title>
+		
+		<link rel="stylesheet" id="_skin" type="text/css" href="../../easyui/themes/material/easyui.css">
+		<link rel="stylesheet" href="http://syseng.kingtopinfo.com:9081/arcgis_js_3.14/esri/css/esri.css">
+		<link rel="stylesheet" href="../../webgis/baseSearch/baseSearch.css">
+		<link rel="stylesheet" href="../../js/jquery-ui/jquery-ui.min.css">
+		<script type="text/javascript" src="../init_layers.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../dojoconfig.js"charset="utf-8"></script>
+		<script type="text/javascript" src="../../easyui/jquery.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../easyui/jquery.easyui.min.js" charset="UTF-8"></script>
+<!-- 		<script type="text/javascript" src="http://localhost:8080/xmsz/js/easyui/datagrid-detailview.js"></script> -->
+		<script type="text/javascript" src="../../easyui/locale/easyui-lang-zh_CN.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../js/jquery-ui/jquery-ui.js"></script>
+		<script src="http://syseng.kingtopinfo.com:9081/arcgis_js_3.14/init.js"></script>
+		<script type="text/javascript" src="../../js/easyui.common.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../js/webgis.common.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../js/util.common.js" charset="UTF-8"></script>		
+		<script type="text/javascript" src="location.js" charset="UTF-8"></script>
+	</head>
+	<body >
+		<div id="layout_north">
+		    <form>
+		    	<div style="width:100%;height:10%;text-align: right;display:none;" id="edit_buttonpanel">
+		        	<a  id="edit_save_button"  style=""class="easyui-linkbutton" data-options="">保存</a>
+		        	<a  id="edit_cancel_button" href="javascript:void(0);" data-options=""  style="margin-right:20px;" class="easyui-linkbutton" data-options="">取消</a>
+	       	 	</div>
+		    </form>
+        </div>
+		<div class="partition_m">
+			<div id="mapDiv" style="width:100%;height:100%;position:fixed;">
+				<div id="swipeDiv"></div>
+				<label id="BasemapToggle2" style="position:fixed; z-index:100;right:62px; top:2px;"></label>
+			</div>
+		</div>
+		
+		<div id="_base_view_window" style="display:none;height:420px">
+			<div style="height:230px;">
+				<table id="_base_search_detailTable"  class="easyui-propertygrid" style="width:99.91%;height:99%;display:none;" data-options="fit:true,showGroup:true,showHeader:false,">
+	       		</table>
+       		</div>
+       		<div style="height:130px;padding-left:30px">
+       			<div style="float:left;width:40%;text-align:center;padding-top:18px;"><img alt="pic1" id="featuresearch_img1" style="padding:10px;" width="90%"  src="../../images/jgpic/A1001-NB.JPG"></div>
+       			<div style="float:left;width:40%;text-align:center;padding-left:20px;padding-top:18px;"><img alt="pic2" id="featuresearch_img2" style="padding:10px;" width="90%"  src="../../images/jgpic/A1002-JJ.JPG"></div>
+       		</div>
+		</div>	
+		
+		<div id="_baseSearch" class="clearfix" style="z-index:99;position:absolute;top:5px;left:5px;">
+			<div id="searchbox-container">
+				<div id="sole-searchbox-content" class="searchbox-content">
+					<input id="_baseSearch_addname" class="searchbox-content-common" name="word" autocomplete="off" maxlength="256" placeholder="搜编码、搜道路、搜管理单位" value="" type="text">
+					<div style="display: none;" id="_baseSearch_clear" class="input-clear" title="清空"></div>
+					<div data-tooltip="2" id="_baseSearch_clearLayer" class="searchbox-content-button right-button cancel-button loading-button" title="清除图层"></div>
+					
+					<div id="baseSearch_result">
+						<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content" id="ui-id-1" tabindex="0" style="display: none; width: 327px; top: 38px; left: 0px;">
+						</ul>
+					</div>
+				</div>
+			</div>
+<!-- 			<div id="baseSearch_account" title="门牌号查询"><input type="checkbox" id="baseSearch_houseNumber" style="position:absolute;right:60px; top:8px; width:15px;height:15px;" ></div> -->
+			<button data-tooltip="1" id="_baseSearch_go" data-title="搜索"></button>
+		</div>
+		
+		<div id="_image_zoom_container" style="z-index:9999;position:absolute;top:0px;left:0px;display:none;background-color:rgba(10, 10, 10, 0.52);">
+			<span id="_image_zoom_close" style="z-index:9999;position:absolute;cursor:pointer;background-image:url('../../images/loadLayer/del.png');width:20px;height:20px;top:0px;right:0px;background-color:rgba(128, 128, 128, 0.68);"></span>
+			<img src="" id="_image_zoom_center"  style="z-index:9998;cursor:pointer;position:absolute;width:600px;height:600px;" />
+		</div>
+		
+		<div id="_base_layer_view_window" style="display:none;height:510px">
+			<div style="width:99.91%;height:350px;">
+				<table id="search_detailTable"  class="easyui-propertygrid" style="width:99.91%;height:99%;display:none;" data-options="fit:true,showGroup:true,showHeader:false,">
+	       		</table>
+       		</div>
+       		<div style="width:99.91%;height:100px;">
+       			<div id= "_base_layer_view_nbdiv" style="float:left;width:28%;height:99%;padding-left: 30px;padding-top: 20px;"><img alt="未上传内部照片" id="_base_layer_view_nb" width="80%" height="80%" src=""></div>
+       			<div id= "_base_layer_view_jjdiv" style="float:left;width:28%;height:99%;padding-left: 10px;padding-top: 20px;"><img alt="未上传近景照片" id="_base_layer_view_jj" width="80%" height="80%" src=""></div>
+       			<div id= "_base_layer_view_yjdiv" style="float:left;width:28%;height:99%;padding-left: 10px;padding-top: 20px;"><img alt="未上传远景照片" id="_base_layer_view_yj" width="80%" height="80%" src=""></div>
+       		</div>
+       		<div style="padding: 2px;text-align: center;">
+       	 		<input type="hidden" id="_base_layer_edit_pid" name="_base_layer_edit_pid" />
+       	 		<a id="_base_layer_view_sure" href="javascript:;" class="easyui-linkbutton" >选取</a>
+       	 		<a id="_base_layer_view_last" href="javascript:;" class="easyui-linkbutton" >上一个</a>
+	        	<a id="_base_layer_view_next" href="javascript:;" class="easyui-linkbutton" >下一个</a>
+        	</div>
+		</div>			
+		
+	</body>
+</html>

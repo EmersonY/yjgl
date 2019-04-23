@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgSjdjUserMappingMapper
+	@Description YJG_SJDJ_USER_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-09-21 17:44:54
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgSjdjUserMappingMapper">
+	
+	<select id="getCount" resultType="int" parameterType="yjgSjdjUserMappingEntity">
+		select 
+			count(t.sjdjusermappingid)
+		from 
+			YJG_SJDJ_USER_MAPPING t
+	</select>
+	
+	<select id="selectPagination" resultType="yjgSjdjUserMappingEntity" parameterType="yjgSjdjUserMappingEntity">
+		select 
+			t.baseuserid,t.czsj,t.jjly,t.sfjd,t.sjdjid,t.sjdjusermappingid,t.type 
+		from 
+			YJG_SJDJ_USER_MAPPING t
+	</select>
+	
+	<select id="select" resultType="yjgSjdjUserMappingEntity">
+		select 
+			t.baseuserid,t.czsj,t.jjly,t.sfjd,t.sjdjid,t.sjdjusermappingid 
+		from 
+			YJG_SJDJ_USER_MAPPING t
+	</select>
+	
+	<select id="getByPkey" resultType="yjgSjdjUserMappingEntity" parameterType="String">
+		select 
+			t.baseuserid,t.czsj,t.jjly,t.sfjd,t.sjdjid,t.sjdjusermappingid,t.type 
+		from 
+			YJG_SJDJ_USER_MAPPING t
+		where 
+			t.sjdjusermappingid = #{sjdjusermappingid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgSjdjUserMappingEntity">
+		insert into YJG_SJDJ_USER_MAPPING(
+			baseuserid,czsj,jjly,sfjd,sjdjid,sjdjusermappingid,type
+		)values(
+			#{baseuserid,jdbcType=VARCHAR},#{czsj,jdbcType=TIME},#{jjly,jdbcType=VARCHAR},#{sfjd,jdbcType=INTEGER},#{sjdjid,jdbcType=VARCHAR},#{sjdjusermappingid,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgSjdjUserMappingEntity">
+		update YJG_SJDJ_USER_MAPPING
+		set 
+			baseuserid = #{baseuserid,jdbcType=VARCHAR}, czsj = #{czsj,jdbcType=TIME}, jjly = #{jjly,jdbcType=VARCHAR}, sfjd = #{sfjd,jdbcType=INTEGER}, sjdjid = #{sjdjid,jdbcType=VARCHAR}, type = #{type,jdbcType=VARCHAR} 
+		where 
+			sjdjusermappingid = #{sjdjusermappingid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_SJDJ_USER_MAPPING where sjdjusermappingid = #{sjdjusermappingid}
+	</delete>
+	
+	<select id="getByUserIdAndSjdjIdAndType" resultType="yjgSjdjUserMappingEntity" parameterType="yjgSjdjEntity">
+		select 
+			t.baseuserid,t.czsj,t.jjly,t.sfjd,t.sjdjid,t.sjdjusermappingid,t.type 
+		from 
+			YJG_SJDJ_USER_MAPPING t
+		where 1=1
+			<if test="null != sjdjid and '' != sjdjid">
+				and t.sjdjid = #{sjdjid} 
+			</if>
+			<if test="null != type and '' != type">
+				and t.type = #{type} 
+			</if>
+			<if test="null != baseuserid and '' != baseuserid">
+				and t.baseuserid = #{baseuserid}	
+			</if>
+	</select>
+	
+	<select id="getBySjdjId" resultType="yjgSjdjUserMappingEntity" parameterType="String">
+		select 
+			t.baseuserid,t.czsj,t.jjly,t.sfjd,t.sjdjid,t.sjdjusermappingid,t.type 
+		from 
+			YJG_SJDJ_USER_MAPPING t
+		where 
+			t.sjdjid = #{sjdjid}
+	</select>
+	
+	<select id="getByUserIdAndSjdjId" resultType="yjgSjdjUserMappingEntity" parameterType="String">
+		select 
+			t.baseuserid,t.czsj,t.jjly,t.sfjd,t.sjdjid,t.sjdjusermappingid,t.type 
+		from 
+			YJG_SJDJ_USER_MAPPING t
+		where 
+			t.sjdjid = #{sjdjid} and t.type = #{type}
+	</select>
+	
+	<select id="selectWqdsj" resultType="yjgSjdjUserMappingEntity" parameterType="yjgSjdjUserMappingEntity">
+		select 
+			baseuserid,czsj,jjly,sfjd,sjdjid,sjdjusermappingid,type 
+		from 
+			YJG_SJDJ_USER_MAPPING 
+		where 
+			SJDJID = #{sjdjid} 
+		and SFJD = 0
+		and BASEUSERID !=#{baseuserid}
+		and TYPE = #{type}
+	</select>
+	
+	<select id="getUnUserCount" resultType="int" parameterType="TblBaseUserEntity">
+		select 
+			count(baseuserid)
+		from 
+			TBL_BASE_USER t where t.baseuserid 
+		not in 
+			(
+				select BASEUSERID from YJG_SJDJ_USER_MAPPING where sjdjid = #{sjdjid,jdbcType=VARCHAR}
+			)
+		and t.state = 1	
+		<if test="account  != null and account != '' ">
+			and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="username != null and username !='' ">
+			and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+        </if>
+	</select>
+	
+	<select id="selectUnUserPagination" resultType="TblBaseUserEntity" parameterType="TblBaseUserEntity">
+		select 
+			t.baseuserid,t.account,t.password,t.username,t.type
+		from 
+			TBL_BASE_USER t where t.baseuserid 
+		not in 
+			(
+				select BASEUSERID from YJG_SJDJ_USER_MAPPING where sjdjid = #{sjdjid,jdbcType=VARCHAR}
+			)
+		and t.state = 1	
+		<if test="account  != null and account != '' ">
+			and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="username != null and username !='' ">
+			and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+        </if>
+	</select>
+	
+	<select id="selectUsered" resultType="TblBaseUserEntity" parameterType="TblBaseUserEntity">
+		select t1.baseuserid,t1.account,t1.username,t.sfjd,t.jjly,t.type,
+		to_char (
+			t.czsj,
+			'yyyy-mm-dd hh24:mi:ss'
+		) AS czsj
+		from YJG_SJDJ_USER_MAPPING t     
+		left join TBL_BASE_USER t1 on t.BASEUSERID = t1.BASEUSERID    
+		where 
+			t1.state = 1 and t.sjdjid =  #{sjdjid,jdbcType=VARCHAR} and t.type = #{type}
+	</select>
+	
+	<select id="selectRefuseUsered" resultType="TblBaseUserEntity" parameterType="TblBaseUserEntity">
+		select t1.baseuserid,t1.account,t1.username,t.sfjd,t.jjly,t.type,
+		to_char (
+			t.czsj,
+			'yyyy-mm-dd hh24:mi:ss'
+		) AS czsj
+		from YJG_SJDJ_USER_MAPPING t     
+		left join TBL_BASE_USER t1 on t.BASEUSERID = t1.BASEUSERID    
+		where 
+			t1.state = 1 and t.sjdjid =  #{sjdjid,jdbcType=VARCHAR} and t.sfjd = 2
+	</select>
+	
+</mapper>

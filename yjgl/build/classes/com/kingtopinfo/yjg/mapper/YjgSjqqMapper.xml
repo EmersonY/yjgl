@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgSjqqMapper
+	@Description YJG_SJQQ表映射配置文件
+	@author cyf
+	@date 2017-09-07 17:45:21
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgSjqqMapper">
+	
+	<select id="getCount" resultType="int" parameterType="yjgSjqqEntity">
+		select 
+			count(t.sjqsid)
+		from 
+			YJG_SJQQ t
+		left join YJG_SJDJ t1 on t.sjdjid = t1.sjdjid
+		left join YJG_XMLC t2 on t1.sjdjid = t2.sjdjid
+		left join V_FLOW_TODO v on t2.instanceid = v.instanceid
+		where
+			t.isdel = 1 and t1.cssjdjpid is null and 
+		<if test="pbaseuserid != null">
+			(
+				t.qsid in (select BASEUSERID from TBL_BASE_USER where PBASEUSERID = #{pbaseuserid} or BASEUSERID = #{pbaseuserid}) or
+				t.qssgid in (select BASEUSERID from TBL_BASE_USER where PBASEUSERID = #{pbaseuserid} or BASEUSERID = #{pbaseuserid})
+			)
+		</if>
+		<if test="timeStart != null">
+			and t.czsj >=  #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t.czsj
+		</if>
+		<if test="null != sjdjdh and '' != sjdjdh">
+			and t1.sjdjdh like '%'||#{sjdjdh}||'%'
+		</if>
+		<if test="null != dbzt and '' != dbzt and '-1' != dbzt">
+			and t.dbzt = #{dbzt}
+		</if>
+	</select>
+	
+	<select id="selectPagination" resultType="yjgSjqqEntity" parameterType="yjgSjqqEntity">
+		select 
+			t.wdbbz,t.baseuserid,t.bz,t.czr,t.isdel,t.qsid,t.qsmc,t.sjdjid,t.sjqsid,to_char(t.czsj,'yyyy-mm-dd hh24:mi:ss') AS czsj,t.dbzt,t.qssgid,t.qssgmc,
+			t1.sjdjdh,t1.yzjb,t1.sqzt,
+			t2.instanceid as instanceid,
+			v.taskname as taskname,v.taskkey as taskkey,v.taskid as taskid,v.definitionid,v.taskstarttime,v.gotime,v.maxtimes
+		from 
+			YJG_SJQQ t
+		left join YJG_SJDJ t1 on t.sjdjid = t1.sjdjid
+		left join YJG_XMLC t2 on t1.sjdjid = t2.sjdjid
+		left join V_FLOW_TODO v on t2.instanceid = v.instanceid
+		where
+			t.isdel = 1 and t1.cssjdjpid is null and 
+			<if test="pbaseuserid != null">
+			(
+				t.qsid in (select BASEUSERID from TBL_BASE_USER where PBASEUSERID = #{pbaseuserid} or BASEUSERID = #{pbaseuserid}) or
+				t.qssgid in (select BASEUSERID from TBL_BASE_USER where PBASEUSERID = #{pbaseuserid} or BASEUSERID = #{pbaseuserid})
+			)
+			</if>
+		<if test="timeStart != null">
+			and t.czsj >=  #{timeStart,jdbcType=TIME}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIME} >= t.czsj
+		</if>
+		<if test="null != sjdjdh and '' != sjdjdh">
+			and t1.sjdjdh like '%'||#{sjdjdh}||'%'
+		</if>
+		<if test="null != dbzt and '' != dbzt and '-1' != dbzt">
+			and t.dbzt = #{dbzt}
+		</if>
+		order by t.czsj desc
+	</select>
+	
+	<select id="getByPkey" resultType="yjgSjqqEntity" parameterType="String">
+		select 
+			t.wdbbz,t.baseuserid,t.bz,t.czr,to_char(t.czsj,'yyyy-mm-dd hh24:mi:ss') AS czsj,t.isdel,t.qsid,t.qsmc,t.sjdjid,t.sjqsid,t.dbzt,t.qssgid,t.qssgmc
+		from 
+			YJG_SJQQ t
+		where 
+			t.sjqsid = #{sjqsid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgSjqqEntity">
+		insert into YJG_SJQQ(
+			baseuserid,bz,czr,czsj,dbzt,isdel,qsid,qsmc,qssgid,qssgmc,sjdjid,sjqsid,wdbbz
+		)values(
+			#{baseuserid,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{czsj,jdbcType=TIME},#{dbzt,jdbcType=VARCHAR},#{isdel,jdbcType=INTEGER},#{qsid,jdbcType=VARCHAR},#{qsmc,jdbcType=VARCHAR},#{qssgid,jdbcType=VARCHAR},#{qssgmc,jdbcType=VARCHAR},#{sjdjid,jdbcType=VARCHAR},#{sjqsid,jdbcType=VARCHAR},#{wdbbz,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgSjqqEntity">
+		update YJG_SJQQ
+		set 
+			baseuserid = #{baseuserid,jdbcType=VARCHAR}, bz = #{bz,jdbcType=VARCHAR}, czr = #{czr,jdbcType=VARCHAR}, czsj = #{czsj,jdbcType=TIME}, dbzt = #{dbzt,jdbcType=VARCHAR}, isdel = #{isdel,jdbcType=INTEGER}, qsid = #{qsid,jdbcType=VARCHAR}, qsmc = #{qsmc,jdbcType=VARCHAR}, qssgid = #{qssgid,jdbcType=VARCHAR}, qssgmc = #{qssgmc,jdbcType=VARCHAR}, sjdjid = #{sjdjid,jdbcType=VARCHAR}, wdbbz = #{wdbbz,jdbcType=VARCHAR} 
+		where 
+			sjqsid = #{sjqsid}
+	</update>
+	
+	<delete id="deleteBySjdjid" parameterType="String">
+		update YJG_SJQQ
+		set 
+			isdel = 0
+		where 
+			sjdjid = #{sjdjid}
+	</delete>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_SJQQ where sjqsid = #{sjqsid}
+	</delete>
+	
+	<select id="findSjqqBySjdjid" resultType="yjgSjqqEntity" parameterType="String">
+		select 
+			t.wdbbz,t.baseuserid,t.bz,t.czr,to_char(t.czsj,'yyyy-mm-dd hh24:mi:ss') AS czsj,t.isdel,t.qsid,t.qsmc,t.sjdjid,t.sjqsid,t.dbzt,t.qssgid,t.qssgmc
+		from 
+			YJG_SJQQ t
+		where 
+			t.sjdjid = #{sjdjid} and t.isdel = 1
+	</select>
+	
+</mapper>

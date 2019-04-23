@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<head>
+		<title>“一张图”数据中心</title>
+		
+		<link rel="stylesheet" id="_skin" type="text/css" href="../easyui/themes/material/easyui.css">
+		<link rel="stylesheet" href="http://127.0.0.1:8081/arcgis_js_api\library\3.14\3.14\esri\css/esri.css">
+<!-- 		<link rel="stylesheet" href="../js/jquery-ui/jquery-ui.min.css"> -->
+<!-- 		<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css"> -->
+		<link rel="stylesheet" type="text/css" href="../css/webgis.css">
+		<link rel="stylesheet" href="index.css">
+		<link rel="stylesheet" href="../webgis/baseSearch/baseSearch.css">
+		<script type="text/javascript" src="../js/basepara.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="init_layers.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="dojoconfig.js"charset="utf-8"></script>
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js" charset="UTF-8"></script>
+<!-- 		<script type="text/javascript" src="../js/datagrid-detailview.js"></script> -->
+<!-- 		<script type="text/javascript" src="../js/locale/easyui-lang-zh_CN.js" charset="UTF-8"></script> -->
+<!-- 		<link rel="stylesheet" href="../js/smartmenus-1.0.0/smartMenu.css" /> -->
+<!-- 		<script type="text/javascript" src="../js/smartmenus-1.0.0/jquery-smartMenu.js" charset="UTF-8"></script> -->
+<!-- 		<script type="text/javascript" src="../js/jquery-ui/jquery-ui2.js" charset="UTF-8"></script> -->
+		<script src="http://hlfg.kingtopinfo.com:13003/arcgis_js_3.14/init.js"></script>
+		<script type="text/javascript" src="../js/easyui.common.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/webgis.common.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/util.common.js" charset="UTF-8"></script>		
+		<script type="text/javascript" src="index.js" charset="UTF-8"></script>
+	</head>
+	<body style="width:100%;height:100%;">
+	
+		<div id="layout_north">
+			<div id="layout_north_login"></div>
+        	<div id="layout_north_login_main">
+				<div class="layout_north_toolbar">
+        			<img id="rangeSearch" class="toolbutton" title="地图定位" alt="地图定位" src="../images/webgis/kjfs.png" >
+        		</div>
+        		<div class="layout_north_toolbar">
+        			<img id="map_toolbar" class="toolbutton" title="地图工具条" alt="地图工具条" src="../images/webgis/dtgjt.png" >
+        		</div>
+        		<div class="layout_north_toolbar">
+        			<img id="multiSwipe" class="toolbutton" title="二分屏" alt="二分屏" src="../images/webgis/efp.png" >
+        		</div>
+        		<div class="layout_north_toolbar">
+        			<img id="mapPrint" class="toolbutton" title="打印" alt="打印" src="../images/webgis/dy.png" winParams="top:100;left:50;height:470;width:310" >
+        		</div>
+        		<div class="layout_north_toolbar">
+        			<img id="saveAllGraphics" class="toolbutton" title="保存工作空间" alt="保存工作空间" src="../images/webgis/save.png" >
+        		</div>
+        		<div class="layout_north_toolbar">
+        			<img id="glyrk" class="toolbutton" title="管理员入口" alt="管理员入口" src="../images/webgis/glyrk.png" >
+        		</div>
+        	</div>
+		</div>
+		<div class="partition_m">
+			<div id="mapDiv" style="width:100%;height:100%;">
+				<div id="swipeDiv"></div>
+				<label id="BasemapToggle2"   style="position:absolute; z-index:100;right:62px; top:2px;"></label>
+			</div>
+		</div>
+		
+		<div id="_baseSearch" class="clearfix" style="z-index:99;position:absolute;top:90px;left:50px;">
+			<div id="searchbox-container">
+				<div id="sole-searchbox-content" class="searchbox-content">
+					<input id="baseSearch_addname" class="searchbox-content-common" name="word" autocomplete="off" maxlength="256" placeholder="输入地名查询" value="" type="text">
+					<div style="display: none;" id="baseSearch_clear" class="input-clear" title="清空"></div>
+					<div data-tooltip="2" id="baseSearch_clearLayer" class="searchbox-content-button right-button cancel-button loading-button" title="清除图层"></div>
+					
+					<div id="baseSearch_result">
+						<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content" id="ui-id-1" tabindex="0" style="display: none; width: 327px; top: 38px; left: 0px;">
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="baseSearch_account" title="门牌号查询"><input type="checkbox" id="baseSearch_houseNumber" style="position:absolute;right:60px; top:8px; width:15px;height:15px;" ></div>
+			<button data-tooltip="1" id="baseSearch_go" data-title="搜索"></button>
+		</div>
+		
+		<div id="_toolbar" class="toolscontainer" style="position:absolute;top:80px;right:60px;display:none;">
+			<div class="ui3-control-wrap clearfixs" id="ui3_control_wrap">        
+				<div class="left float-l">                       
+					<div class="trafficopt"  id="basesearch_point">                
+						<span id="traffic_control" class="last traffic"></span><i>点查询</i>            
+					</div>             
+					<div class="trafficopt"  id="basesearch_rectangle">                
+						<span id="traffic_control" class="last traffic"></span><i>拉框查询</i>            
+					</div>  
+					<div class="trafficopt"  id="basesearch_polygon">                
+						<span id="traffic_control" class="last traffic"></span><i>面查询</i>            
+					</div>  
+					<div class="trafficopt"  id="basesearch_clear">                
+						<span id="traffic_control" class="last traffic"></span><i>清除</i>            
+					</div>             
+				</div>
+			</div>
+		</div>
+		
+		<div id="layer_win" style="position:fixed;top:0px;right:-310px;width:300px;height:100%;background-color:#ffffff;z-index:9998;box-shadow: 0 -1px 24px rgba(0,0,0,0.4);">
+			<div id="_hide_layer_win" style="background: url('../images/webgis/index/settings.png') no-repeat 0 -50px;position: absolute;top: 20px;width: 24px;left: 10px;height: 25px;cursor:pointer"></div>
+			
+			<div style="background-color:#dddddd;margin-top:60px;height:2px;"></div>
+			<div class="layer_control" region="north" data-options="border:false" style="height:60px;padding-top: 5px;padding-left: 5px;">
+					<img style="cursor:pointer;" alt="置顶" src="../images/loadLayer/top.png" id="topLayer">
+					<img style="cursor:pointer;" alt="上移" src="../images/loadLayer/up.png" id="upLayer">
+					<img style="cursor:pointer;" alt="下移" src="../images/loadLayer/down.png" id="downLayer">
+					<img style="cursor:pointer;" alt="置底" src="../images/loadLayer/bottom.png" id="bottomLayer">
+<!-- 					<img style="cursor:pointer;" alt="删除" src="../images/loadLayer/delLayer.png" id="delLayer"> -->
+			</div>
+<!-- 			<div id="jc"></div> -->
+			<table id="yjz"></table>
+		</div>
+		
+		<div id="_base_layer_view_window" style="display:none;height:510px">
+			<div style="width:99.91%;height:400px;">
+				<table id="search_detailTable"  class="easyui-propertygrid" style="width:99.91%;height:99%;display:none;" data-options="fit:true,showGroup:true,showHeader:false,">
+	       		</table>
+       		</div>
+       		<div style="width:99.91%;height:100px;">
+       			<div style="float:left;width:50%;height:99%;left:10px;"><img alt="pic1" id="featuresearch_img1" width="90%" height="80%" src="../images/jgpic/A1001-NB.JPG"></div>
+       			<div style="float:left;width:50%;height:99%;left:10px;"><img alt="pic2" id="featuresearch_img2" width="90%" height="80%" src="../images/jgpic/A1002-JJ.JPG"></div>
+       		</div>
+		</div>		
+		
+		<div id="_base_layer_edit_window" style="display:none;height:510px">
+			<div style="width:99.91%;height:400px;">
+				<table id="edit_detailTable"  class="easyui-propertygrid" style="width:99.91%;height:99%;display:none;" data-options="fit:true,showGroup:true,showHeader:false,">
+	       		</table>
+       		</div>
+       		<div style="width:99.91%;height:100px;">
+       			<div style="float:left;width:50%;height:99%;left:10px;"><img alt="pic1" id="featureedit_img1" width="90%" height="80%" src="../images/jgpic/A1001-NB.JPG"></div>
+       			<div style="float:left;width:50%;height:99%;left:10px;"><img alt="pic2" id="featureedit_img2" width="90%" height="80%" src="../images/jgpic/A1002-JJ.JPG"></div>
+       		</div>
+		</div>		
+		
+		<div id="rangeSearch_win" style="position:fixed;top:0px;right:-310px;width:300px;height:100%;background-color:#ffffff;z-index:9998;box-shadow: 0 -1px 24px rgba(0,0,0,0.4);">
+			<div id="_hide_rangeSearch_win" style="background: url('../images/webgis/index/settings.png') no-repeat 0 -50px;position: absolute;top: 20px;width: 24px;left: 10px;height: 25px;cursor:pointer"></div>
+			<div style="background-color:#dddddd;margin-top:60px;height:2px;"></div>
+			<div style="height:33px;padding:9px;">
+		        <b style="font-size:15px;height:25px;">井盖编号:</b>
+		      	<input type="text" id="rangeSearch_jgbh" />
+			</div> 
+			<div style="height:33px;padding:9px;">
+		        <b style="font-size:15px;height:25px;">井盖类型:</b>
+		      	<input type="text" id="rangeSearch_jglx" />
+			</div> 
+			<div style="height:33px;padding:9px;">
+		        <b style="font-size:15px;height:25px;">井盖规格:</b>
+		      	<input type="text" id="rangeSearch_jggg" />
+			</div> 
+			<div style="height:33px;padding:9px;">
+		        <b style="font-size:15px;height:25px;">井内管径:</b>
+		      	<input type="text" id="rangeSearch_jngj" />
+			</div> 
+			<div style="height:33px;padding:9px;">
+		        <b style="font-size:15px;height:25px;">所属道路:</b>
+		      	<input type="text" id="rangeSearch_ssdl" />
+			</div> 
+			<div style="height:33px;padding:9px;">
+		        <b style="font-size:15px;height:25px;">权属单位:</b>
+		      	<input type="text" id="rangeSearch_qsdw" />
+			</div> 
+			<div style="height:33px;padding:9px;">
+		        <b style="font-size:15px;height:25px;">建设年份:</b>
+		      	<input type="text" id="rangeSearch_jsnf" />
+			</div> 
+			<div style="height:98px;padding:2px 9px 9px 9px;">
+				<div style="height:50px;padding:9px;">
+			        <b style="font-size:15px;height:25px;">井盖材质:</b><br>
+			        <select id="rangeSearch_jgcz" style="width:120px;height:22px;">
+			    		<option value="未选择" selected="selected">未选择</option>
+			    		<option value="复合材料">复合材料</option>
+			    		<option value="铁">铁</option>
+			    		<option value="塑料">塑料</option>
+			    		<option value="水泥">水泥</option>
+			    		<option value="下沉式">下沉式</option>
+			    		<option value="其他">其他</option>
+		    		</select>
+		        </div>
+		        <div style="height:50px;padding:9px;">
+			        <b style="font-size:15px;height:25px;">井盖形状:</b>
+			        <div style="padding:3px;">
+				        <input type="radio" value="未选择" name="rangeSearch_jgxz" checked />未选择
+		       	        <input type="radio" value="圆" name="rangeSearch_jgxz"  />圆
+				        <input type="radio" value="方" name="rangeSearch_jgxz" />方
+			        </div>
+		        </div>
+		        <div style="height:53px;padding:9px;">
+			        <b style="font-size:15px;height:25px;">是否有防坠网:</b>
+			        <div style="padding:3px;">
+				        <input type="radio" value="未选择" name="rangeSearch_sfyfzw" checked />未选择
+				        <input type="radio" value="是" name="rangeSearch_sfyfzw" />是
+		       	        <input type="radio" value="否" name="rangeSearch_sfyfzw"  />否
+				        <input type="radio" value="破损" name="rangeSearch_sfyfzw" />破损
+				        <input type="radio" value="无法观测" name="rangeSearch_sfyfzw" />无法观测
+			        </div>
+		        </div>
+			</div>
+			<div style="height:50px;padding:275px 9px 9px 9px;margin-left:35px;">
+		       	<input type="button" class="inputButton" id="rangeSearch_search" value="查询" />
+				<input type="button" class="inputButton" id="rangeSearch_clear" style="margin-left:20px;" value="清空" />
+			</div>
+		</div> 
+	</body>
+</html>

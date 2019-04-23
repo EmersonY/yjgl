@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgJgxxMapper
+	@Description YJG_JGXX表映射配置文件
+	@author cyf
+	@date 2017-10-19 16:18:13
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.sjwh.mapper.YjgJgxxMapper">
+	
+	<select id="getCount" resultType="int" parameterType="yjgJgxxEntity">
+		select 
+			count(t.jgid)
+		from 
+			YJG_JGXX t
+		where 1=1 
+		<if test="null != jglx and jglx != '-1'">
+			and t.jglx = #{jglx}
+		</if>
+		<if test="null != rtzt and rtzt != '-1'">
+			and t.rtzt = #{rtzt}
+		</if>
+		<if test="null != jngj and jngj != ''">
+			and t.jngj like '%'||#{jngj,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != jgxz and jgxz != '-1'">
+			and t.jgxz = #{jgxz}
+		</if>
+		<if test="null != jgcz and jgcz != '-1'">
+			and t.jgcz = #{jgcz}
+		</if>
+		<if test="null != jggg and jggg != ''">
+			and t.jggg like '%'||#{jggg,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != sfzw and sfzw != '-1'">
+			and t.sfzw = #{sfzw}
+		</if>
+		<if test="null != ssdl and ssdl != ''">
+			and t.ssdl in (${ssdl})
+		</if>
+		<if test="null != jgbh and jgbh != ''">
+			and t.jgbh like '%'||#{jgbh,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != gldw and gldw != ''">
+			and t.gldw like '%'||#{gldw,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != qsdw and qsdw != ''">
+			and t.qsdw like '%'||#{qsdw,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != jgzt and jgzt != '-1'">
+			and t.jgzt = #{jgzt}
+		</if>
+	</select>
+	
+	<select id="selectPagination" resultType="yjgJgxxEntity" parameterType="yjgJgxxEntity">
+		select 
+			t.czr,t.dljssj,t.gldw,t.jgbh,t.jgcz,t.jggg,t.jgid,t.jglx,t.jgsl,t.jgxz,t.jgzt,t.jngj,t.js,t.qsdw,t.rtzt,t.sfzw,t.ssdl,t.xzb,t.xzqh,t.yzb,
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj
+		from 
+			YJG_JGXX t
+		where 1=1 
+		<if test="null != jglx and jglx != '-1'">
+			and t.jglx = #{jglx}
+		</if>
+		<if test="null != jngj and jngj != ''">
+			and t.jngj like '%'||#{jngj,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != jgxz and jgxz != '-1'">
+			and t.jgxz = #{jgxz}
+		</if>
+		<if test="null != jgcz and jgcz != '-1'">
+			and t.jgcz = #{jgcz}
+		</if>
+		<if test="null != jggg and jggg != ''">
+			and t.jggg like '%'||#{jggg,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != sfzw and sfzw != '-1'">
+			and t.sfzw = #{sfzw}
+		</if>
+		<if test="null != jgbh and jgbh != ''">
+			and t.jgbh like '%'||#{jgbh,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != ssdl and ssdl != ''">
+			and t.ssdl in (${ssdl})
+		</if>
+		<if test="null != js and js != ''">
+			and t.js = #{js}
+		</if>
+		<if test="null != jgsl and jgsl != ''">
+			and t.jgsl = #{jgsl}
+		</if>
+		<if test="null != gldw and gldw != ''">
+			and t.gldw like '%'||#{gldw,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != qsdw and qsdw != ''">
+			and t.qsdw like '%'||#{qsdw,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != jgzt and jgzt != '-1'">
+			and t.jgzt = #{jgzt}
+		</if>
+		order by t.czsj desc
+	</select>
+	
+	<select id="selectPaginationByrtzt" resultType="yjgJgxxEntity" parameterType="yjgJgxxEntity">
+		select 
+			t.czr,t.czsj,t.dljssj,t.gldw,t.jgbh,t.jgcz,t.jggg,t.jgid,t.jglx,t.jgsl,t.jgxz,t.jgzt,t.jngj,t.js,t.qsdw,t.rtzt,t.sfzw,t.ssdl,t.xzb,t.xzqh,t.yzb
+		from 
+			YJG_JGXX t
+		where 
+			t.rtzt = #{rtzt}
+		<if test="null != jglx and jglx != '-1'">
+			and t.jglx = #{jglx}
+		</if>
+		<if test="null != jgbh and jgbh != ''">
+			and t.jgbh like '%'||#{jgbh,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="null != qsdw and qsdw != ''">
+			and t.qsdw like '%'||#{qsdw,jdbcType=VARCHAR}||'%'
+		</if>
+	</select>
+	
+	<select id="getByJgbh" resultType="yjgJgxxEntity" parameterType="String">
+		select 
+			t.czr,t.czsj,t.dljssj,t.gldw,t.jgbh,t.jgcz,t.jggg,t.jgid,t.jglx,t.jgsl,t.jgxz,t.jgzt,t.jngj,t.js,t.qsdw,t.rtzt,t.sfzw,t.ssdl,t.xzb,t.xzqh,t.yzb
+		from 
+			YJG_JGXX t
+		where
+			t.jgbh = #{jgbh}
+	</select>
+	
+	<select id="getByPkey" resultType="yjgJgxxEntity" parameterType="String">
+		select 
+			t.czr,t.czsj,t.dljssj,t.gldw,t.jgbh,t.jgcz,t.jggg,t.jgid,t.jglx,t.jgxz,t.jgzt,t.jngj,t.qsdw,t.sfzw,t.ssdl,t.xzb,t.xzqh,t.yzb,t.rtzt  
+		from 
+			YJG_JGXX t
+		where 
+			t.jgid = #{jgid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgJgxxEntity">
+		insert into YJG_JGXX(
+			czr,czsj,dljssj,gldw,jgbh,jgcz,jggg,jgid,jglx,jgsl,jgxz,jgzt,jngj,js,qsdw,rtzt,sfzw,ssdl,xzb,xzqh,yzb
+		)values(
+			#{czr,jdbcType=VARCHAR},#{czsj,jdbcType=TIME},#{dljssj,jdbcType=VARCHAR},#{gldw,jdbcType=VARCHAR},#{jgbh,jdbcType=VARCHAR},#{jgcz,jdbcType=VARCHAR},#{jggg,jdbcType=VARCHAR},#{jgid,jdbcType=VARCHAR},#{jglx,jdbcType=VARCHAR},#{jgsl,jdbcType=VARCHAR},#{jgxz,jdbcType=VARCHAR},#{jgzt,jdbcType=VARCHAR},#{jngj,jdbcType=VARCHAR},#{js,jdbcType=VARCHAR},#{qsdw,jdbcType=VARCHAR},#{rtzt,jdbcType=VARCHAR},#{sfzw,jdbcType=VARCHAR},#{ssdl,jdbcType=VARCHAR},#{xzb,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{yzb,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgJgxxEntity">
+		update YJG_JGXX
+		set 
+			czr = #{czr,jdbcType=VARCHAR}, czsj = #{czsj,jdbcType=TIME}, dljssj = #{dljssj,jdbcType=VARCHAR}, gldw = #{gldw,jdbcType=VARCHAR}, jgbh = #{jgbh,jdbcType=VARCHAR}, jgcz = #{jgcz,jdbcType=VARCHAR}, jggg = #{jggg,jdbcType=VARCHAR}, jglx = #{jglx,jdbcType=VARCHAR}, jgsl = #{jgsl,jdbcType=VARCHAR}, jgxz = #{jgxz,jdbcType=VARCHAR}, jgzt = #{jgzt,jdbcType=VARCHAR}, jngj = #{jngj,jdbcType=VARCHAR}, js = #{js,jdbcType=VARCHAR}, qsdw = #{qsdw,jdbcType=VARCHAR}, rtzt = #{rtzt,jdbcType=VARCHAR}, sfzw = #{sfzw,jdbcType=VARCHAR}, ssdl = #{ssdl,jdbcType=VARCHAR}, xzb = #{xzb,jdbcType=VARCHAR}, xzqh = #{xzqh,jdbcType=VARCHAR}, yzb = #{yzb,jdbcType=VARCHAR} 
+		where 
+			jgbh = #{jgbh}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_JGXX where jgbh = #{jgbh}
+	</delete>
+	
+</mapper>

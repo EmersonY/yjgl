@@ -1,0 +1,5 @@
+[{"layer_id":"88342d6a843a48f5a588f68578a0f9b2","layer_name":"电子地图","service_url":"http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_XMMAP/MapServer","service_type":"tiled","service_time":"2016-06-26"},
+{"layer_id":"4e81832a3c1b4d70a67d869be6bcc999","layer_name":"电子地图注记","service_url":"http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_XMMAP_CVA/MapServer","service_type":"tiled","service_time":"2016-06-26"},
+{"layer_id":"de00121fb1dd4d69970ed27a68433966","layer_name":"道路","service_url":"http://mapapi.xmtfj.gov.cn/RemoteRest/services/TRA/MapServer","service_type":"tiled","service_time":"2016-06-26"},
+{"layer_id":"1a9ad072daf74e6c113d5ce9c38f0261","layer_name":"窨井分布图","service_url":"http://183.253.55.30:6080/arcgis/rest/services/KT/XMYJ/MapServer","service_type":"tiled","service_time":"2017-11-26"}
+]

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblFlowTaskConfigureMapper
+	@Description TBL_FLOW_TASK_CONFIGURE表映射配置文件
+	@author cyf
+	@date 2017-09-19 14:22:08
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.activiti.mapper.TblFlowTaskConfigureMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblFlowTaskConfigureEntity">
+		select 
+			count(t.flowtaskconfigureid)
+		from 
+			TBL_FLOW_TASK_CONFIGURE t
+	</select>
+	
+	<select id="selectPagination" resultType="tblFlowTaskConfigureEntity" parameterType="tblFlowTaskConfigureEntity">
+		select 
+			t.businessurl,t.flowtaskconfigureid,t.maxtimes,t.overtimehandle,t.processid,t.taskcode,t.taskid,t.taskname 
+		from 
+			TBL_FLOW_TASK_CONFIGURE t
+	</select>
+	
+	<select id="select" resultType="tblFlowTaskConfigureEntity">
+		select 
+			t.businessurl,t.flowtaskconfigureid,t.maxtimes,t.overtimehandle,t.processid,t.taskcode,t.taskid,t.taskname 
+		from 
+			TBL_FLOW_TASK_CONFIGURE t
+	</select>
+	
+	<select id="getByPkey" resultType="tblFlowTaskConfigureEntity" parameterType="String">
+		select 
+			t.businessurl,t.flowtaskconfigureid,t.maxtimes,t.overtimehandle,t.processid,t.taskcode,t.taskid,t.taskname 
+		from 
+			TBL_FLOW_TASK_CONFIGURE t
+		where 
+			t.flowtaskconfigureid = #{flowtaskconfigureid}
+	</select>
+	
+	<insert id="insert" parameterType="tblFlowTaskConfigureEntity">
+		insert into TBL_FLOW_TASK_CONFIGURE(
+			businessurl,flowtaskconfigureid,maxtimes,overtimehandle,processid,taskcode,taskid,taskname
+		)values(
+			#{businessurl,jdbcType=VARCHAR},#{flowtaskconfigureid,jdbcType=VARCHAR},#{maxtimes,jdbcType=INTEGER},#{overtimehandle,jdbcType=VARCHAR},#{processid,jdbcType=VARCHAR},#{taskcode,jdbcType=VARCHAR},#{taskid,jdbcType=VARCHAR},#{taskname,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblFlowTaskConfigureEntity">
+		update TBL_FLOW_TASK_CONFIGURE
+		set 
+			businessurl = #{businessurl,jdbcType=VARCHAR}, maxtimes = #{maxtimes,jdbcType=INTEGER}, overtimehandle = #{overtimehandle,jdbcType=VARCHAR}, processid = #{processid,jdbcType=VARCHAR}, taskcode = #{taskcode,jdbcType=VARCHAR}, taskid = #{taskid,jdbcType=VARCHAR}, taskname = #{taskname,jdbcType=VARCHAR} 
+		where 
+			flowtaskconfigureid = #{flowtaskconfigureid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_FLOW_TASK_CONFIGURE where flowtaskconfigureid = #{flowtaskconfigureid}
+	</delete>
+	
+	<select id="selectByProcessidAndTaskid" resultType="tblFlowTaskConfigureEntity" parameterType="tblFlowTaskConfigureEntity">
+		select 
+			* 
+		from 
+			TBL_FLOW_TASK_CONFIGURE 
+		where 
+			taskid = #{taskid,jdbcType=VARCHAR} 
+			and processid = #{processid,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

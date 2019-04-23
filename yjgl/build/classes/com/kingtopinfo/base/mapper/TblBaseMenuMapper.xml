@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName com.kingtopinfo.base.mapper.TBaseMenuMapper
+	@Description T_BASE_MENU表映射配置文件
+	@author dzb@kingtopinfo.com
+	@date 2014-02-20 09:12:37
+	@version 1.0
+	@remark create by generator
+	-->
+	
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseMenuMapper">
+	
+	<sql id="columns">
+		t.updatetime,t.updateuserid,t.state,t.icon,t.sequ,t.basemenupid,t.src,t.menuname,t.basemenuid,t.basemenuid as id,t.menuname as text
+	</sql>
+	
+	<select id="getByKey" resultType="tblBaseMenuEntity" parameterType="String">
+		select 
+			<include refid="columns"></include>
+		from 
+			TBL_BASE_MENU t
+		where 
+			t.basemenuid = #{basemenuid}
+	</select>
+	
+	<select id="getAll" resultType="tblBaseMenuEntity" parameterType="String">
+		select 
+			<include refid="columns"></include>
+		from 
+			TBL_BASE_MENU t
+	</select>
+	
+	<select id="selectMenuByRoids" resultType="tblBaseMenuEntity">
+		select 
+			<include refid="columns"></include>
+		from 
+			TBL_BASE_MENU t
+		where
+			basemenuid in (select basemenuid from TBL_BASE_ROLE_MENU_MAPPING where baseroleid in 
+			<foreach collection="list" item="baseroleid" index="index" open="(" close=")" separator=",">
+		      #{baseroleid}
+			</foreach>
+			) 
+			and t.basemenupid = '-'
+			and t.state = 1
+		order by t.sequ ASC
+	</select>
+	
+	<select id="selectMenuByPid" resultType="tblBaseMenuEntity" parameterType="String">
+		select 
+			<include refid="columns"></include>
+		from 
+			TBL_BASE_MENU t 
+		where 
+			t.basemenupid = #{basemenupid}
+			and t.state = 1
+		order by t.sequ ASC
+	</select>
+	
+	<select id="select" resultType="tblBaseMenuEntity">
+		select 
+			t.updatetime,t.updateuserid,t.state,t.icon,t.sequ,t.basemenupid,t.src,t.menuname,t.basemenuid,t.basemenuid as id,t.menuname as text,t.basemenupid as pid
+		from 
+			TBL_BASE_MENU t
+		order by t.sequ ASC	
+	</select>
+	
+	<select id="selectMaxSequ" resultType="Integer">
+		select 
+			max(t.sequ)
+		from 
+			TBL_BASE_MENU t
+	</select>
+	
+	<select id="selectMinSequ" resultType="Integer">
+		select 
+			min(sequ)
+		from 
+			TBL_BASE_MENU
+	</select>
+	
+	<select id="secTopMaxMsg" resultType="tblBaseMenuEntity" parameterType="String">
+		select 
+			basemenuid,sequ 
+		from 
+			TBL_BASE_MENU 
+		where 
+			sequ =( select max(sequ) from TBL_BASE_MENU where sequ &lt; 
+				  		( select sequ from TBL_BASE_MENU where basemenuid = #{basemenuid} )
+				    and basemenupid is null and state = 1
+				  )
+	</select>
+	
+	<select id="secTopMinMsg" resultType="tblBaseMenuEntity" parameterType="String">
+		select 
+			basemenuid,sequ 
+		from 
+			TBL_BASE_MENU 
+		where 
+			sequ =( select min(sequ) from TBL_BASE_MENU where sequ &gt; 
+						( select sequ from TBL_BASE_MENU where basemenuid = #{basemenuid} )
+				    and basemenupid is null and state = 1
+				  )
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseMenuEntity">
+		insert into TBL_BASE_MENU(
+			updatetime,updateuserid,state,icon,sequ,basemenupid,src,menuname,basemenuid
+		)values(
+			#{updatetime,jdbcType=TIME},#{updateuserid,jdbcType=VARCHAR},#{state,jdbcType=INTEGER},#{icon,jdbcType=VARCHAR},#{sequ,jdbcType=INTEGER},#{basemenupid,jdbcType=VARCHAR},#{src,jdbcType=VARCHAR},#{menuname,jdbcType=VARCHAR},#{basemenuid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblBaseMenuEntity">
+		update TBL_BASE_MENU
+		set 
+			updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR}, state = #{state,jdbcType=INTEGER}, icon = #{icon,jdbcType=VARCHAR}, sequ = #{sequ,jdbcType=INTEGER}, basemenupid = #{basemenupid,jdbcType=VARCHAR}, src = #{src,jdbcType=VARCHAR}, menuname = #{menuname,jdbcType=VARCHAR} 
+		where 
+			basemenuid = #{basemenuid}
+	</update>
+	
+	<select id="selectByPkey" resultType="tblBaseMenuEntity" parameterType="String">
+		select 
+			t.updatetime,t.updateuserid,t.state,t.icon,t.sequ,t.basemenupid,t.src,t.menuname,t.basemenuid 
+		from 
+			TBL_BASE_MENU t
+		where 
+			t.basemenuid = #{basemenuid}
+	</select>
+	
+	<select id="selectByPid" resultType="tblBaseMenuEntity" parameterType="String">
+        select 
+           <include refid="columns"></include>
+        from 
+            TBL_BASE_MENU t
+        where 
+            t.basemenupid = #{basemenupid}  
+        order by t.sequ ASC      
+    </select>
+    
+    <delete id="delete" parameterType="String">
+		delete from TBL_BASE_MENU where basemenuid = #{basemenuid}
+	</delete>
+	
+	<delete id="deleteByMenuid" parameterType="String">
+		delete FROM TBL_BASE_MENU where basemenuid = #{basemenuid}
+	</delete>
+	
+	<update id="move" parameterType="tblBaseMenuEntity">
+        update 
+			TBL_BASE_MENU
+        set 
+            basemenupid = #{basemenupid,jdbcType=VARCHAR}
+        where 
+            basemenuid = #{basemenuid}
+    </update>
+    
+    <update id="updateSequ" parameterType="tblBaseMenuEntity">
+		update 
+			TBL_BASE_MENU
+		set 
+			sequ = #{sequ,jdbcType=INTEGER}
+		where 
+			basemenuid = #{basemenuid}
+	</update>
+	
+	<select id="selectByRole" resultType="tblBaseMenuEntity" parameterType="String">
+		select 
+			*
+		from 
+			TBL_BASE_MENU
+		where
+			basemenuid in (select basemenuid from TBL_BASE_ROLE_MENU_MAPPING where baseroleid in 
+			<foreach collection="list" item="baseroleid" index="index" open="(" close=")" separator=",">
+		      #{baseroleid}
+			</foreach>
+			) 
+			and
+            	basemenupid = #{basemenupid} 
+            and 
+            	state = 1
+		order by sequ ASC		
+	</select>
+	
+	<select id="selectRoleByUserId" resultType="String" parameterType="String">
+        select 
+            baseroleid
+        from 
+           TBL_BASE_USER_ROLE_MAPPING 
+        where 
+            baseuserid = #{baseuserid}
+    </select>
+    
+    <select id="selectUrlByRoleId" resultType="string" parameterType="string">
+		select 
+			m.src
+		from 
+			TBL_BASE_MENU m, 
+			TBL_BASE_ROLE_MENU_MAPPING t
+		where 
+			m.basemenuid = t.basemenuid
+			and t.baseroleid = #{baseroleid}
+			and m.state = 1
+	</select>
+	
+	<select id="selectAllUrl" resultType="tblBaseMenuEntity" >
+		select 
+			t.src
+		from 
+			TBL_BASE_MENU t 
+		where 
+			t.src !=  '-'
+	</select>
+	
+	<select id="selectByUrl" resultType="tblBaseMenuEntity" parameterType="string">
+		select 
+			*
+		from 
+			TBL_BASE_MENU
+		where 
+			src = #{src}
+	</select>
+	
+	<select id="selectByKey" resultType="tblBaseMenuEntity" parameterType="string">
+		select 
+			*
+		from 
+			TBL_BASE_MENU 
+		where 
+			basemenuid = #{basemenuid}
+	</select>
+	
+	<select id="selectRoleByUrl" resultType="string" parameterType="string">
+		select 
+			m.baseroleid
+		from 
+			TBL_BASE_MENU t, 
+			TBL_BASE_ROLE_MENU_MAPPING m
+		where 
+			t.basemenuid = m.basemenuid
+			and t.src = #{src}
+	</select>
+
+	<select id="getCount" resultType="int" parameterType="tblBaseMenuEntity">
+		select 
+			count(t.basemenuid)
+		from 
+			TBL_BASE_MENU t
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseMenuEntity" parameterType="tblBaseMenuEntity">
+		select 
+			t.basemenuid,t.basemenupid,t.icon,t.menuname,t.sequ,t.src,t.state,t.updatetime,t.updateuserid 
+		from 
+			TBL_BASE_MENU t
+	</select>
+	
+		
+	<select id="selectroleOfMenu" resultType="tblBaseMenuEntity">
+		select 
+			basemenuid as id,menuname,basemenupid as pid,sequ,state,updatetime,src
+		from 
+			TBL_BASE_MENU
+        where 
+            basemenuid in (select basemenuid from TBL_BASE_ROLE_MENU_MAPPING rm where rm.baseroleid = #{roleid})
+            
+         order by sequ ASC	
+    </select>
+
+</mapper>

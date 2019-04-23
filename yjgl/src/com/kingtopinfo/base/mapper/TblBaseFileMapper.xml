@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseFileMapper
+	@Description TBL_BASE_FILE表映射配置文件
+	@author cyf
+	@date 2017-08-18 14:04:49
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseFileMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblBaseFileEntity">
+		select 
+			count(t.fileid)
+		from 
+			TBL_BASE_FILE t
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseFileEntity" parameterType="tblBaseFileEntity">
+		select 
+			t.cjr,t.extend,t.fileid,t.filename,t.filepath,t.filesize,t.gxsj,t.operaid,t.operatype,t.remark,t.state 
+		from 
+			TBL_BASE_FILE t
+	</select>
+	
+	<select id="select" resultType="tblBaseFileEntity">
+		select 
+			t.cjr,t.extend,t.fileid,t.filename,t.filepath,t.filesize,t.gxsj,t.operaid,t.operatype,t.remark,t.state 
+		from 
+			TBL_BASE_FILE t
+	</select>
+	
+	<select id="getByPkey" resultType="tblBaseFileEntity" parameterType="String">
+		select 
+			t.cjr,t.extend,t.fileid,t.filename,t.filepath,t.filesize,t.gxsj,t.operaid,t.operatype,t.remark,t.state 
+		from 
+			TBL_BASE_FILE t
+		where 
+			t.fileid = #{fileid}
+	</select>
+	<select id="getByFilepath" resultType="tblBaseFileEntity" parameterType="String">
+		select 
+			t.cjr,t.extend,t.fileid,t.filename,t.filepath,t.filesize,t.gxsj,t.operaid,t.operatype,t.remark,t.state 
+		from 
+			TBL_BASE_FILE t
+		where 
+			t.filepath = #{filepath}
+	</select>
+	
+	<select id="getByOperaid" resultType="tblBaseFileEntity" parameterType="tblBaseFileEntity">
+		select 
+			t.cjr,t.extend,t.fileid,t.filename,t.filepath,t.filesize,t.gxsj,t.operaid,t.operatype,t.remark,t.state 
+		from 
+			TBL_BASE_FILE t
+		where 
+			t.operaid = #{operaid}
+			<if test="operatype != null and operatype != ''">
+				and t.operatype = #{operatype}
+			</if>
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseFileEntity">
+		insert into TBL_BASE_FILE(
+			cjr,extend,fileid,filename,filepath,filesize,gxsj,operaid,operatype,remark,state
+		)values(
+			#{cjr,jdbcType=VARCHAR},#{extend,jdbcType=VARCHAR},#{fileid,jdbcType=VARCHAR},#{filename,jdbcType=VARCHAR},#{filepath,jdbcType=VARCHAR},#{filesize,jdbcType=INTEGER},#{gxsj,jdbcType=TIME},#{operaid,jdbcType=VARCHAR},#{operatype,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{state,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="saveOrupdatelogo" parameterType="tblBaseFileEntity">
+		 <selectKey keyProperty="count" resultType="int" order="BEFORE">
+		    select count(*) from TBL_BASE_FILE where operaid = #{operaid}
+		  </selectKey>
+		  <if test="count > 0">
+		   update TBL_BASE_FILE
+			set 
+				cjr = #{cjr,jdbcType=VARCHAR}, extend = #{extend,jdbcType=VARCHAR}, filename = #{filename,jdbcType=VARCHAR}, filepath = #{filepath,jdbcType=VARCHAR}, filesize = #{filesize,jdbcType=INTEGER}, gxsj = #{gxsj,jdbcType=TIME}, operaid = #{operaid,jdbcType=VARCHAR}, operatype = #{operatype,jdbcType=VARCHAR}, remark = #{remark,jdbcType=VARCHAR}, state = #{state,jdbcType=INTEGER} 
+			where 
+				operaid = #{operaid}
+		  </if>
+		  <if test="count==0">
+		    insert into TBL_BASE_FILE(
+				cjr,extend,fileid,filename,filepath,filesize,gxsj,operaid,operatype,remark,state
+			)values(
+				#{cjr,jdbcType=VARCHAR},#{extend,jdbcType=VARCHAR},#{fileid,jdbcType=VARCHAR},#{filename,jdbcType=VARCHAR},#{filepath,jdbcType=VARCHAR},#{filesize,jdbcType=INTEGER},#{gxsj,jdbcType=TIME},#{operaid,jdbcType=VARCHAR},#{operatype,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{state,jdbcType=INTEGER}
+			)
+		  </if>
+	</insert>
+	
+	<update id="update" parameterType="tblBaseFileEntity">
+		update TBL_BASE_FILE
+		set 
+			cjr = #{cjr,jdbcType=VARCHAR}, extend = #{extend,jdbcType=VARCHAR}, filename = #{filename,jdbcType=VARCHAR}, filepath = #{filepath,jdbcType=VARCHAR}, filesize = #{filesize,jdbcType=INTEGER}, gxsj = #{gxsj,jdbcType=TIME}, operaid = #{operaid,jdbcType=VARCHAR}, operatype = #{operatype,jdbcType=VARCHAR}, remark = #{remark,jdbcType=VARCHAR}, state = #{state,jdbcType=INTEGER} 
+		where 
+			fileid = #{fileid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_BASE_FILE where fileid = #{fileid}
+	</delete>
+	
+	<delete id="deleteFilepath" parameterType="String">
+		delete from TBL_BASE_FILE where filepath = #{filepath}
+	</delete>
+	
+	<select id="selectByOperatypeAndOperaid" resultType="tblBaseFileEntity" parameterType="tblBaseFileEntity">
+		select 
+			cjr,extend,fileid,filename,filepath,filesize,gxsj,operaid,operatype,remark,state 
+		from 
+			TBL_BASE_FILE 
+		where 
+			operatype = #{operatype} and operaid = #{operaid}
+	</select>
+	
+</mapper>

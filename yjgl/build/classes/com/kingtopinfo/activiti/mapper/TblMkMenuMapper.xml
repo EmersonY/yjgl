@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblMkMenuMapper
+	@Description TBL_MK_MENU表映射配置文件
+	@author cyf
+	@date 2017-09-18 09:25:29
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.activiti.mapper.TblMkMenuMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblMkMenuEntity">
+		select 
+			count(t.id)
+		from 
+			TBL_MK_MENU t
+	</select>
+	
+	<select id="selectPagination" resultType="tblMkMenuEntity" parameterType="tblMkMenuEntity">
+		select 
+			t.id,t.name,t.pid,t.sequ,t.state,t.type,t.updatetime,t.url,t.ywlxsx 
+		from 
+			TBL_MK_MENU t
+	</select>
+	
+	<select id="select" resultType="tblMkMenuEntity">
+		select 
+			t.id,t.name,t.pid,t.sequ,t.state,t.type,t.updatetime,t.url,t.ywlxsx 
+		from 
+			TBL_MK_MENU t
+		where t.type = 'MENU'
+			order by t.sequ ASC
+	</select>
+	
+	<select id="getByPkey" resultType="tblMkMenuEntity" parameterType="String">
+		select 
+			t.id,t.name,t.pid,t.sequ,t.state,t.type,t.updatetime,t.url,t.ywlxsx 
+		from 
+			TBL_MK_MENU t
+		where 
+			t.id = #{id}
+	</select>
+	
+	<insert id="insert" parameterType="tblMkMenuEntity">
+		insert into TBL_MK_MENU(
+			id,name,pid,sequ,state,type,updatetime,url,ywlxsx
+		)values(
+			#{id,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},#{sequ,jdbcType=INTEGER},#{state,jdbcType=INTEGER},#{type,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{url,jdbcType=VARCHAR},#{ywlxsx,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblMkMenuEntity">
+		update TBL_MK_MENU
+		set 
+			name = #{name,jdbcType=VARCHAR}, pid = #{pid,jdbcType=VARCHAR}, sequ = #{sequ,jdbcType=INTEGER}, state = #{state,jdbcType=INTEGER}, type = #{type,jdbcType=VARCHAR}, updatetime = #{updatetime,jdbcType=TIME}, url = #{url,jdbcType=VARCHAR}, ywlxsx = #{ywlxsx,jdbcType=VARCHAR} 
+		where 
+			id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_MK_MENU where id = #{id}
+	</delete>
+	
+	<select id="selectMaxSequ" resultType="Integer">
+		select 
+			 nvl(max(sequ),0)
+		from 
+			TBL_MK_MENU 
+		where type = 'MENU'
+	</select>
+	
+	<select id="selectByPid" resultType="tblMkMenuEntity" parameterType="String">
+        select 
+           *
+        from 
+            TBL_MK_MENU
+        where 
+            pid = #{pid}  
+            and type = 'MENU'
+        order by sequ ASC      
+    </select>
+	
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseSerialnumberMapper
+	@Description TBL_BASE_SERIALNUMBER表映射配置文件
+	@author cyf
+	@date 2017-09-11 11:28:17
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseSerialnumberMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblBaseSerialnumberEntity">
+		select 
+			count(t.serialnumberid)
+		from 
+			TBL_BASE_SERIALNUMBER t
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseSerialnumberEntity" parameterType="tblBaseSerialnumberEntity">
+		select 
+			t.datestr,t.seq,t.serialnumberid,t.type 
+		from 
+			TBL_BASE_SERIALNUMBER t
+	</select>
+	
+	<select id="select" resultType="tblBaseSerialnumberEntity">
+		select 
+			t.datestr,t.seq,t.serialnumberid,t.type 
+		from 
+			TBL_BASE_SERIALNUMBER t
+	</select>
+	
+	<select id="getByPkey" resultType="tblBaseSerialnumberEntity" parameterType="String">
+		select 
+			t.datestr,t.seq,t.serialnumberid,t.type 
+		from 
+			TBL_BASE_SERIALNUMBER t
+		where 
+			t.serialnumberid = #{serialnumberid}
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseSerialnumberEntity">
+		insert into TBL_BASE_SERIALNUMBER(
+			datestr,seq,serialnumberid,type
+		)values(
+			#{datestr,jdbcType=VARCHAR},#{seq,jdbcType=VARCHAR},#{serialnumberid,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblBaseSerialnumberEntity">
+		update TBL_BASE_SERIALNUMBER
+		set 
+			datestr = #{datestr,jdbcType=VARCHAR}, seq = #{seq,jdbcType=VARCHAR}, type = #{type,jdbcType=VARCHAR} 
+		where 
+			serialnumberid = #{serialnumberid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_BASE_SERIALNUMBER where serialnumberid = #{serialnumberid}
+	</delete>
+	
+	<select id="findMaxSeqByDateStr" resultType="String" parameterType="String">
+		select 
+			max(to_number(t.seq))
+		from 
+			TBL_BASE_SERIALNUMBER t
+		where 
+			t.datestr = #{datestr} and t.type = '1'
+	</select>
+	
+	<select id="findMaxSeqByType" resultType="String" parameterType="String">
+		select 
+			max(to_number(t.seq))
+		from 
+			TBL_BASE_SERIALNUMBER t
+		where 
+			t.type = #{type}
+	</select>
+	
+	
+</mapper>

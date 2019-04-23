@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseResourceMapper
+	@Description TBL_BASE_RESOURCE表映射配置文件
+	@author cyf
+	@date 2017-07-27 14:45:09
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseResourceMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblBaseResourceEntity">
+		select 
+			count(t.baseresourceid)
+		from 
+			TBL_BASE_RESOURCE t
+		<where>
+			<if test="null != name and '' != name">
+				and name like '%'||#{name}||'%'
+			</if>
+			<if test="null != resourceno and '' != resourceno">
+				and resourceno like '%'||#{resourceno}||'%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseResourceEntity" parameterType="tblBaseResourceEntity">
+		select 
+			t.basemenuid,t.baseresourceid,t.menuname,t.name,t.remark,t.resourceno,t.status,t.updater 
+		from 
+			TBL_BASE_RESOURCE t
+		<where>
+			<if test="null != name and '' != name">
+				and name like '%'||#{name}||'%'
+			</if>
+			<if test="null != resourceno and '' != resourceno">
+				and resourceno like '%'||#{resourceno}||'%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="select" resultType="tblBaseResourceEntity">
+		select 
+			t.basemenuid,t.baseresourceid,t.menuname,t.name,t.remark,t.resourceno,t.status,t.updater
+		from 
+			TBL_BASE_RESOURCE t
+	</select>
+	
+	<select id="getByPkey" resultType="tblBaseResourceEntity" parameterType="String">
+		select 
+			t.basemenuid,t.baseresourceid,t.menuname,t.name,t.remark,t.resourceno,t.status,t.updater
+		from 
+			TBL_BASE_RESOURCE t
+		where 
+			t.baseresourceid = #{baseresourceid}
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseResourceEntity">
+		insert into TBL_BASE_RESOURCE(
+			basemenuid,baseresourceid,menuname,name,remark,resourceno,status,updater
+		)values(
+			#{basemenuid,jdbcType=VARCHAR},#{baseresourceid,jdbcType=VARCHAR},#{menuname,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{resourceno,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{updater,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblBaseResourceEntity">
+		update TBL_BASE_RESOURCE
+		set 
+			basemenuid = #{basemenuid,jdbcType=VARCHAR}, menuname = #{menuname,jdbcType=VARCHAR}, name = #{name,jdbcType=VARCHAR}, remark = #{remark,jdbcType=VARCHAR}, resourceno = #{resourceno,jdbcType=VARCHAR}, status = #{status,jdbcType=INTEGER}, updater = #{updater,jdbcType=VARCHAR} 
+		where 
+			baseresourceid = #{baseresourceid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_BASE_RESOURCE where baseresourceid = #{baseresourceid}
+	</delete>
+	
+	<select id="selectInRoleId" resultType="tblBaseResourceEntity" parameterType="String">
+		select
+			t.basemenuid,t.baseresourceid,t.menuname,t.name,t.remark,t.resourceno,t.status,t.updater 
+		from 
+			TBL_BASE_RESOURCE t
+		where 
+			t.status = 1 
+			and 
+			BASERESOURCEID 
+			in (
+				select distinct(BASERESOURCEID) from TBL_BASE_ROLE_RESOURCE_MAPPING where BASEROLEID in 
+				<foreach collection="list" item="baseresourceid" index="index" open="(" close=")" separator=",">
+			      #{baseresourceid}
+				</foreach>
+			)
+	</select>
+	
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseRoleMapper
+	@Description TBL_BASE_ROLE表映射配置文件
+	@author cyf
+	@date 2017-06-05 14:21:42
+	@version 1.0
+	@remark create by generator
+	-->
+	
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseRoleMapper">
+	
+	<sql id="columns">
+		t.updateuserid,t.updatetime,t.baserolepid,t.rolename,t.baseroleid,t.baseroletype,t.state,t.baseroleid,t.baseroleid as id,t.rolename,t.baserolepid
+	</sql>	
+
+	<select id="getCount" resultType="int" parameterType="tblBaseRoleEntity">
+		select 
+			count(t.baseroleid)
+		from 
+			TBL_BASE_ROLE t
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseRoleEntity" parameterType="tblBaseRoleEntity">
+		select 
+			t.baseroleid,t.baserolepid,t.rolename,t.state,t.updatetime,t.updateuserid 
+		from 
+			TBL_BASE_ROLE t
+	</select>
+
+	<select id="selectRoleTree" resultType="tblBaseRoleEntity">
+		select 
+			<include refid="columns"></include>
+		from 
+			TBL_BASE_ROLE t
+		order by 
+			t.rolename desc
+	</select>
+	
+	<select id="getByPkey" resultType="tblBaseRoleEntity" parameterType="String">
+		select 
+            <include refid="columns"></include>
+		from 
+			TBL_BASE_ROLE t
+		where 
+			t.baseroleid = #{baseroleid}
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseRoleEntity">
+		insert into TBL_BASE_ROLE(
+			baseroleid,baserolemenumid,baserolepid,baseroleresourceid,baseroletype,baseuserrolemid,rolename,state,updatetime,updateuserid
+		)values(
+			#{baseroleid,jdbcType=VARCHAR},#{baserolemenumid,jdbcType=VARCHAR},#{baserolepid,jdbcType=VARCHAR},#{baseroleresourceid,jdbcType=VARCHAR},#{baseroletype,jdbcType=VARCHAR},#{baseuserrolemid,jdbcType=VARCHAR},#{rolename,jdbcType=VARCHAR},#{state,jdbcType=INTEGER},#{updatetime,jdbcType=TIME},#{updateuserid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_BASE_ROLE where baseroleid = #{baseroleid}
+	</delete>
+	
+	<update id="update" parameterType="tblBaseRoleEntity">
+		update TBL_BASE_ROLE
+		set 
+			baserolemenumid = #{baserolemenumid,jdbcType=VARCHAR}, baserolepid = #{baserolepid,jdbcType=VARCHAR}, baseroleresourceid = #{baseroleresourceid,jdbcType=VARCHAR}, baseroletype = #{baseroletype,jdbcType=VARCHAR}, baseuserrolemid = #{baseuserrolemid,jdbcType=VARCHAR}, rolename = #{rolename,jdbcType=VARCHAR}, state = #{state,jdbcType=INTEGER}, updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR} 
+		where 
+			baseroleid = #{baseroleid}
+	</update>
+	
+	<select id="selectByPid" resultType="tblBaseRoleEntity" parameterType="String">
+        select 
+			<include refid="columns"></include>
+        from 
+            TBL_BASE_ROLE t
+        where 
+            t.baserolepid = #{baseroleid}
+    </select>
+    
+    <update id="move" parameterType="tblBaseRoleEntity">
+        update  
+        	TBL_BASE_ROLE t
+        set 
+            t.baserolepid = #{baserolepid,jdbcType=VARCHAR}
+        where 
+            t.baseroleid = #{baseroleid}
+    </update>
+    
+    <select id="selectAddedMenuRoles" resultType="tblBaseRoleEntity">
+        select 
+            <include refid="columns"></include>
+        from 
+            TBL_BASE_ROLE t
+        where 
+            t.baseroleid in (select baseroleid from TBL_BASE_ROLE_MENU_MAPPING rm where rm.basemenuid = #{basemenuid})
+    </select>
+    
+    <select id="select" resultType="tblBaseRoleEntity">
+		select 
+			t.baseroleid,t.baserolepid,t.rolename,t.state,t.updatetime,t.updateuserid,t.baseroleid as id,t.baserolepid as pid
+		from 
+			TBL_BASE_ROLE t
+		order by t.rolename
+	</select>
+	
+	<select id="selectMKMenuRoles" resultType="tblBaseRoleEntity">
+        select 
+            baseroleid as id,rolename,baserolepid as pid,updatetime 
+        from 
+            TBL_BASE_ROLE 
+        where 
+            baseroleid in (select roleid from TBL_MK_MENU_MAPPING rm where rm.menuid = #{menuid})
+    </select>
+    
+    <select id="selectSuperUserRoleid" resultType="String">
+   		select baseroleid from TBL_BASE_ROLE where rolename = '井盖办'
+    </select>
+    
+    <select id="selectRoleidByUserid" resultType="tblBaseRoleEntity" parameterType="String">
+		select 
+			BASEROLEID, ROLENAME
+		from 
+			TBL_BASE_ROLE 
+		where 
+			rolename = '现场施工巡查员' 
+			and baserolepid = (
+				select 
+					baserolepid 
+				from TBL_BASE_USER_ROLE_MAPPING t1
+				left join TBL_BASE_ROLE t2 
+				on t1.BASEROLEID = t2.BASEROLEID
+				where 
+				t1.BASEUSERID = #{baseuserid}
+			)
+	</select>
+	
+	<select id="selectSecondRole" resultType="tblBaseRoleEntity" parameterType="tblBaseRoleEntity">
+   		select 
+   			<include refid="columns"></include>
+   		from 
+   			tbl_base_role t
+   		where 
+   			t.BASEROLEPID = (select baseroleid from tbl_base_role where ROLENAME = '权属单位')
+  			<if test="null != baseroletype and '' != baseroletype">
+				and t.baseroletype like '%'||#{baseroletype}||'%'
+			</if>
+    </select>
+    
+    <select id="selectRoleByUserid" resultType="tblBaseRoleEntity" parameterType="String">
+        select 
+			t2.*
+		from TBL_BASE_USER_ROLE_MAPPING t1
+			left join TBL_BASE_ROLE t2 
+			on t1.BASEROLEID = t2.BASEROLEID
+		where 
+			t1.BASEUSERID = #{baseuserid}
+	</select>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgAppversionMapper
+	@Description YJG_APPVERSION表映射配置文件
+	@author cyf
+	@date 2018-01-02 09:51:19
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.app.mapper.YjgAppversionMapper">
+
+	<sql id="all">t.id,t.sfqzgx,t.updateperson,t.versioncode,t.versionname, to_char(t.updatetime,'yyyy-mm-dd hh24:mi:ss') as updatetime</sql>
+	<select id="getCount" resultType="int" parameterType="yjgAppversionEntity">
+		select 
+			count(t.id)
+		from 
+			YJG_APPVERSION t
+	</select>
+	
+	<select id="selectPagination" resultType="yjgAppversionEntity" parameterType="yjgAppversionEntity">
+		select 
+			<include refid="all"></include>
+		from 
+			YJG_APPVERSION t
+			order by t.updatetime desc
+	</select>
+	
+	<select id="select" resultType="yjgAppversionEntity">
+		select 
+			<include refid="all"></include>
+		from 
+			YJG_APPVERSION t
+		order by t.versioncode desc
+	</select>
+	
+	<select id="getByPkey" resultType="yjgAppversionEntity" parameterType="String">
+		select 
+			t.id,t.sfqzgx,t.updateperson,t.updatetime,t.versioncode,t.versionname 
+		from 
+			YJG_APPVERSION t
+		where 
+			t.id = #{id}
+	</select>
+	
+	<insert id="insert" parameterType="yjgAppversionEntity">
+		insert into YJG_APPVERSION(
+			id,sfqzgx,updateperson,updatetime,versioncode,versionname
+		)values(
+			#{id,jdbcType=VARCHAR},#{sfqzgx,jdbcType=INTEGER},#{updateperson,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{versioncode,jdbcType=VARCHAR},#{versionname,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgAppversionEntity">
+		update YJG_APPVERSION
+		set 
+			sfqzgx = #{sfqzgx,jdbcType=INTEGER}, updateperson = #{updateperson,jdbcType=VARCHAR}, updatetime = #{updatetime,jdbcType=TIME}, versioncode = #{versioncode,jdbcType=VARCHAR}, versionname = #{versionname,jdbcType=VARCHAR} 
+		where 
+			id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_APPVERSION where id = #{id}
+	</delete>
+	
+	<select id="selectMaxVersioncode" resultType="Integer">
+		select NVL(MAX(versioncode) ,0) AS versioncode from YJG_APPVERSION
+	</select>
+</mapper>

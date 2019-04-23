@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseUserRoleMappingMapper
+	@Description TBL_BASE_USER_ROLE_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-06-05 14:25:06
+	@version 1.0
+	@remark create by generator
+	-->
+	
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseUserRoleMappingMapper">
+	
+	<insert id="insert" parameterType="tblBaseUserRoleMappingEntity">
+		insert into TBL_BASE_USER_ROLE_MAPPING(
+			updateuserid,updatetime,baseroleid,baseuserid,baseuserrolemid
+		)values(
+			#{updateuserid,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{baseroleid,jdbcType=VARCHAR},#{baseuserid,jdbcType=VARCHAR},#{baseuserrolemid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<delete id="deleteByRoidAndUserid" parameterType="tblBaseUserRoleMappingEntity">
+		delete FROM TBL_BASE_USER_ROLE_MAPPING where baseuserid =  #{baseuserid, jdbcType=VARCHAR} and baseroleid = #{baseroleid, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteByUserid" parameterType="String">
+		delete FROM TBL_BASE_USER_ROLE_MAPPING where baseuserid = #{baseuserid, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteByRoleid" parameterType="String">
+		delete FROM TBL_BASE_USER_ROLE_MAPPING where baseroleid = #{baseroleid, jdbcType=VARCHAR}
+	</delete>
+	
+    <select id="selectAddedUsersByRoleid" resultType="tblBaseUserEntity" parameterType="TblFlowTaskRoleMappingEntity">
+		select 
+			u.baseuserid,
+			u.username
+		from 
+			TBL_BASE_USER_ROLE_MAPPING t,TBL_BASE_USER u		
+		where 
+			u.baseuserid = t.baseuserid and u.state = 1 and t.baseroleid in 
+			(
+		        select 
+	            	roleid
+	        	from 
+	            	TBL_FLOW_TASK_ROLE_MAPPING 
+	        	where 
+	            	processid = #{processid,jdbcType=VARCHAR} and taskid = #{taskid,jdbcType=VARCHAR}
+			) 
+			<if test="pbaseuserid  != null and pbaseuserid != '' ">
+				and u.pbaseuserid = #{pbaseuserid,jdbcType=VARCHAR}
+			</if>
+			<if test="username  != null and username != '' ">
+				and u.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+			</if>
+	</select>
+	
+	<select id="selectAddedPusersByRoleid" resultType="tblBaseUserEntity" parameterType="TblBaseUserRoleMappingEntity">
+		select 
+			u.baseuserid,
+			u.username
+		from 
+			TBL_BASE_USER_ROLE_MAPPING t,TBL_BASE_USER u		
+		where 
+			u.baseuserid = t.baseuserid and u.state = 1 and t.baseroleid in 
+			(
+		        select 
+	            	roleid
+	        	from 
+	            	TBL_FLOW_TASK_ROLE_MAPPING 
+	        	where 
+	            	processid = #{processid,jdbcType=VARCHAR} and taskid = #{taskid,jdbcType=VARCHAR}
+			) 
+			<if test="pbaseuserid  != null and pbaseuserid != '' ">
+				and u.pbaseuserid = #{pbaseuserid,jdbcType=VARCHAR}
+			</if>
+			<if test="username  != null and username != '' ">
+				and u.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+			</if>
+	</select>
+
+	
+	<select id="selectByProcessidAndTaskid" resultType="tblBaseUserEntity" parameterType="tblBaseUserRoleMappingEntity">
+		select t2.BASEUSERID 
+		from 
+			TBL_FLOW_TASK_ROLE_MAPPING t1
+		left join TBL_BASE_USER_ROLE_MAPPING t2 on t1.ROLEID = t2.BASEROLEID
+		where
+ 			t1.TASKID = #{taskid, jdbcType=VARCHAR} and t1.PROCESSID = #{processid, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectUnAddUsersPagination" resultType="TblBaseUserEntity" parameterType="TblBaseUserEntity">
+    	select
+			t.baseuserid,t.account,t.username
+		from
+			TBL_BASE_USER t
+		where
+			t.baseuserid not in (select  m.baseuserid from TBL_BASE_USER_ROLE_MAPPING m where m.baseroleid = #{baseroleid,jdbcType=VARCHAR})
+			<if test="account  != null and account != '' ">
+				and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="username != null and username !='' ">
+				and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+            </if>
+    </select>
+    
+    <select id="selectUnAddUsersCount" resultType="int" parameterType="tblBaseUserRoleMappingEntity">
+		select 
+			count(t.baseuserid)
+		from 
+			TBL_BASE_USER t
+		where
+			t.baseuserid not in (select  m.baseuserid from TBL_BASE_USER_ROLE_MAPPING m where m.baseroleid = #{baseroleid,jdbcType=VARCHAR})
+			<if test="account  != null and account != '' ">
+				and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="username != null and username !='' ">
+				and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+            </if>
+	</select>
+	
+    <select id="selectSuperUser" resultType="TblBaseUserEntity">
+		select t1.* from TBL_BASE_USER t1 
+		left join TBL_BASE_USER_ROLE_MAPPING t2 on t1.BASEUSERID = t2.BASEUSERID
+		left join TBL_BASE_ROLE t3 on t2.BASEROLEID = t3.BASEROLEID
+		where t1.STATE = 1 and t3.ROLENAME = '井盖办'
+		<if test="username != null and username !='' ">
+			and t1.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+        </if>
+	</select>
+	
+</mapper>

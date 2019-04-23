@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseUserMapper">
+	
+	<sql id="all">t.account,t.baseuserid,t.password,t.pbaseuserid,t.state,t.updatetime,t.updateuserid,t.username,t.islogin</sql>
+	
+	<select id="count" resultType="Integer">
+		select 
+			count(baseuserid)
+		from 
+			TBL_BASE_USER
+		<where>
+			<if test="null != account and '' != account">
+				and account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and username like '%'||#{username}||'%'
+			</if>
+			<if test="null != pbaseuserid and '' != pbaseuserid">
+				and pbaseuserid = #{pbaseuserid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="unsecondCount" resultType="Integer">
+		select 
+			count(baseuserid)
+		from 
+			TBL_BASE_USER
+		<where>
+			<if test="null != account and '' != account">
+				and account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and username like '%'||#{username}||'%'
+			</if>
+			<if test="null != pbaseuserid and '' != pbaseuserid">
+				and (pbaseuserid != #{pbaseuserid}  or pbaseuserid is null)
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseUserEntity">
+		select 
+			baseuserid,
+			account,
+			password,
+			username,
+			state,
+			updateuserid,
+			updatetime,
+			pbaseuserid
+		from 
+			TBL_BASE_USER
+		<where>
+			<if test="null != account and '' != account">
+				and account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and username like '%'||#{username}||'%'
+			</if>
+			<if test="null != pbaseuserid and '' != pbaseuserid">
+				and pbaseuserid = #{pbaseuserid}
+			</if>
+		</where>
+		order by account ASC	
+	</select>
+	
+	<select id="selectByRoleidPagination" resultType="tblBaseUserEntity">
+		select 
+			baseuserid,account,password,username,state,updateuserid,updatetime,pbaseuserid
+		from 
+			TBL_BASE_USER 
+		<where>
+			<if test="null != baseroleid and '' != baseroleid">
+				PBASEUSERID
+				in (
+					select BASEUSERID from TBL_BASE_USER_ROLE_MAPPING where BASEROLEID = #{baseroleid}
+				)
+			</if>
+		</where>
+		order by account ASC	
+	</select>
+	
+	<select id="getCountByRoleid" resultType="int">
+		select 
+			count(baseuserid)
+		from 
+			TBL_BASE_USER 
+		<where>
+			<if test="null != baseroleid and '' != baseroleid">
+				PBASEUSERID
+				in (
+					select BASEUSERID from TBL_BASE_USER_ROLE_MAPPING where BASEROLEID = #{baseroleid}
+				)
+			</if>
+		</where>
+		order by account ASC	
+	</select>
+	
+	<select id="selectUnsecondPagination" resultType="tblBaseUserEntity">
+		select 
+			baseuserid,
+			account,
+			password,
+			username,
+			state,
+			updateuserid,
+			updatetime,
+			pbaseuserid
+		from 
+			TBL_BASE_USER
+		<where>
+			<if test="null != account and '' != account">
+				and account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and username like '%'||#{username}||'%'
+			</if>
+			<if test="null != pbaseuserid and '' != pbaseuserid">
+				and (pbaseuserid != #{pbaseuserid}  or pbaseuserid is null)
+			</if>
+		</where>
+		order by username DESC	
+	</select>
+	
+	<select id="selectByuserIdPagination" resultType="tblBaseUserEntity" parameterType="tblBaseUserEntity">
+		select 
+			t.account,t.baseuserid,t.password,t.pbaseuserid,t.state,t.updatetime,t.updateuserid,t.username		
+		from 
+			TBL_BASE_USER t
+		where 
+			t.pbaseuserid = #{pbaseuserid}
+			<if test="null != account and '' != account">
+				and t.account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and t.username like '%'||#{username}||'%'
+			</if>
+		order by t.updatetime DESC	
+	</select>
+	
+	<select id="selectByUnUserIdPagination" resultType="tblBaseUserEntity" parameterType="tblBaseUserEntity">
+		select 
+			t.account,t.baseuserid,t.password,t.pbaseuserid,t.state,t.updatetime,t.updateuserid,t.username		
+		from 
+			TBL_BASE_USER t
+		where 
+			(t.pbaseuserid != #{pbaseuserid} or t.pbaseuserid is null)
+			<if test="null != account and '' != account">
+				and t.account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and t.username like '%'||#{username}||'%'
+			</if>
+		order by t.updatetime DESC	
+	</select>
+	
+	<select id="getCountByuserId" resultType="Integer" parameterType="tblBaseUserEntity">
+		select 
+			count(t.baseuserid)
+		from 
+			TBL_BASE_USER t
+		where 
+			t.pbaseuserid = #{pbaseuserid}
+			<if test="null != account and '' != account">
+				and t.account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and t.username like '%'||#{username}||'%'
+			</if>
+	</select>
+	
+	<select id="getCountByUnUserId" resultType="Integer" parameterType="tblBaseUserEntity">
+		select 
+			count(t.baseuserid)
+		from 
+			TBL_BASE_USER t
+		where 
+			(t.pbaseuserid != #{pbaseuserid} or t.pbaseuserid is null)
+			<if test="null != account and '' != account">
+				and t.account like '%'||#{account}||'%'
+			</if>
+			<if test="null != username and '' != username">
+				and t.username like '%'||#{username}||'%'
+			</if>
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseUserEntity">
+		insert into TBL_BASE_USER(
+			account,baseuserid,islogin,password,pbaseuserid,state,updatetime,updateuserid,username
+		)values(
+			#{account,jdbcType=VARCHAR},#{baseuserid,jdbcType=VARCHAR},#{islogin,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{pbaseuserid,jdbcType=VARCHAR},#{state,jdbcType=INTEGER},#{updatetime,jdbcType=TIME},#{updateuserid,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblBaseUserEntity">
+		update TBL_BASE_USER
+		set 
+			account = #{account,jdbcType=VARCHAR},islogin = #{islogin,jdbcType=VARCHAR}, password = #{password,jdbcType=VARCHAR}, pbaseuserid = #{pbaseuserid,jdbcType=VARCHAR}, state = #{state,jdbcType=INTEGER}, updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR}, username = #{username,jdbcType=VARCHAR} 
+		where 
+			baseuserid = #{baseuserid}
+	</update>
+	
+	<select id="selectByAccount" resultType="tblBaseUserEntity" parameterType="String">
+		select 
+
+			t1.phone,t.updatetime,t.updateuserid,t.state,t.username,t.password,t.account,t.baseuserid,t.password,t.pbaseuserid,t.state,t.updatetime,t.updateuserid,t.username,t2.filepath as filepath
+		from 
+			TBL_BASE_USER t, tbl_base_user_ext t1,tbl_base_file t2
+		where 
+			t.account = #{account}
+			and
+			  t2.operaid(+) = t.baseuserid
+			and t.baseuserid = t1.baseuserid(+)
+			and t.state = 1
+	</select>
+	<select id="selectByAccountapp" resultType="tblBaseUserEntity" parameterType="String">
+	select 
+    (select p.rolename from (select t2.rolename as rolename,t3.baseuserid as baseuserid from tbl_flow_role t2,tbl_flow_user_role_mapping t3 where t3.roleid = t2.flowroleid) p  where p.baseuserid = t.baseuserid) as rolename,
+    t1.phone,t.updatetime,t.updateuserid,t.state,t.username,t.password,t.account,t.baseuserid,t.password,t.pbaseuserid,t.state,t.updatetime,t.updateuserid,t.username    
+
+    from 
+      TBL_BASE_USER t, tbl_base_user_ext t1
+    where 
+      t.account =  #{account}
+      and t.state = 1
+      and t.baseuserid = t1.baseuserid(+)
+      </select>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_BASE_USER where baseuserid = #{baseuserid}
+	</delete>
+	
+	<select id="getByPkey" resultType="tblBaseUserEntity" parameterType="String">
+		select 
+			<include refid="all"></include>
+		from 
+			TBL_BASE_USER t
+		where 
+			t.baseuserid = #{baseuserid}
+	</select>
+	
+	<select id="getByPbaseuserid" resultType="tblBaseUserEntity" parameterType="String">
+		select 
+			t.account,t.baseuserid,t.password,t.pbaseuserid,t.state,t.updatetime,t.updateuserid,t.username
+		from 
+			TBL_BASE_USER t
+		where 
+			t.pbaseuserid = #{pbaseuserid}
+	</select>
+	
+	<update id="updatePassword" parameterType="tblBaseUserEntity">
+		update TBL_BASE_USER t
+		set 
+			t.password = #{password, jdbcType=VARCHAR}
+		where 
+			t.baseuserid = #{baseuserid}
+	</update>
+	
+    <select id="selectUnCountByRoleId"  resultType="Integer"  parameterType="TblBaseUserEntity">
+        select 
+			count(*) 
+		from
+			TBL_BASE_USER t
+		where
+			t.baseuserid not in (select  m.baseuserid from TBL_BASE_USER_ROLE_MAPPING m where m.baseroleid = #{baseroleid,jdbcType=VARCHAR})
+			and t.state = 1
+			<if test="account  != null and account != '' ">
+				and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="username != null and username !='' ">
+				and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+            </if>
+    </select>
+    
+    <select id="selectUnPaginationByRoleId" resultType="TblBaseUserEntity" parameterType="TblBaseUserEntity">
+    	select
+			t.baseuserid,t.account,t.password,t.username
+		from
+			TBL_BASE_USER t
+		where
+			t.baseuserid not in (select  m.baseuserid from TBL_BASE_USER_ROLE_MAPPING m where m.baseroleid = #{baseroleid,jdbcType=VARCHAR})
+			and t.state = 1
+			<if test="account  != null and account != '' ">
+				and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="username != null and username !='' ">
+				and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+            </if>
+    </select>
+     
+    <select id="selectCountByRoleId"  resultType="Integer"  parameterType="TblBaseUserEntity">
+        select 
+			count(*) 
+		from
+			TBL_BASE_USER t
+		where
+			t.baseuserid in (select  m.baseuserid from TBL_BASE_USER_ROLE_MAPPING m where m.baseroleid = #{baseroleid,jdbcType=VARCHAR})
+			and t.state = 1
+			<if test="account  != null and account != '' ">
+				and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="username != null and username !='' ">
+				and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+            </if>
+    </select>
+    
+    <select id="selectPaginationByRoleId" resultType="TblBaseUserEntity" parameterType="TblBaseUserEntity">
+    	select
+			t.baseuserid,t.account,t.password,t.username
+		from
+			TBL_BASE_USER t
+		where
+			t.baseuserid in (select  m.baseuserid from TBL_BASE_USER_ROLE_MAPPING m where m.baseroleid = #{baseroleid,jdbcType=VARCHAR})
+			and t.state = 1
+			<if test="account  != null and account != '' ">
+				and t.account like '%'||#{account,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="username != null and username !='' ">
+				and t.username like '%'||#{username,jdbcType=VARCHAR}||'%'
+            </if>
+    </select>
+    
+   <select id="selectUserMsgById" resultType="map" parameterType="String">
+		select 
+			t1.baseuserid as "baseuserid",t1.account as "account",t1.username as "username",t2.tel as "tel",t2.phone as "phone", t2.gender as "gender"
+		from 
+			TBL_BASE_USER t1 
+			left join TBL_BASE_USER_EXT t2 
+			on t1.BASEUSERID = t2.BASEUSERID 
+		where 
+			t1.BASEUSERID = #{BASEUSERID}
+	</select>
+	
+	<select id="selectRoleIdByAccount" resultType="String" parameterType="String">
+		select 
+			m.baseroleid
+		from 
+			TBL_BASE_USER t, 
+			TBL_BASE_USER_ROLE_MAPPING m
+		where 
+			t.baseuserid = m.baseuserid
+			and t.account = #{account}
+	</select>
+	
+	<update id="deletePuser" parameterType="tblBaseUserEntity">
+		update TBL_BASE_USER
+		set 
+			account = #{account,jdbcType=VARCHAR}, password = #{password,jdbcType=VARCHAR}, pbaseuserid = #{pbaseuserid,jdbcType=VARCHAR}, state = #{state,jdbcType=INTEGER}, updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR}, username = #{username,jdbcType=VARCHAR} 
+		where 
+			baseuserid = #{baseuserid}
+	</update>
+	
+	<select id="selectUserByAccount" resultType="tblBaseUserEntity" parameterType="String">
+		select 
+			t.updatetime,t.updateuserid,t.state,t.username,t.password,t.account,t.baseuserid,t.password,t.pbaseuserid,t.state,t.updatetime,t.updateuserid,t.username
+		from 
+			TBL_BASE_USER t
+		where 
+			t.account = #{account}
+	</select>
+	
+</mapper>

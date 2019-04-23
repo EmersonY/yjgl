@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName com.kingtopinfo.base.mapper.ProcessMapper
+	@Description 流程关联查询
+	@author lxc@kingtopinfo.com
+	@date 2016-11-23 10:22:06
+	@version 1.0
+	@remark create by generator
+	-->
+	
+<mapper namespace="com.kingtopinfo.activiti.mapper.ActProcessMapper">
+	
+	<select id="selectHistoryActByInstanceid" resultType="ActTaskEntity" parameterType="String">
+		select v.* from v_flow_his_act v where v.instanceid = #{instanceid} order by v.taskstarttime asc
+	</select>
+	
+	<select id="selectHistoryActBySjdjid" resultType="ActTaskEntity" parameterType="String">
+		select v.* from v_flow_his_act v left join YJG_XMLC t on v.INSTANCEID = t.INSTANCEID where t.sjdjid = #{sjdjid} order by v.taskstarttime asc
+	</select>
+</mapper>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseTypeMapper">
+	
+	<sql id="all">basetypeid,code,name,value,STATE,updatetime,basetypepid,type,sequ,ver,attribute,module</sql>
+	
+	<select id="getssdlDate" resultType="String" parameterType="String">
+		select 
+			attribute
+		from 
+			TBL_BASE_TYPE
+		where
+			code = 'SSDL'
+			and name=#{name}
+
+	</select>
+	<select id="selectByCode" resultType="tblBaseTypeEntity" parameterType="String">
+		select
+			<include refid="all"></include> 
+		from 
+			TBL_BASE_TYPE
+		where
+			code = #{code} 
+			and STATE = 1 
+			and type is null 
+		order by 
+			sequ ASC
+	</select>
+	
+	<select id="selectChildByCode" resultType="tblBaseTypeEntity" parameterType="String">
+		select 
+			<include refid="all"></include> 
+		from 
+			TBL_BASE_TYPE
+		where
+			code = #{code} 
+			and STATE = 1 
+			and type is null 
+			and value is not null
+		order by 
+			sequ ASC
+	</select>
+	
+	<select id="getByKey" resultType="tblBaseTypeEntity" parameterType="String">
+		select 
+			<include refid="all"></include>
+		from 
+			TBL_BASE_TYPE
+		where
+			basetypeid = #{basetypeid}
+	</select>
+	
+	<select id="selectAllByCode" resultType="tblBaseTypeEntity" parameterType="String">
+		select 
+			basetypeid,basetypeid as id,code,name,value,state,state as stateStr,updatetime,basetypepid as pid,type,sequ,ver,attribute,module
+		from 
+			TBL_BASE_TYPE
+		where
+			code = #{code} and type is null order by sequ ASC
+	</select>
+	
+	<select id="selectPidByIdAndCode" resultType="tblBaseTypeEntity" parameterType="tblBaseTypeEntity">
+		select 
+			<include refid="all"></include> 
+		from 
+			TBL_BASE_TYPE
+		where
+			code = #{code} and 	basetypepid = #{basetypeid}
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseTypeEntity">
+		insert into TBL_BASE_TYPE(
+			attribute,basetypeid,basetypepid,code,codeattrbute,module,name,sequ,state,type,updatetime,updateuserid,value,ver
+		)values(
+			#{attribute,jdbcType=VARCHAR},#{basetypeid,jdbcType=VARCHAR},#{basetypepid,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{codeattrbute,jdbcType=VARCHAR},#{module,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{sequ,jdbcType=INTEGER},#{state,jdbcType=INTEGER},#{type,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{updateuserid,jdbcType=VARCHAR},#{value,jdbcType=VARCHAR},0
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblBaseTypeEntity">
+		update TBL_BASE_TYPE
+		set 
+			attribute = #{attribute,jdbcType=VARCHAR}, basetypepid = #{basetypepid,jdbcType=VARCHAR}, code = #{code,jdbcType=VARCHAR}, codeattrbute = #{codeattrbute,jdbcType=VARCHAR}, module = #{module,jdbcType=VARCHAR}, name = #{name,jdbcType=VARCHAR}, sequ = #{sequ,jdbcType=INTEGER}, state = #{state,jdbcType=INTEGER}, type = #{type,jdbcType=VARCHAR}, updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR}, value = #{value,jdbcType=VARCHAR}, ver = #{ver,jdbcType=INTEGER} 
+		where 
+			basetypeid = #{basetypeid}
+	</update>
+	
+	<update id="updateByCode" parameterType="tblBaseTypeEntity">
+		update TBL_BASE_TYPE
+		set 
+			state = #{state,jdbcType=INTEGER}, 
+			updatetime = #{updatetime,jdbcType=TIME},
+			updateuserid = #{updateuserid,jdbcType=VARCHAR}
+		where 
+			code = #{code}
+	</update>
+	
+	<update id="updateSequ" parameterType="tblBaseTypeEntity">
+		update TBL_BASE_TYPE
+		set 
+			sequ = #{sequ,jdbcType=INTEGER}
+		where 
+			basetypeid = #{basetypeid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete FROM TBL_BASE_TYPE  where basetypeid = #{basetypeid}
+	</delete>
+	
+	<update id="move" parameterType="tblBaseTypeEntity">
+		update TBL_BASE_TYPE
+		set 
+			basetypepid = #{basetypepid,jdbcType=INTEGER}
+		where 
+			basetypeid = #{basetypeid}
+	</update>
+	
+	<select id="selectMenu" resultType="tblBaseTypeEntity" parameterType="tblBaseTypeEntity">
+		select 
+			<include refid="all"></include> 
+		from 
+			TBL_BASE_TYPE
+		where
+			type = #{type} 
+			<if test="module !=null and module !='-1'">
+				and module = #{module}
+			</if>
+		order by 
+			module ASC
+	</select>
+	
+	<select id="selectCountByPid" resultType="Integer" parameterType="String">
+		select 
+			count(*)
+		from 
+			TBL_BASE_TYPE
+		where
+			basetypepid = #{basetypepid,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectMaxSequ" resultType="Integer">
+		select 
+			max(sequ)
+		from 
+			TBL_BASE_TYPE 
+	</select>
+	
+	<select id="selectVerByCode" resultType="Integer" parameterType="tblBaseTypeEntity">
+		select 
+			ver
+		from 
+			TBL_BASE_TYPE
+		where 
+			code = #{code,jdbcType=VARCHAR}
+			and type = #{type,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateVerByCode" parameterType="tblBaseTypeEntity">
+		update TBL_BASE_TYPE
+		set 
+			ver = #{ver,jdbcType=INTEGER}, 
+			updatetime = #{updatetime,jdbcType=TIME} 
+		where 
+			code = #{code,jdbcType=VARCHAR}
+			and type = #{type,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="selectNameAndValueByCode" resultType="tblBaseTypeEntity" parameterType="String">
+		select 
+			name,value
+		from 
+			TBL_BASE_TYPE
+		where
+			code = #{code} 
+			and STATE = 1 
+			and type is null 
+		order by 
+			sequ ASC
+	</select>
+	
+	<select id="selectValueByCodeAndName" resultType="tblBaseTypeEntity" parameterType="tblBaseTypeEntity">
+		select 
+			value,attribute,codeattrbute
+		from 
+			TBL_BASE_TYPE
+		where
+			code = #{code} 
+			and name = #{name} 
+			and STATE = 1 
+			and type is null 
+		order by 
+			sequ ASC
+	</select>
+	
+	<select id="selectByCodeAndValue" resultType="tblBaseTypeEntity" parameterType="String">
+		select
+			<include refid="all"></include> 
+		from 
+			TBL_BASE_TYPE
+		where
+			code = #{code} 
+			and value = #{value} 
+			and STATE = 1 
+			and type is null 
+		order by 
+			sequ ASC
+	</select>
+</mapper>

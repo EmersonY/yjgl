@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblFlowTaskRoleMappingMapper
+	@Description TBL_FLOW_TASK_ROLE_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-08-21 15:05:42
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.activiti.mapper.TblFlowTaskRoleMappingMapper">
+	
+<insert id="insert" parameterType="tblFlowTaskRoleMappingEntity">
+		insert into TBL_FLOW_TASK_ROLE_MAPPING(
+			dxlx,flowtaskroleid,processid,roleid,taskid,updatetime,userid
+		)values(
+			#{dxlx,jdbcType=VARCHAR},#{flowtaskroleid,jdbcType=VARCHAR},#{processid,jdbcType=VARCHAR},#{roleid,jdbcType=VARCHAR},#{taskid,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{userid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblFlowTaskRoleMappingEntity">
+		update TBL_FLOW_TASK_ROLE_MAPPING
+		set 
+			dxlx = #{dxlx,jdbcType=VARCHAR}, processid = #{processid,jdbcType=VARCHAR}, roleid = #{roleid,jdbcType=VARCHAR}, taskid = #{taskid,jdbcType=VARCHAR}, updatetime = #{updatetime,jdbcType=TIME}, userid = #{userid,jdbcType=VARCHAR} 
+		where 
+			flowtaskroleid = #{flowtaskroleid}
+	</update>
+	
+	<delete id="deleteByRoleid" parameterType="String">
+		delete from TBL_FLOW_TASK_ROLE_MAPPING where roleid = #{roleid}
+	</delete>
+	
+	<select id="selectByProcessidAndTaskid" resultType="tblFlowTaskRoleMappingEntity" parameterType="tblFlowTaskRoleMappingEntity">
+        select 
+            roleid
+        from 
+            TBL_FLOW_TASK_ROLE_MAPPING 
+        where 
+            processid = #{processid,jdbcType=VARCHAR} and taskid = #{taskid,jdbcType=VARCHAR}
+    </select>
+    
+    <delete id="deleteByRoleidAndProcessidAndTaskid" parameterType="tblFlowTaskRoleMappingEntity">
+		delete FROM
+			TBL_FLOW_TASK_ROLE_MAPPING
+		where roleid = #{roleid,jdbcType=VARCHAR} and processid = #{processid,jdbcType=VARCHAR} and taskid = #{taskid,jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

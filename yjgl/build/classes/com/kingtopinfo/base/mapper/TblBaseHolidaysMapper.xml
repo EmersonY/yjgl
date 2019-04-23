@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblBaseHolidaysMapper
+	@Description TBL_BASE_HOLIDAYS表映射配置文件
+	@author cyf
+	@date 2018-01-12 09:14:28
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.base.mapper.TblBaseHolidaysMapper">
+	
+	<sql id="all">t.createperson,to_char(t.createtime,'yyyy-mm-dd hh24:mi:ss') AS createtime,t.holidaydate,t.holidayname,t.holidaysid,t.holidaytype,t.isholiday,t.remark,t.updateperson,to_char(t.updatetime,'yyyy-mm-dd hh24:mi:ss') AS updatetime,t.year</sql>
+	
+	<select id="getCount" resultType="int" parameterType="tblBaseHolidaysEntity">
+		select 
+			count(t.holidaysid)
+		from 
+			TBL_BASE_HOLIDAYS t
+		<where>
+		 	<if test="null != year and'' != year">
+				and t.year = #{year}
+			</if>
+		    <if test="null != holidayname and '-1' != holidayname">
+				and t.holidayname like '%'||#{holidayname}||'%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectPagination" resultType="tblBaseHolidaysEntity" parameterType="tblBaseHolidaysEntity">
+		select 
+			<include refid="all"></include>
+		from 
+			TBL_BASE_HOLIDAYS t
+		<where>
+		 	<if test="null != year and'' != year">
+				and t.year = #{year}
+			</if>
+		    <if test="null != holidayname and '-1' != holidayname">
+				and t.holidayname like '%'||#{holidayname}||'%'
+			</if>
+		</where>
+		order by t.holidaydate
+	</select>
+	
+	<select id="select" resultType="tblBaseHolidaysEntity">
+		select 
+			t.createperson,t.createtime,t.holidaydate,t.holidayname,t.holidaysid,t.holidaytype,t.isholiday,t.remark,t.updateperson,t.updatetime,t.year 
+		from 
+			TBL_BASE_HOLIDAYS t
+	</select>
+	
+	<select id="getByPkey" resultType="tblBaseHolidaysEntity" parameterType="String">
+		select 
+			<include refid="all"></include>
+		from 
+			TBL_BASE_HOLIDAYS t
+		where 
+			t.holidaysid = #{holidaysid}
+	</select>
+	
+	<select id="selectByStartAndEnd" resultType="tblBaseHolidaysEntity">
+		select 
+			<include refid="all"></include>
+		from 
+			TBL_BASE_HOLIDAYS t
+		where 
+			to_char(t.holidaydate, 'yyyy-MM-dd') >= to_char(#{timeStart,jdbcType=DATE}, 'yyyy-MM-dd') 
+			and to_char(#{timeEnd,jdbcType=DATE}, 'yyyy-MM-dd') >= to_char(t.holidaydate, 'yyyy-MM-dd')
+		order by t.holidaydate asc
+	</select>
+	
+	<insert id="insert" parameterType="tblBaseHolidaysEntity">
+		insert into TBL_BASE_HOLIDAYS(
+			createperson,createtime,holidaydate,holidayname,holidaysid,holidaytype,isholiday,remark,updateperson,updatetime,year
+		)values(
+			#{createperson,jdbcType=VARCHAR},#{createtime,jdbcType=TIME},#{holidaydate,jdbcType=TIME},#{holidayname,jdbcType=VARCHAR},#{holidaysid,jdbcType=VARCHAR},#{holidaytype,jdbcType=VARCHAR},#{isholiday,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{updateperson,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{year,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblBaseHolidaysEntity">
+		update TBL_BASE_HOLIDAYS
+		set 
+			createperson = #{createperson,jdbcType=VARCHAR}, createtime = #{createtime,jdbcType=TIME}, holidaydate = #{holidaydate,jdbcType=TIME}, holidayname = #{holidayname,jdbcType=VARCHAR}, holidaytype = #{holidaytype,jdbcType=VARCHAR}, isholiday = #{isholiday,jdbcType=INTEGER}, remark = #{remark,jdbcType=VARCHAR}, updateperson = #{updateperson,jdbcType=VARCHAR}, updatetime = #{updatetime,jdbcType=TIME}, year = #{year,jdbcType=INTEGER} 
+		where 
+			holidaysid = #{holidaysid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_BASE_HOLIDAYS where holidaysid = #{holidaysid}
+	</delete>
+	
+</mapper>

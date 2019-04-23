@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgBwlMapper
+	@Description YJG_BWL表映射配置文件
+	@author cyf
+	@date 2018-01-11 10:32:10
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgBwlMapper">
+
+	<sql id="all">t.BWLID,t.BASEUSERID,t.BWLNR,t.BWLJB,t.BWLWZ,t.BWLZT,t.BWLBT,to_char(t.bwldate,'yyyy-mm-dd hh24:mi:ss') AS bwldate</sql>
+
+	<select id="getByPkey" resultType="yjgBwlEntity" parameterType="String">
+		select 
+			<include refid="all"></include> 
+		from 
+			YJG_BWL t
+		where 
+			t.bwlid = #{bwlid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgBwlEntity">
+		insert into YJG_BWL(
+			baseuserid,bwlbt,bwldate,bwlid,bwljb,bwlnr,bwlwz,bwlzt
+		)values(
+			#{baseuserid,jdbcType=VARCHAR},#{bwlbt,jdbcType=VARCHAR},#{bwldate,jdbcType=TIME},#{bwlid,jdbcType=VARCHAR},#{bwljb,jdbcType=VARCHAR},#{bwlnr,jdbcType=VARCHAR},#{bwlwz,jdbcType=VARCHAR},#{bwlzt,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgBwlEntity">
+		update YJG_BWL
+		set 
+			baseuserid = #{baseuserid,jdbcType=VARCHAR}, bwlbt = #{bwlbt,jdbcType=VARCHAR}, bwldate = #{bwldate,jdbcType=TIME}, bwljb = #{bwljb,jdbcType=VARCHAR}, bwlnr = #{bwlnr,jdbcType=VARCHAR}, bwlwz = #{bwlwz,jdbcType=VARCHAR}, bwlzt = #{bwlzt,jdbcType=VARCHAR} 
+		where 
+			bwlid = #{bwlid}
+	</update>
+	
+	<select id="selectBwl" resultType="yjgBwlEntity">
+		select 
+			t.BWLID,t.BASEUSERID,t.BWLNR,t.BWLJB,t.BWLWZ,to_char(t.bwldate,'yyyy-mm-dd hh24:mi:ss') AS bwldate,t.BWLBT,t.BWLZT
+		from YJG_BWL t  
+		where 
+		    t.bwldate  &gt;= #{startDate}
+		    and t.bwldate &lt; #{endDate}
+			and t.baseuserid = #{baseuserid}
+		order by t.bwldate DESC
+	</select>
+	
+	<select id="getBwlCount" resultType="int" parameterType="yjgBwlEntity">
+		select count(t.BWLID) from YJG_BWL t  
+		<where>
+			<if test="null != baseuserid and '' != baseuserid">
+				and t.baseuserid = #{baseuserid}
+			</if>
+		    <if test="null != bwlnr and '' != bwlnr">
+				and t.bwlnr like '%'||#{bwlnr}||'%'
+			</if>
+			<if test="null != bwlwz and '' != bwlwz">
+				and t.bwlwz like '%'||#{bwlwz}||'%'
+			</if>
+				and t.bwldate  &gt;= #{startDate}			
+				and t.bwldate  &lt;= #{lastDay}
+		</where>
+		order by t.bwldate DESC
+	</select>
+	
+	<select id="selectBwlPagination" resultType="YjgBwlEntity" parameterType="YjgBwlEntity">
+		select 
+			<include refid="all"></include>
+		from YJG_BWL t  
+		<where>
+		 	<if test="null != baseuserid and '' != baseuserid">
+				and t.baseuserid = #{baseuserid}
+			</if>
+		    <if test="null != bwlnr and '' != bwlnr">
+				and t.bwlnr like '%'||#{bwlnr}||'%'
+			</if>
+			<if test="null != bwlwz and '' != bwlwz">
+				and t.bwlwz like '%'||#{bwlwz}||'%'
+			</if>
+				and t.bwldate  &gt;= #{startDate}			
+				and t.bwldate  &lt;= #{lastDay}
+		</where>
+		order by t.bwldate DESC
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_BWL where bwlid = #{bwlid}
+	</delete>
+	
+	<select id="remindBwl" resultType="int" parameterType="YjgBwlEntity">
+		select 
+			 count(t.BWLID)
+		from YJG_BWL t  
+		where 
+		 	t.BWLZT = 0
+		    and t.bwldate  &gt;= #{startDate}
+		    and t.bwldate &lt; #{endDate}
+			and t.baseuserid = #{baseuserid}
+		order by t.bwldate DESC
+	</select>
+	
+</mapper>

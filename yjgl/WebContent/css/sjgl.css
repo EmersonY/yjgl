@@ -1,0 +1,98 @@
+.apply_footer{
+	padding: 10px;
+	background-color: #fff;
+	border-bottom: 1px solid #ddd;
+}
+.apply_footer_upload{
+	display: inline-block;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_upload_new{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_upload_gis_add{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 2px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_upload_edit_new{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_upload_sjcz_edit_new{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_upload_yj_edit_new{
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.apply_footer_img{
+	padding-bottom: 10px;
+	padding: 2px;
+}
+.apply_footer_upload>span {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background: url(../images/logo/upload.png) scroll no-repeat center center;
+    background-size: contain;
+}
+.apply_footer_upload .file{
+	border: none;
+	margin-left:80;
+	display: inline-block;
+	width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+}
+.apply_footer_info{
+	padding-top: 10px;
+}
+.apply_footer_info textarea{
+	font-size: 14px;
+	width: 100%;
+	margin-top: 3px;
+	padding: 5px;
+	border: 1px solid #ddd;
+	font-family:  'Heiti SC', 'Helvetica';
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.TblFlowButtonMappingMapper
+	@Description TBL_FLOW_BUTTON_MAPPING表映射配置文件
+	@author cyf
+	@date 2017-09-19 15:07:18
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.activiti.mapper.TblFlowButtonMappingMapper">
+	
+	<select id="getCount" resultType="int" parameterType="tblFlowButtonMappingEntity">
+		select 
+			count(t.id)
+		from 
+			TBL_FLOW_BUTTON_MAPPING t
+	</select>
+	
+	<select id="selectPagination" resultType="tblFlowButtonMappingEntity" parameterType="tblFlowButtonMappingEntity">
+		select 
+			t.buttonid,t.id,t.processid,t.taskid 
+		from 
+			TBL_FLOW_BUTTON_MAPPING t
+	</select>
+	
+	<select id="select" resultType="tblFlowButtonMappingEntity">
+		select 
+			t.buttonid,t.id,t.processid,t.taskid 
+		from 
+			TBL_FLOW_BUTTON_MAPPING t
+	</select>
+	
+	<select id="getByPkey" resultType="tblFlowButtonMappingEntity" parameterType="String">
+		select 
+			t.buttonid,t.id,t.processid,t.taskid 
+		from 
+			TBL_FLOW_BUTTON_MAPPING t
+		where 
+			t.id = #{id}
+	</select>
+	
+	<insert id="insert" parameterType="tblFlowButtonMappingEntity">
+		insert into TBL_FLOW_BUTTON_MAPPING(
+			buttonid,id,processid,taskid
+		)values(
+			#{buttonid,jdbcType=VARCHAR},#{id,jdbcType=VARCHAR},#{processid,jdbcType=VARCHAR},#{taskid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="tblFlowButtonMappingEntity">
+		update TBL_FLOW_BUTTON_MAPPING
+		set 
+			buttonid = #{buttonid,jdbcType=VARCHAR}, processid = #{processid,jdbcType=VARCHAR}, taskid = #{taskid,jdbcType=VARCHAR} 
+		where 
+			id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from TBL_FLOW_BUTTON_MAPPING where id = #{id}
+	</delete>
+	
+	<select id="selectByProcessidAndTaskid" resultType="tblFlowButtonMappingEntity">
+		select 
+			t.id,t.processid,t.taskid,t.buttonid 
+		from 
+			TBL_FLOW_BUTTON_MAPPING t
+		where	
+			t.processid = #{processid,jdbcType=VARCHAR} 
+		and 
+			t.taskid = #{taskid,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteByProcessidAndTaskid" parameterType="tblFlowButtonMappingEntity">
+		delete from TBL_FLOW_BUTTON_MAPPING 
+			   where 
+			   		processid = #{processid,jdbcType=VARCHAR} 
+				and 
+					taskid = #{taskid,jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgSjczMapper
+	@Description YJG_SJCZ表映射配置文件
+	@author cyf
+	@date 2017-09-12 08:50:55
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgSjczMapper">
+	<sql id="all">t.bz,t.czgcms,t.czr,t.czrxm,t.isdel,t.sjczid,t.sjdjid,t.czzt,
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj 
+	</sql>
+	
+	<select id="getCount" resultType="int" parameterType="yjgSjczEntity">
+		select 
+			count(t.sjczid)
+		from 
+			YJG_SJCZ t
+		where 
+			t.sjdjid = #{sjdjid} and t.isdel = 1
+	</select>
+	
+	<select id="selectPagination" resultType="yjgSjczEntity" parameterType="yjgSjczEntity">
+		select 
+			t.bz,t.czgcms,t.czr,t.czrxm,t.isdel,t.sjczid,t.sjdjid,t.czzt,
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj 
+		from 
+			YJG_SJCZ t
+		where 
+			t.sjdjid = #{sjdjid} and t.isdel = 1
+		order by t.czsj desc
+	</select>
+	
+	<select id="selectByCzzt" resultType="yjgSjczEntity" parameterType="yjgSjczEntity">
+		select 
+			<include refid="all"></include>
+		from 
+			YJG_SJCZ t
+		where 
+			t.sjdjid = #{sjdjid} and t.isdel = 1 and t.czzt = #{czzt}
+	</select>
+	
+	<select id="selectByCondition" resultType="yjgSjczEntity" parameterType="yjgSjczEntity">
+		select 
+			<include refid="all"></include>
+		from 
+			YJG_SJCZ t
+		where 
+			t.sjdjid = #{sjdjid} and t.isdel = 1
+	</select>
+	
+	<select id="selectBySjdjId" resultType="yjgSjczEntity" parameterType="yjgSjczEntity">
+		select 
+			t.bz,t.czgcms,t.czr,t.czrxm,t.czzt,
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj,
+			t.isdel,t.sjczid,t.sjdjid 
+		from 
+			YJG_SJCZ t
+		where 
+			t.sjdjid in (select sjdjid from YJG_SJDJ where sjdjid = #{sjdjid} or CSSJDJPID = #{sjdjid} ) and t.isdel = 1
+		order by t.czsj
+	</select>
+	
+	<select id="getByPkey" resultType="yjgSjczEntity" parameterType="String">
+		select 
+			t.bz,t.czgcms,t.czr,t.czrxm,t.isdel,t.sjczid,t.sjdjid,t.czzt,
+			to_char (
+				t.czsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS czsj 
+		from 
+			YJG_SJCZ t
+		where 
+			t.sjczid = #{sjczid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgSjczEntity">
+		insert into YJG_SJCZ(
+			bz,czgcms,czr,czrxm,czsj,czzt,isdel,sjczid,sjdjid
+		)values(
+			#{bz,jdbcType=VARCHAR},#{czgcms,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{czrxm,jdbcType=VARCHAR},#{czsj,jdbcType=TIME},#{czzt,jdbcType=VARCHAR},#{isdel,jdbcType=INTEGER},#{sjczid,jdbcType=VARCHAR},#{sjdjid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgSjczEntity">
+		update YJG_SJCZ
+		set 
+			bz = #{bz,jdbcType=VARCHAR}, czgcms = #{czgcms,jdbcType=VARCHAR}, czr = #{czr,jdbcType=VARCHAR}, czrxm = #{czrxm,jdbcType=VARCHAR}, czsj = #{czsj,jdbcType=TIME}, czzt = #{czzt,jdbcType=VARCHAR}, isdel = #{isdel,jdbcType=INTEGER}, sjdjid = #{sjdjid,jdbcType=VARCHAR} 
+		where 
+			sjczid = #{sjczid}
+	</update>
+	
+	<update id="updateCzzt" parameterType="yjgSjczEntity">
+		update YJG_SJCZ
+		set 
+			czzt = 3
+		where 
+			sjdjid = #{sjdjid} and czzt = 2
+	</update>
+	
+	<update id="resetCzzt" parameterType="yjgSjczEntity">
+		update YJG_SJCZ
+		set 
+			czzt = 1
+		where 
+			sjdjid = #{sjdjid} and (czzt = 2 or czzt = 3)
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from YJG_SJCZ where sjczid = #{sjczid}
+	</delete>
+	
+	<update id="deleteByState" parameterType="yjgSjczEntity">
+		update YJG_SJCZ
+		set 
+			isdel = 0
+		where 
+			sjczid = #{sjczid}
+	</update>
+	
+	
+</mapper>

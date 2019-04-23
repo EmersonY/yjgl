@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!--
+	@MapperName mapper.YjgSjdjMapper
+	@Description YJG_SJDJ表映射配置文件
+	@author cyf
+	@date 2017-08-24 10:56:59
+	@version 1.0
+	@remark create by generator
+	-->
+<mapper namespace="com.kingtopinfo.yjg.mapper.YjgSjdjMapper">
+	
+	<select id="selecttaskid" resultType="yjgSjdjEntity" parameterType="String">
+		 select * from YJG_XMLC t1,V_FLOW_TODO v,yjg_sjqq t2 where  t1.sjdjid = #{sjdjid} and t2.sjdjid(+) = t1.sjdjid and t1.instanceid = v.instanceid
+	</select>
+	
+	<sql id="all">
+		to_char (
+		t.scsj,
+		'yyyy-mm-dd hh24:mi:ss'
+		) AS scsj,
+		to_char (
+			t.jssj,
+			'yyyy-mm-dd hh24:mi:ss'
+		) AS jssj,
+		to_char (
+			t.updatetime,
+			'yyyy-mm-dd hh24:mi:ss'
+		) AS updatetime,
+		t.isline,t.ckqx,t.updator,t.baseuserid,t.bz,t.cssjdjpid,t.isdel,t.jgid,t.jglx,t.sbrdh,t.sbrxm,t.sjdjdh,t.sjdjid,t.sjlx,t.sqzt,t.ssdl,t.updateuserid,t.wzms,t.xxly,t.xzb,t.xzqh,t.yzb,t.yzjb 
+	</sql>
+	
+	<select id="getCount" resultType="int" parameterType="yjgSjdjEntity">
+		SELECT
+			count(t2.sjdjid)
+		FROM
+		(
+			SELECT
+				t.sjdjid
+			FROM
+				YJG_SJDJ t LEFT JOIN YJG_JGXX x on t.jgid = x.jgbh
+			WHERE
+				t.ISDEL = 1 and t.cssjdjpid is null
+				<if test="null != sjdjdh and '' != sjdjdh">
+					and t.sjdjdh like '%'||#{sjdjdh}||'%'
+				</if>
+				<if test="null != sbrxm and '' != sbrxm">
+					and t.sbrxm like '%'||#{sbrxm}||'%'
+				</if>
+				<if test="null != sbrdh and '' != sbrdh">
+					and t.sbrdh like '%'||#{sbrdh}||'%'
+				</if>
+				<if test="null != sqzt and sqzt != -1">
+					and t.sqzt = #{sqzt}
+				</if>
+				<if test="null != sjlx and sjlx != -1">
+					and t.sjlx = #{sjlx}
+				</if>
+				<if test="null != yzjb and yzjb != -1">
+					and t.yzjb = #{yzjb}
+				</if>
+				<if test="null != jglx and jglx != '-1'">
+					and t.jglx = #{jglx}
+				</if>
+				<if test="null != xxly and xxly != -1">
+					and t.xxly = #{xxly}
+				</if>
+				<if test="timeStart != null">
+					and t.scsj >=  #{timeStart,jdbcType=TIME}
+				</if>
+				<if test="timeEnd != null">
+					and #{timeEnd,jdbcType=TIME} >= t.scsj
+				</if>
+				<if test="timeStartCopy != null">
+					and t.jssj >=  #{timeStartCopy,jdbcType=TIME}
+				</if>
+				<if test="timeEndCopy != null">
+					and #{timeEndCopy,jdbcType=TIME} >= t.jssj
+				</if>
+				<if test="null != yzjb and yzjb != -1">
+					and t.yzjb = #{yzjb}
+				</if>
+				<if test="null != xxly and xxly != -1">
+					and t.xxly = #{xxly}
+				</if>
+				<if test="null != jgid and jgid != ''">
+					and t.jgid like '%'||#{jgid}||'%'
+				</if>
+				<if test="null != jgcz and jgcz != '-1'">
+					and x.jgcz = #{jgcz}
+				</if>
+				<if test="null != jgxz and jgxz != '-1'">
+					and x.jgxz = #{jgxz}
+				</if>
+				<if test="null != jgcz and jgcz != '-1'">
+					and x.jgcz = #{jgcz}
+				</if>
+				<if test="null != jgxz and jgxz != '-1'">
+					and x.jgxz = #{jgxz}
+				</if>
+				<if test="null != sfzw and sfzw != '-1'">
+					and x.sfzw = #{sfzw}
+				</if>
+				<if test="null != jgzt and jgzt != '-1'">
+					and x.jgzt = #{jgzt}
+				</if>
+				<if test="null != jngj and jngj != ''">
+					and x.jngj = #{jngj}
+				</if>
+				<if test="null != jggg and jggg != ''">
+					and x.jggg = #{jggg}
+				</if>
+				<if test="null != ssdl and ssdl != ''">
+					and t.ssdl in (${ssdl})
+				</if>
+				<if test="null != ckqx and ckqx != ''">
+					and (instr(t.ckqx, #{ckqx})> 0 or t.ckqx is null)
+				</if>
+			UNION ALL
+				SELECT
+					t1.fyjsjdjid AS sjdjid
+				FROM
+					YJG_FYJSJDJ t1
+				WHERE
+					t1.ISDEL = 1 and t1.cssjdjpid is null
+				<if test="null != sjdjdh and '' != sjdjdh">
+					and t1.sjdjdh like '%'||#{sjdjdh}||'%'
+				</if>
+				<if test="null != sbrxm and '' != sbrxm">
+					and t1.sbrxm like '%'||#{sbrxm}||'%'
+				</if>
+				<if test="null != sbrdh and '' != sbrdh">
+					and t1.sbrdh like '%'||#{sbrdh}||'%'
+				</if>
+				<if test="null != sqzt and sqzt != -1">
+					and t1.sqzt = #{sqzt}
+				</if>
+				<if test="null != sjlx and sjlx != -1">
+					and t1.sjlx = #{sjlx}
+				</if>
+				<if test="timeStart != null">
+					and t1.scsj >=  #{timeStart,jdbcType=TIME}
+				</if>
+				<if test="timeEnd != null">
+					and #{timeEnd,jdbcType=TIME} >= t1.scsj
+				</if>
+				<if test="null != yzjb and yzjb != -1">
+					and t1.yzjb = #{yzjb}
+				</if>
+				<if test="null != jglx and jglx != '-1'">
+					and t1.jglx = #{jglx}
+				</if>
+				<if test="null != xxly and xxly != -1">
+					and t1.xxly = #{xxly}
+				</if>
+				<if test="null != jgid and jgid != ''">
+					and t1.jgid = #{jgid}
+				</if>
+	 			<if test="timeStartCopy != null">
+					and t1.jssj >=  #{timeStartCopy,jdbcType=TIME}
+				</if>
+				<if test="timeEndCopy != null">
+					and #{timeEndCopy,jdbcType=TIME} >= t1.jssj
+				</if>
+				<if test="null != sfzw and sfzw != '-1'">
+					and x1.sfzw = #{sfzw}
+				</if>
+				<if test="null != jgzt and jgzt != '-1'">
+					and x1.jgzt = #{jgzt}
+				</if>
+				<if test="null != jngj and jngj != ''">
+					and x1.jngj = #{jngj}
+				</if>
+				<if test="null != jggg and jggg != ''">
+					and x1.jggg = #{jggg}
+				</if>
+				<if test="null != ssdl and ssdl != ''">
+					and t1.ssdl in (${ssdl})
+				</if>
+				<if test="null != ckqx and ckqx != ''">
+					and (instr(t1.ckqx, #{ckqx})> 0 or t1.ckqx is null)
+				</if>
+		) t2
+			left join YJG_XMLC t1 on t2.sjdjid = t1.sjdjid
+			left join V_FLOW_TODO v on t1.instanceid  = v.instanceid
+	</select>
+	
+	<select id="selectByJgxxAndSjxx" resultType="YjgJgSjCxVo" parameterType="YjgJgSjCxVo">
+		SELECT
+			t2.xzb AS xzb,t2.yzb AS yzb,t1.jgid,t1.jgxz
+		FROM(
+			SELECT 
+				to_char (
+					t.jssj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS jssj,
+				to_char (
+					t.scsj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS scsj,
+				t.jgid,
+				t.sbrxm,
+				t.xzb,
+				t.yzb
+			FROM
+				YJG_SJDJ t
+			WHERE
+				t.ISDEL = 1
+				<if test="null != sbrxm and '' != sbrxm">
+					and t.sbrxm like '%'||#{sbrxm}||'%'
+				</if>
+				<if test="null != sjlx and sjlx != ''">
+					and t.sjlx = #{sjlx}
+				</if>
+				<if test="timeStart != null and timeStart != ''" >
+					and t.scsj >=  #{timeStart,jdbcType=TIME}
+				</if>
+				<if test="timeEnd != null and timeEnd != ''">
+					and #{timeEnd,jdbcType=TIME} >= t.scsj
+				</if>
+				<if test="timeStartCopy != null">
+					and t.jssj >=  #{timeStartCopy,jdbcType=TIME}
+				</if>
+				<if test="timeEndCopy != null">
+					and #{timeEndCopy,jdbcType=TIME} >= t.jssj
+				</if>
+		UNION ALL
+				SELECT 
+				to_char (
+					t1.jssj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS jssj,
+				to_char (
+					t1.scsj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS scsj,
+				t1.jgid,
+				t1.sbrxm,
+				t1.xzb,
+				t1.yzb
+			FROM
+				YJG_FYJSJDJ t1
+			WHERE
+				t1.ISDEL = 1
+				<if test="null != sbrxm and '' != sbrxm">
+					and t1.sbrxm like '%'||#{sbrxm}||'%'
+				</if>
+				<if test="null != sjlx and sjlx != ''">
+					and t1.sjlx = #{sjlx}
+				</if>
+				<if test="timeStart != null and timeStart != ''">
+					and t1.scsj >=  #{timeStart,jdbcType=TIME}
+				</if>
+				<if test="timeEnd != null and timeEnd != ''">
+					and #{timeEnd,jdbcType=TIME} >= t1.scsj
+				</if>
+				<if test="timeStartCopy != null">
+					and t1.jssj >=  #{timeStartCopy,jdbcType=TIME}
+				</if>
+				<if test="timeEndCopy != null">
+					and #{timeEndCopy,jdbcType=TIME} >= t1.jssj
+				</if>
+		)t2
+		left join 
+			(
+			SELECT
+				t3.jgbh AS jgid,
+				t3.ssdl,t3.jgxz,t3.jgcz,t3.jngj,t3.sfzw,t3.jggg,t3.qsdw,t3.gldw
+			FROM 
+				YJG_JGXX t3
+			)t1 on t2.jgid = t1.jgid
+			<where>
+			    <if test="null != jgxz and jgxz != ''">
+					t1.jgxz = #{jgxz}
+				</if>
+				<if test="null != jgcz and jgcz != ''">
+					and t1.jgcz = #{jgcz}
+				</if>
+				<if test="null != jngj and jngj != ''">
+					and t1.jngj = #{jngj}
+				</if>
+				<if test="null != jggg and jggg != ''">
+					and t1.jggg = #{jggg}
+				</if>
+				<if test="null != jgsl and jgsl != ''">
+					and t1.jgsl = #{jgsl}
+				</if>
+				<if test="null != jgzt and jgzt != ''">
+					and t1.jgzt = #{jgzt}
+				</if>
+				<if test="null != sfzw and sfzw != ''">
+					and t1.sfzw = #{sfzw}
+				</if>
+				<if test="null != ssdl and ssdl != ''">
+					and t1.ssdl = #{ssdl}
+				</if>
+				<if test="null != gldw and gldw != ''">
+					and t1.gldw = #{gldw}
+				</if>
+				<if test="null != qsdw and qsdw != ''">
+					and t1.qsdw = #{qsdw}
+				</if>
+			</where>
+	</select>
+	
+	<select id="selectPagination" resultType="yjgSjdjEntity" parameterType="yjgSjdjEntity">
+		SELECT 
+			t1.instanceid as instanceid,
+			v.taskname as taskname,v.taskkey as taskkey,v.taskid as taskid,v.definitionid,v.taskstarttime,v.gotime,v.maxtimes,
+			t2.*
+		FROM (
+			SELECT
+				t.updator,
+				t.baseuserid,
+				t.bz,
+				t.cssjdjpid,
+				t.jgid,
+				t.jglx,
+				t.sbrdh,
+				t.sbrxm,
+				t.sjdjdh,
+				t.sjdjid,
+				'' as fyjsjdjid,
+				t.sjlx,
+				t.sqzt,
+				t.ssdl,
+				t.isline,
+				t.updateuserid,
+				t.wzms,
+				t.xxly,
+				t.xzb,
+				t.xzqh,
+				t.yzb,
+				t.yzjb,
+				x.jgcz,
+				x.jgxz,
+				to_char (
+					t.jssj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS jssj,
+				to_char (
+					t.scsj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS scsj,
+				to_char (
+					t.updatetime,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS updatetime
+		FROM
+			YJG_SJDJ t LEFT JOIN YJG_JGXX x on t.jgid = x.jgbh
+		WHERE
+			t.ISDEL = 1 and t.cssjdjpid is null
+			<if test="null != sjdjdh and '' != sjdjdh">
+				and t.sjdjdh like '%'||#{sjdjdh}||'%'
+			</if>
+			<if test="null != sbrxm and '' != sbrxm">
+				and t.sbrxm like '%'||#{sbrxm}||'%'
+			</if>
+			<if test="null != sbrdh and '' != sbrdh">
+				and t.sbrdh like '%'||#{sbrdh}||'%'
+			</if>
+			<if test="null != sqzt and sqzt != -1">
+				and t.sqzt = #{sqzt}
+			</if>
+			<if test="null != sjlx and sjlx != -1">
+				and t.sjlx = #{sjlx}
+			</if>
+			<if test="null != yzjb and yzjb != -1">
+				and t.yzjb = #{yzjb}
+			</if>
+			<if test="null != jglx and jglx != '-1'">
+				and t.jglx = #{jglx}
+			</if>
+			<if test="null != xxly and xxly != -1">
+				and t.xxly = #{xxly}
+			</if>
+			<if test="timeStart != null">
+				and t.scsj >=  #{timeStart,jdbcType=TIME}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIME} >= t.scsj
+			</if>
+			<if test="timeStartCopy != null">
+				and t.jssj >=  #{timeStartCopy,jdbcType=TIME}
+			</if>
+			<if test="timeEndCopy != null">
+				and #{timeEndCopy,jdbcType=TIME} >= t.jssj
+			</if>
+			<if test="null != yzjb and yzjb != -1">
+				and t.yzjb = #{yzjb}
+			</if>
+			<if test="null != xxly and xxly != -1">
+				and t.xxly = #{xxly}
+			</if>
+			<if test="null != jgid and jgid != ''">
+				and t.jgid like '%'||#{jgid}||'%'
+			</if>
+			<if test="null != jgcz and jgcz != '-1'">
+				and x.jgcz = #{jgcz}
+			</if>
+			<if test="null != jgxz and jgxz != '-1'">
+				and x.jgxz = #{jgxz}
+			</if>
+			<if test="null != sfzw and sfzw != '-1'">
+				and x.sfzw = #{sfzw}
+			</if>
+			<if test="null != jgzt and jgzt != '-1'">
+				and x.jgzt = #{jgzt}
+			</if>
+			<if test="null != jngj and jngj != ''">
+				and x.jngj = #{jngj}
+			</if>
+			<if test="null != jggg and jggg != ''">
+				and x.jggg = #{jggg}
+			</if>
+			<if test="null != ssdl and ssdl != ''">
+				and t.ssdl in (${ssdl})
+			</if>
+			<if test="null != ckqx and ckqx != ''">
+				and (instr(t.ckqx, #{ckqx})> 0 or t.ckqx is null)
+			</if>
+		UNION ALL
+			SELECT
+				t1.updator,
+				t1.baseuserid,
+				t1.bz,
+				t1.cssjdjpid,
+				t1.jgid,
+				t1.jglx,
+				t1.sbrdh,
+				t1.sbrxm,
+				t1.sjdjdh,
+				t1.fyjsjdjid,
+				'' as sjdjid,
+				t1.sjlx,
+				t1.sqzt,
+				t1.ssdl,
+				t1.isline,
+				t1.updateuserid,
+				t1.wzms,
+				t1.xxly,
+				t1.xzb,
+				t1.xzqh,
+				t1.yzb,
+				t1.yzjb,
+				'' as jgcz,
+				'' as jgxz,
+				to_char (
+					t1.jssj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS jssj,
+				to_char (
+					t1.scsj,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS scsj,
+				to_char (
+					t1.updatetime,
+					'yyyy-mm-dd hh24:mi:ss'
+				) AS updatetime
+			FROM
+				YJG_FYJSJDJ t1
+			WHERE
+				t1.ISDEL = 1 and t1.cssjdjpid is null
+				<if test="null != sjdjdh and '' != sjdjdh">
+					and t1.sjdjdh like '%'||#{sjdjdh}||'%'
+				</if>
+				<if test="null != sbrxm and '' != sbrxm">
+					and t1.sbrxm like '%'||#{sbrxm}||'%'
+				</if>
+				<if test="null != sbrdh and '' != sbrdh">
+					and t1.sbrdh like '%'||#{sbrdh}||'%'
+				</if>
+				<if test="null != sqzt and sqzt != -1">
+					and t1.sqzt = #{sqzt}
+				</if>
+				<if test="null != sjlx and sjlx != -1">
+					and t1.sjlx = #{sjlx}
+				</if>
+				<if test="timeStart != null">
+					and t1.scsj >=  #{timeStart,jdbcType=TIME}
+				</if>
+				<if test="timeEnd != null">
+					and #{timeEnd,jdbcType=TIME} >= t1.scsj
+				</if>
+				<if test="null != yzjb and yzjb != -1">
+					and t1.yzjb = #{yzjb}
+				</if>
+				<if test="null != jglx and jglx != '-1'">
+					and t1.jglx = #{jglx}
+				</if>
+				<if test="null != xxly and xxly != -1">
+					and t1.xxly = #{xxly}
+				</if>
+				<if test="null != jgid and jgid != ''">
+					and t1.jgid = #{jgid}
+				</if>
+	 			<if test="timeStartCopy != null">
+					and t1.jssj >=  #{timeStartCopy,jdbcType=TIME}
+				</if>
+				<if test="timeEndCopy != null">
+					and #{timeEndCopy,jdbcType=TIME} >= t1.jssj
+				</if>
+				<if test="null != sfzw and sfzw != '-1'">
+					and x1.sfzw = #{sfzw}
+				</if>
+				<if test="null != jgzt and jgzt != '-1'">
+					and x1.jgzt = #{jgzt}
+				</if>
+				<if test="null != jngj and jngj != ''">
+					and x1.jngj = #{jngj}
+				</if>
+				<if test="null != jggg and jggg != ''">
+					and x1.jggg = #{jggg}
+				</if>
+				<if test="null != ssdl and ssdl != ''">
+					and t1.ssdl in (${ssdl})
+				</if>
+				<if test="null != ckqx and ckqx != ''">
+					and (instr(t1.ckqx, #{ckqx})> 0 or t1.ckqx is null)
+				</if>
+		) t2
+		left join YJG_XMLC t1 on t2.sjdjid = t1.sjdjid
+		left join V_FLOW_TODO v on t1.instanceid  = v.instanceid
+		order by t2.scsj desc
+	</select>
+	
+	<select id="selectTaskPagination" resultType="yjgSjdjEntity" parameterType="yjgSjdjEntity">
+		SELECT 
+			distinct t1.sjdjid,t2.instanceid as instanceid,
+			v.taskname as taskname,v.taskkey as taskkey,v.taskid as taskid,v.definitionid,v.taskstarttime,v.gotime,v.maxtimes,v.assignee,
+			t1.sjdjdh,t1.yzjb,t1.sqzt,t1.xxly,t1.jglx,t1.jssj,t1.sjlx,t1.sbrxm,t1.sbrdh,t1.xzb,t1.yzb,t1.ssdl,t1.jgid,t1.xzqh,t1.bz,t1.wzms,t1.isline,
+			to_char (
+				t1.scsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS scsj,
+			to_char (
+				t1.updatetime,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS updatetime
+		from	
+			YJG_SJDJ t1,V_FLOW_TODO v,YJG_XMLC t2,ACT_RU_IDENTITYLINK t3
+		where
+			t1.ISDEL = 1 
+			and t1.cssjdjpid is null
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and
+				(
+					(
+					v.TASKID = t3.TASK_ID_ 
+					and v.assignee is null
+					and t3.TYPE_ = 'candidate'
+					and t3.USER_ID_= #{assignee,jdbcType=VARCHAR} 
+					)
+					or
+					(
+					v.assignee = #{assignee,jdbcType=VARCHAR}
+					)
+				)
+		order by updatetime desc
+	</select>
+	
+	<select id="selectTaskedPagination" resultType="yjgSjdjEntity" parameterType="yjgSjdjEntity">
+		SELECT 
+			distinct t1.sjdjid,t2.instanceid as instanceid,
+			v.taskname as taskname,v.taskkey,v.taskid,v.definitionid,v.taskstarttime as taskstarttime,v.assignee,v.taskendtime as taskendtime,
+			t1.sjdjdh,t1.yzjb,t1.sqzt,t1.isline,
+			to_char (
+				t1.scsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS scsj
+		from	
+			YJG_SJDJ t1,V_FLOW_DID v,YJG_XMLC t2
+		where
+			t1.ISDEL = 1 
+			and t1.cssjdjpid is null
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and v.assignee = #{assignee,jdbcType=VARCHAR}
+			order by v.taskendtime desc
+	</select>
+	
+	<select id="selectBjtaskPagination" resultType="yjgSjdjEntity" parameterType="yjgSjdjEntity">
+		SELECT 
+			distinct t1.sjdjid,t2.instanceid as instanceid,
+			v.taskname as taskname,v.taskkey as taskkey,v.taskid as taskid,v.definitionid,v.taskstarttime,v.assignee,v.taskendtime,
+			t1.sjdjdh,t1.yzjb,t1.sqzt,
+			to_char (
+				t1.scsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS scsj
+		from	
+			YJG_SJDJ t1,V_FLOW_FINISHED v,YJG_XMLC t2,ACT_HI_IDENTITYLINK t3
+		where
+			t1.ISDEL = 1 
+			and t1.cssjdjpid is null
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and v.taskstarttime in
+			(select max(v2.taskstarttime) from YJG_SJDJ t2,V_FLOW_FINISHED v2 ,YJG_XMLC t3
+				where
+					t3.instanceid  = v2.instanceid and t2.sjdjid = t3.sjdjid
+<!-- 					and v2.assignee = #{assignee,jdbcType=VARCHAR}
+ -->					group by t3.instanceid
+			)
+			order by scsj desc
+	</select>
+	
+	<select id="getTaskCount" resultType="int" parameterType="yjgSjdjEntity">
+		SELECT 
+			count(distinct t1.sjdjid)
+		from	
+			YJG_SJDJ t1,V_FLOW_TODO v,YJG_XMLC t2,ACT_RU_IDENTITYLINK t3
+		where
+			t1.ISDEL = 1 
+			and t1.cssjdjpid is null
+			<if test="null != yzjb and yzjb != -1">
+				and t1.yzjb = #{yzjb}
+			</if>
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and
+				(
+					(
+					v.TASKID = t3.TASK_ID_ 
+					and t3.USER_ID_= #{assignee,jdbcType=VARCHAR} 
+					)
+					or
+					(
+					v.assignee = #{assignee,jdbcType=VARCHAR}
+					)
+				)
+	</select>
+	
+	<select id="getTaskRecentCount" resultType="int" parameterType="yjgSjdjEntity">
+		SELECT 
+			count(distinct t1.sjdjid)
+		from	
+			YJG_SJDJ t1,V_FLOW_TODO v,YJG_XMLC t2,ACT_RU_IDENTITYLINK t3
+		where
+			t1.ISDEL = 1 
+			and v.taskstarttime between sysdate-1/144 and sysdate
+			and t1.cssjdjpid is null
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and
+				(
+					(
+					v.TASKID = t3.TASK_ID_ 
+					and t3.USER_ID_= #{assignee,jdbcType=VARCHAR} 
+					)
+					or
+					(
+					v.assignee = #{assignee,jdbcType=VARCHAR}
+					)
+				)
+	</select>
+	
+	<select id="getTaskedCount" resultType="int" parameterType="yjgSjdjEntity">
+		SELECT 
+			count(t1.sjdjid)
+		from	
+			YJG_SJDJ t1,V_FLOW_DID v,YJG_XMLC t2
+		where
+			t1.ISDEL = 1 
+			and t1.cssjdjpid is null
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and v.assignee = #{assignee,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getBjtaskCount" resultType="int" parameterType="yjgSjdjEntity">
+		SELECT 
+			count(distinct t1.sjdjid)
+		from	
+			YJG_SJDJ t1,V_FLOW_FINISHED v,YJG_XMLC t2,ACT_HI_IDENTITYLINK t3
+		where
+			t1.ISDEL = 1 
+			and t1.cssjdjpid is null
+			and t2.instanceid  = v.instanceid
+			and t1.sjdjid = t2.sjdjid
+			and v.taskstarttime in
+			(select max(v2.taskstarttime) from YJG_SJDJ t2,V_FLOW_FINISHED v2 ,YJG_XMLC t3
+				where
+					t3.instanceid  = v2.instanceid and t2.sjdjid = t3.sjdjid
+<!-- 					and v2.assignee = #{assignee,jdbcType=VARCHAR}
+ -->					group by t3.instanceid
+			)
+	</select>
+	
+	<select id="select" resultType="yjgSjdjEntity">
+		select 
+			t.updator,t.baseuserid,t.bz,t.cssjdjpid,t.isdel,t.jgid,t.jglx,t.sbrdh,t.sbrxm,t.sjdjdh,t.sjdjid,t.sjlx,t.sqzt,t.ssdl,t.updateuserid,t.wzms,t.xxly,t.xzb,t.xzqh,t.yzb,t.yzjb,t.cssjdjpid as pid,t.sjdjid as id 
+			to_char (
+				t.jssj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS jssj,
+			to_char (
+				t.scsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS scsj,
+			to_char (
+				t.updatetime,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS updatetime
+		from 
+			YJG_SJDJ t
+	</select>
+	
+	<select id="listChildSjdj" resultType="yjgSjdjEntity" parameterType="String">
+		select 
+			t.updator,t.baseuserid,t.bz,t.cssjdjpid,t.jgid,t.jglx,t.sbrdh,t.sbrxm,t.updateuserid,t.wzms,t.xxly,t.xzb,t.xzqh,t.yzb,t.yzjb,t.sjdjdh,t.sjdjid,t.sjlx,t.sqzt,t.ssdl,
+			to_char (
+				t.jssj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS jssj,
+			to_char (
+				t.scsj,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS scsj,
+			to_char (
+				t.updatetime,
+				'yyyy-mm-dd hh24:mi:ss'
+			) AS updatetime
+		from 
+			YJG_SJDJ t
+		where
+			t.cssjdjpid = #{sjdjid} and t.ISDEL = 1
+	</select>
+	
+	<select id="getByPkey" resultType="yjgSjdjEntity" parameterType="String">
+		select 
+			<include refid="all"></include>
+		from 
+			YJG_SJDJ t
+		where 
+			t.sjdjid = #{sjdjid}
+	</select>
+	
+	<insert id="insert" parameterType="yjgSjdjEntity">
+		insert into YJG_SJDJ(
+			baseuserid,bz,ckqx,cssjdjpid,isdel,isline,jgid,jglx,jssj,sbrdh,sbrxm,scsj,sjdjdh,sjdjid,sjlx,sqzt,ssdl,updatetime,updateuserid,updator,wzms,xxly,xzb,xzqh,yzb,yzjb
+		)values(
+			#{baseuserid,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{ckqx,jdbcType=VARCHAR},#{cssjdjpid,jdbcType=VARCHAR},#{isdel,jdbcType=INTEGER},#{isline,jdbcType=VARCHAR},#{jgid,jdbcType=VARCHAR},#{jglx,jdbcType=VARCHAR},#{jssj,jdbcType=TIME},#{sbrdh,jdbcType=VARCHAR},#{sbrxm,jdbcType=VARCHAR},#{scsj,jdbcType=TIME},#{sjdjdh,jdbcType=VARCHAR},#{sjdjid,jdbcType=VARCHAR},#{sjlx,jdbcType=INTEGER},#{sqzt,jdbcType=INTEGER},#{ssdl,jdbcType=VARCHAR},#{updatetime,jdbcType=TIME},#{updateuserid,jdbcType=VARCHAR},#{updator,jdbcType=VARCHAR},#{wzms,jdbcType=VARCHAR},#{xxly,jdbcType=INTEGER},#{xzb,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{yzb,jdbcType=VARCHAR},#{yzjb,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="yjgSjdjEntity">
+		update YJG_SJDJ
+		set 
+			baseuserid = #{baseuserid,jdbcType=VARCHAR}, bz = #{bz,jdbcType=VARCHAR}, ckqx = #{ckqx,jdbcType=VARCHAR}, cssjdjpid = #{cssjdjpid,jdbcType=VARCHAR}, isdel = #{isdel,jdbcType=INTEGER}, isline = #{isline,jdbcType=VARCHAR}, jgid = #{jgid,jdbcType=VARCHAR}, jglx = #{jglx,jdbcType=VARCHAR}, jssj = #{jssj,jdbcType=TIME}, sbrdh = #{sbrdh,jdbcType=VARCHAR}, sbrxm = #{sbrxm,jdbcType=VARCHAR}, scsj = #{scsj,jdbcType=TIME}, sjdjdh = #{sjdjdh,jdbcType=VARCHAR}, sjlx = #{sjlx,jdbcType=INTEGER}, sqzt = #{sqzt,jdbcType=INTEGER}, ssdl = #{ssdl,jdbcType=VARCHAR}, updatetime = #{updatetime,jdbcType=TIME}, updateuserid = #{updateuserid,jdbcType=VARCHAR}, updator = #{updator,jdbcType=VARCHAR}, wzms = #{wzms,jdbcType=VARCHAR}, xxly = #{xxly,jdbcType=INTEGER}, xzb = #{xzb,jdbcType=VARCHAR}, xzqh = #{xzqh,jdbcType=VARCHAR}, yzb = #{yzb,jdbcType=VARCHAR}, yzjb = #{yzjb,jdbcType=VARCHAR} 
+		where 
+			sjdjid = #{sjdjid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		update YJG_SJDJ
+		set 
+			isdel = 0
+		where 
+			sjdjid = #{sjdjid} or cssjdjpid = #{cssjdjpid}
+	</delete>
+	
+	<update id="separate" parameterType="String">
+		update YJG_SJDJ t
+		set 
+			t.cssjdjpid = null
+		where 
+			t.sjdjid = #{sjdjid} and t.ISDEL = 1
+	</update>
+	
+	<select id="getCountByXxly" resultType="int" parameterType="yjgSjdjEntity">
+		select 
+			count(*) 
+		from 
+			YJG_SJDJ 
+		where 
+			XXLY = #{xxly} and ISDEL = 1 and cssjdjpid is null
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart,jdbcType=TIME}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIME} >= scsj
+			</if>
+	</select>
+	
+	<select id="getCountByExceptXxly" resultType="int" parameterType="yjgSjdjEntity"> 
+		select 
+			count(*) 
+		from 
+			YJG_SJDJ 
+		where 
+			XXLY <![CDATA[<>]]> #{xxly}  and ISDEL = 1 and cssjdjpid is null
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart,jdbcType=TIME}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIME} >= scsj
+			</if>	
+	</select>
+	
+	<select id="getCountBySjlx" resultType="int" parameterType="yjgSjdjEntity">
+		select 
+			count(*) 
+		from 
+			YJG_SJDJ 
+		where 
+			SJLX = #{sjlx} and ISDEL = 1 and cssjdjpid is null
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd} >= scsj
+			</if>
+	</select>
+	
+	<select id="getBhCountByGglx" resultType="int" parameterType="yjgSjdjEntity">
+		select 
+			count(*) 
+		from 
+			YJG_SJDJ 
+		where 
+			JGLX = #{jglx} and ISDEL = 1 and cssjdjpid is null and sqzt = 7
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd} >= scsj
+			</if>
+	</select>
+	
+	<select id="getClCountByGglx" resultType="int" parameterType="yjgSjdjEntity">
+		select 
+			count(*) 
+		from 
+			YJG_SJDJ 
+		where 
+			JGLX = #{jglx} and ISDEL = 1 and cssjdjpid is null and sqzt in (4,5,7)
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd} >= scsj
+			</if>
+	</select>
+	
+	<select id="getCountGroupByJgid" resultType="YjgBaseSjdjEntity" parameterType="YjgYwtjEntity">
+		select 
+			count(*) as count,JGID as jgid
+		from 
+			YJG_SJDJ 
+		where 
+			ISDEL = 1 and cssjdjpid is null and JGID is not null
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIMESTAMP} >= scsj
+			</if>
+		GROUP BY JGID
+	</select>
+	
+	<select id="getCountGroupByJglx" resultType="YjgBaseSjdjEntity" parameterType="YjgYwtjEntity">
+		select 
+			count(SJDJID) as count,JGLX
+		from 
+			YJG_SJDJ 
+		where 
+			ISDEL = 1 and cssjdjpid is null and JGLX is not null
+			<if test="timeStart != null">
+				and scsj >=  #{timeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIMESTAMP} >= scsj
+			</if>
+		GROUP BY JGLX
+	</select>
+	
+	<select id="selectJglxPagination" resultType="YjgSjdjEntity" parameterType="YjgSjdjEntity">
+		select b.*,t1.instanceid from 
+		(
+			select 
+				<include refid="all"></include>
+			from 
+				YJG_SJDJ t
+			where 
+				t.ISDEL = 1 and t.cssjdjpid is null
+				<if test="baseType == 2">
+					and t.sqzt != 7			
+				</if>
+				<if test="baseType == 3">
+					and t.sqzt = 7			
+				</if>
+				<if test="baseType == 4">
+					 and sqzt in (4,5,7)		
+				</if>
+				<if test="baseType == 5">
+					 and sqzt not in (4,5,7)			
+				</if>
+				<if test="timeStart != null">
+					and t.scsj >=  #{timeStart,jdbcType=TIMESTAMP}
+				</if>
+				<if test="timeEnd != null">
+					and #{timeEnd,jdbcType=TIMESTAMP} >= t.scsj
+				</if>
+				<if test="jglx != null">
+					and t.jglx = #{jglx}
+				</if>
+		) b
+		left join YJG_XMLC t1 on b.sjdjid = t1.sjdjid
+		left join V_FLOW_TODO v on t1.instanceid  = v.instanceid
+	</select>
+	
+	<select id="getJglxCount" resultType="int" parameterType="YjgSjdjEntity">
+		select 
+			count(t.sjdjid)
+		from 
+			YJG_SJDJ t
+		where 
+			t.ISDEL = 1 and t.cssjdjpid is null
+			<if test="baseType == 2">
+				and t.sqzt != 7			
+			</if>
+			<if test="baseType == 3">
+				and t.sqzt = 7			
+			</if>
+			<if test="baseType == 4">
+				 and sqzt in (4,5,7)		
+			</if>
+			<if test="baseType == 5">
+				 and sqzt not in (4,5,7)			
+			</if>
+			<if test="timeStart != null">
+				and t.scsj >=  #{timeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIMESTAMP} >= t.scsj
+			</if>
+			<if test="jglx != null">
+				and t.jglx = #{jglx}
+			</if>
+	</select>
+	
+	<select id="getCountGroupByDlid" resultType="YjgBaseSjdjEntity" parameterType="YjgYwtjEntity">
+		select rownum,t.* from (
+	    	select 
+				count(SJDJID) as count,SSDL
+			from 
+				YJG_SJDJ 
+			where 
+				ISDEL = 1 and cssjdjpid is null and SSDL is not null
+				<if test="timeStart != null">
+					and SCSJ >=  #{timeStart,jdbcType=TIMESTAMP}
+				</if>
+				<if test="timeEnd != null">
+					and #{timeEnd,jdbcType=TIMESTAMP} >= SCSJ
+				</if>
+			GROUP BY SSDL
+	    	order by count desc
+	    )t where rownum &lt; 101
+	</select>
+	
+	<select id="exportDataBytime" resultType="yjgSjdjEntity" parameterType="YjgSjdjTimeEntity">
+		select
+			<include refid="all"></include>
+		from
+			YJG_SJDJ t
+		where
+			t.ISDEL = 1 and t.cssjdjpid is null
+		<if test="year !=null and year!=''">
+			and to_char(t.SCSJ,'yyyy') = #{year,jdbcType=VARCHAR}
+		</if>
+		<if test="month !=null and month!=''">
+			and to_char(t.SCSJ,'MM') = #{month,jdbcType=VARCHAR}
+		</if>
+		order by t.scsj
+	</select>
+	
+	<select id="selectYwtjPagination" resultType="yjgSjdjEntity" parameterType="yjgSjdjEntity">
+		select b.*,t1.instanceid from 
+		(
+			select
+				<include refid="all"></include>
+			from
+				YJG_SJDJ t
+			where
+				t.ISDEL = 1 and t.cssjdjpid is null
+			<if test="jgid !=null and jgid !=''">
+				and t.jgid = #{jgid}
+			</if>
+			<if test="ssdl !=null and ssdl !=''">
+				and t.ssdl = #{ssdl}
+			</if>
+			<if test="xxly !=null and xxly !=''">
+				and t.xxly = #{xxly}
+			</if>
+			<if test="timeStart != null">
+				and t.scsj >=  #{timeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="timeEnd != null">
+				and #{timeEnd,jdbcType=TIMESTAMP} >= t.scsj
+			</if>
+		) b
+		left join YJG_XMLC t1 on b.sjdjid = t1.sjdjid
+		left join V_FLOW_TODO v on t1.instanceid  = v.instanceid
+	</select>
+	
+	<select id="getJgtjDetailCount" resultType="int" parameterType="yjgSjdjEntity">
+		select
+			count(t.sjdjid) 
+		from
+			YJG_SJDJ t
+			left join YJG_XMLC t1 on t.sjdjid = t1.sjdjid
+			left join V_FLOW_TODO v on t1.instanceid  = v.instanceid
+		where
+			t.ISDEL = 1 and t.cssjdjpid is null
+		<if test="jgid !=null and jgid !=''">
+			and t.jgid = #{jgid}
+		</if>
+		<if test="ssdl !=null and ssdl !=''">
+			and t.ssdl = #{ssdl}
+		</if>
+		<if test="xxly !=null and xxly !=''">
+			and t.xxly = #{xxly}
+		</if>
+		<if test="timeStart != null">
+			and t.scsj >=  #{timeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="timeEnd != null">
+			and #{timeEnd,jdbcType=TIMESTAMP} >= t.scsj
+		</if>
+	</select>
+</mapper>

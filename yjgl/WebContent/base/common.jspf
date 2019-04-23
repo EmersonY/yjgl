@@ -1,0 +1,11 @@
+<script type="text/javascript" src="../easyui/jquery.min.js"></script>
+<script type="text/javascript" src="../easyui/jquery.easyui.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../js/jquery.form.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../js/jsrender.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../easyui/ext/easyui.treegrid.extend.js"></script>
+<script type="text/javascript" src="../easyui/ext/easyui.tree.extend.js"></script>
+<script type="text/javascript" src="../easyui/ext/easyui.combotree.extend.js"></script>
+<script type="text/javascript" src="../easyui/ext/easyui.filebox.extend.js"></script>
+
